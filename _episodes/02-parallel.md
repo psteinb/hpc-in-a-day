@@ -27,11 +27,11 @@ Lola Lazy is now confident enough to work with the batch system of the cluster. 
 One of her more experienced colleagues has suggested to her, to use the _Message Passing Interface_ (in short _MPI_) for that matter. As she has no prior knowledge in the field, accepting this advice is as good as trying some other technique on her how. She first explores the documentation of MPI a bit to get a feeling about the philosophy behind this approach. 
 
 > ## Message Passing Interface
-> A long time before we had smart phones, tablets or laptops, [compute clusters](http://www.phy.duke.edu/~rgb/brahma/Resources/beowulf/papers/ICPP95/icpp95.html) consisted of interconnected computers that had merely enough memory to show the first two frames of a modern movie (`2*1920*1080*4 Bytes = 16 MB`). 
-> ![Schematic View of a Compute Cluster](../fig/cluster_schematic.svg)
+> A long time before we had smart phones, tablets or laptops, [compute clusters](http://www.phy.duke.edu/~rgb/brahma/Resources/beowulf/papers/ICPP95/icpp95.html) were already around and consisted of interconnected computers that had merely enough memory to show the first two frames of a movie (`2*1920*1080*4 Bytes = 16 MB`). 
 > However, scientific problems back than were equally demanding more and more memory than today. 
 > To overcome the lack of available hardware memory, [specialists from academia and industry](https://en.wikipedia.org/wiki/Message_Passing_Interface#History) came about with the idea to consider the memory of several interconnected compute nodes as one. Given a standardized software that synchronizes the various states of memory between the client/slave nodes during the execution of driver application through the network interfaces. With this performing large calculations that required more memory than each individual cluster node can offer was possible. Moreover, this technique by passing messages (hence _Message Passing Interface_ or _MPI_) on memory updates in a controlled fashion allowed to write parallel programs that were capable of running on a diverse set of cluster architectures.
-{: .callout}
+
+![Schematic View of a Compute Cluster](../fig/cluster_schematic.svg)
 
 Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
