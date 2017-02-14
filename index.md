@@ -25,7 +25,7 @@ root: .
 	c. revisiting "Hello World" using input/output [15 min]
 
 
-3.  Paradigms of Parallel Computing [90 min] 
+3.  [Paradigms of Parallel Computing](02-parallel.html) [90 min] 
 
 	a. calculating with many distributed systems (MPI, shared-memory parallelisation) [30 min]
 
