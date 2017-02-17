@@ -1,8 +1,10 @@
 ---
-layout: lesson
+layout: less
+title: High Performance Computing
 root: .
 ---
 
+This needs refactoring to reflect something along the lines of shell-novice/index.md
 
 1.  Introduction to the Unix Shell [90 min]
 
@@ -10,7 +12,7 @@ root: .
 
     b.  commands and scripts [30 min]
 
-	c.  taking the space shuttle `ssh` to another planet [15 min]
+	c.  taking the space shuttle and `ssh` to another planet [15 min]
 
 	d.  transferring files to/from a remote host (`scp`, `rsync`) [15 min]
 
@@ -24,7 +26,7 @@ root: .
 	c. revisiting "Hello World" using input/output [15 min]
 
 
-3.  Paradigms of Parallel Computing [90 min] 
+3.  [Paradigms of Parallel Computing](02-parallel.html) [90 min] 
 
 	a. calculating with many distributed systems (MPI, shared-memory parallelisation) [30 min]
 
