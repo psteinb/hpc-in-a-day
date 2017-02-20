@@ -42,16 +42,15 @@
     \node [draw, above, fill=gray,text=white,minimum width=3cm] at($(nic_\n.north)+(0,.25)$) (mem_\n) {Memory};
     
 
-    \node [draw, dashed, above, minimum width=3cm, minimum height=1.5cm] at($(mem_\n.north)+(0,.25)$) (cpus_\n) {};
+    \node [above, minimum width=3cm, minimum height=1.5cm] at($(mem_\n.north)+(0,.25)$) (cpus_\n) {};
 
-    \foreach \x in {1,...,3}
-    {
-      \draw [dashed] ($(cpus_\n.north west) + (\x*.75,0)$) -- ($(cpus_\n.south west) + (\x*.75,0)$);
-    }
-
-    \foreach \y in {1,...,2}
-    {
-      \draw [dashed] ($(cpus_\n.south west) + (0,\y*.5)$) -- ($(cpus_\n.south east) + (0,\y*.5)$);
+    \foreach \y in {0,...,2}{
+      
+      \foreach \x in {0,...,3}{
+        \pgfmathsetmacro\result{\y * 4 + \x}
+        \node [draw,dashed,rectangle,minimum width=.75cm,minimum height=.5cm,anchor=north west] at($(cpus_\n.north west)+(\x*.75,\y*-.5)$) (node_\n_core_\x_\y) {\pgfmathprintnumber{\result}};
+      
+      }
     }
   
 
