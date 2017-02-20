@@ -55,12 +55,9 @@
     
     % \draw[thick] (node_\n.south) -- (switch)  {};
 
-
-    \node [draw, above, minimum width=3cm] at($(node_\n.south)+(0,.25)$) (nic_\n) {Network Interface};
-    \path [thick] (nic_\n) edge (node_\n.south) 
+    \node [draw, above, fill=blue, text=white] at($(node_\n.south)+(0,.25)$) (mpirun_call_\n) {$\texttt{mpirun} \rightarrow \texttt{hostname}$};
+    \path [thick,color=blue] (mpirun_call_\n) edge (node_\n.south) 
     (node_\n.south) edge (switch);
-
-    \node [draw, above, fill=gray,text=white,minimum width=3cm] at($(nic_\n.north)+(0,.25)$) (mem_\n) {Memory};
   }
 
 
