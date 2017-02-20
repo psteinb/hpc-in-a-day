@@ -33,34 +33,38 @@
    
     \node [draw,rectangle, minimum width=3.75cm, minimum height=3.5cm] at($(0,3)+(4.2*\n,0)$) (node_\n) {};
     \node [node distance=2mm,above =of node_\n] (node_label_\n) {\bfseries{}Node $\n$};
-    \node (anchor_for_cores_\n) at($(node_\n)+(0,.75)$)  {};
+    \node [below] (cpus_\n) at($(node_\n.north)+(-1.4,-.25)$)  {};
 
-    \begin{scope}[every node/.style={draw, %
-        dashed,%
-        rectangle, %
-        on grid, %
-        minimum height=.75cm,%
-        minimum width=1.5cm, 
-        node distance=3.75mm and 7.5mm%
-      }]
-      \node [above left =of anchor_for_cores_\n] (node_\n_cpu_0) {};
-      \node [above right=of anchor_for_cores_\n] (node_\n_cpu_1) {};
-      \node [below left =of anchor_for_cores_\n] (node_\n_cpu_2) {};
-      \node [below right=of anchor_for_cores_\n] (node_\n_cpu_3) {};
-    \end{scope}
-    \foreach \c in {0,...,3}
-    {
-      \node [below right] at(node_\n_cpu_\c.north west) {$\c$};
+    \foreach \y in {0,...,2}{
+      
+      \foreach \x in {0,...,3}{
+        \pgfmathsetmacro\result{(\y * 4 + \x)+1}
+        \node [draw,dashed,rectangle,minimum width=.75cm,minimum height=.5cm,anchor=north west] at($(cpus_\n.north west)+(\x*.75,\y*-.5)$) (node_\n_core_\x_\y) {\pgfmathprintnumber{\result}};
+      
+      }
     }
-    
-    % \draw[thick] (node_\n.south) -- (switch)  {};
 
-    \node [draw, above, fill=blue, text=white] at($(node_\n.south)+(0,.25)$) (mpirun_call_\n) {$\texttt{mpirun} \rightarrow \texttt{hostname}$};
-    \path [thick,color=blue] (mpirun_call_\n) edge (node_\n.south) 
-    (node_\n.south) edge (switch);
+
   }
 
+    \node [draw, align=center, above, fill=blue, text=white, minimum height=1cm] at($(node_0.south)+(0,.5)$) (mpirun_call_0) {$12x$\\$\texttt{mpirun hostname}$};
+    \path [thick,color=blue] (mpirun_call_0) edge (node_0.south) 
+    (node_0.south) edge (switch);
 
+    \foreach \x in {0,...,3}{
+
+      \node [draw,fill=blue,rectangle,minimum width=2mm,minimum height=2mm,anchor=north west] at(node_1_core_\x_0.north west) (busy_1_core_\x) {};
+
+      \foreach \y in {0,...,2}{
+        \node [draw,fill=blue,rectangle,minimum width=1mm,minimum height=1mm,anchor=north west] at(node_0_core_\x_\y.north west) (busy_0_core_\x_\y) {};
+      }
+    }
+
+
+    \node [draw, align=center, above, fill=blue, text=white, minimum height=1cm] at($(node_1.south)+(0,.5)$) (mpirun_call_1) {$4x$\\$\texttt{mpirun hostname}$};
+    \path [thick,color=blue] (mpirun_call_1) edge (node_1.south) 
+    (node_1.south) edge (switch)
+    (switch) edge (you);
 
 \end{tikzpicture}
 \end{document}
