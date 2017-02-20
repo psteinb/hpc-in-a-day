@@ -24,7 +24,7 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 > However, scientific problems back than were equally demanding more and more memory than today. 
 > To overcome the lack of available hardware memory, [specialists from academia and industry](https://en.wikipedia.org/wiki/Message_Passing_Interface#History) came about with the idea to consider the memory of several interconnected compute nodes as one. Given a standardized software that synchronizes the various states of memory between the client/slave nodes during the execution of driver application through the network interfaces. With this performing large calculations that required more memory than each individual cluster node can offer was possible. Moreover, this technique by passing messages (hence _Message Passing Interface_ or _MPI_) on memory updates in a controlled fashion allowed to write parallel programs that were capable of running on a diverse set of cluster architectures.
 
-![Schematic View of a Compute Cluster](../tikz/cluster_schematic.svg)
+![Schematic View of a Compute Cluster with 4 nodes (12 cores each)](../tikz/cluster_schematic.svg)
 
 Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
@@ -36,14 +36,14 @@ $ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun hostname
 The log file that is filled by the `bsub` command, contains the following lines after finishing the job:
 
 ~~~
-n11
-n11
-n11
-n11
+n01
+n01
+n01
+n01
 ~~~
 {: .output}
 
-The output makes here wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
+The output makes her wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
 
 ~~~
 $ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun hostname
@@ -51,26 +51,28 @@ $ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun hostname
 {: .bash}
 
 ~~~
-n11
-n11
-n11
-n11
-n11
-n11
-n11
-n11
-n11
-n11
-n11
-n12
-n11
-n12
-n12
-n12
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n02
+n01
+n02
+n02
+n02
 ~~~
 {: .output}
 
-Ok, 12 instances of `hostname` were called on `n11` and 4 more on `n12`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleaque, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion. Her colleaque explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
+![Execution of `mpirun hostname` on a Compute Cluster with 4 nodes (12 cores each)](../tikz/mpirunhostname_on_clusterschematic.svg)
+
+Ok, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleaque, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleaque explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
 
 Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as Fortran, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
 
@@ -80,22 +82,22 @@ $ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun python3 print_host
 {: .bash}
 
 ~~~
-this is 16/16 running on n12
-this is 15/16 running on n12
-this is 13/16 running on n12
-this is 14/16 running on n12
-this is  3/16 running on n11
-this is  5/16 running on n11
-this is 11/16 running on n11
-this is  1/16 running on n11
-this is  7/16 running on n11
-this is  2/16 running on n11
-this is  4/16 running on n11
-this is  6/16 running on n11
-this is  8/16 running on n11
-this is  9/16 running on n11
-this is 10/16 running on n11
-this is 12/16 running on n11
+this is 16/16 running on n02
+this is 15/16 running on n02
+this is 13/16 running on n02
+this is 14/16 running on n02
+this is  3/16 running on n01
+this is  5/16 running on n01
+this is 11/16 running on n01
+this is  1/16 running on n01
+this is  7/16 running on n01
+this is  2/16 running on n01
+this is  4/16 running on n01
+this is  6/16 running on n01
+this is  8/16 running on n01
+this is  9/16 running on n01
+this is 10/16 running on n01
+this is 12/16 running on n01
 ~~~
 {: .output}
 
