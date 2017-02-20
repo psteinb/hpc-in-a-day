@@ -8,3 +8,6 @@ CONDUCT.html
 *.pyc
 _site
 .DS_Store
+tikz/*aux
+tikz/*pdf
+tikz/*log
