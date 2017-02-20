@@ -2,6 +2,7 @@
 import sys
 import random
 import math
+from multiprocessing import cpu_count, Pool
 
 def estimate_pi(total_count):
 
@@ -12,14 +13,21 @@ def estimate_pi(total_count):
         d = math.sqrt(x*x + y*y)
         if d < 1: count_inside += 1
 
-    estimate = 4.0 * count_inside / total_count
-    return estimate
+    return count_inside
+
 
 if __name__=='__main__':
 
+    ncores = cpu_count()
     n_iterations = 10000
     if len(sys.argv) > 1:
         n_iterations = int(sys.argv[1])
 
-    my_pi = estimate_pi(n_iterations)
-    print("[serial version] pi is %f from %i samples" % (my_pi,n_iterations))
+    partitions = [ math.ceil(n_iterations/ncores) for item in range(ncores)]
+    pool = Pool(processes=ncores)
+
+    counts=pool.map(estimate_pi, partitions)
+
+    my_pi = 4*sum(counts)/sum(partitions)
+
+    print("[using %i cores] pi is %f from %i samples" % (ncores,my_pi,n_iterations))
