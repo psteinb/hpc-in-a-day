@@ -1,6 +1,6 @@
 ---
 title: "Computing the answer to life, the universe and everything"
-teaching: 30
+teaching: 45
 exercises: 10
 questions:
 - "How do I exploit parallelism using MPI?"
@@ -176,7 +176,94 @@ So from the above, Lola wants to compare the `real` time spent by her serial imp
 > A speed-up of _8.6x_ for a parallel python program is not bad. The luxury of python programming makes us pay the price of performance. In a perfect world, data parallel algorithms using one machine only are expected to scale perfectly, i.e. using 20 cores should give a speed-up of _20x_. Due to a myriad of reasons from the software or from the hardware side, this perfect scaling often remains a hard-to-achieve goal which projects attain only after months if not years of development.
 {: .callout}
 
+To finalize this day's work, Lola wants to tackle distributed memory parallelisation using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is preinstalled on her cluster. She again starts from the [serial implementation](../samples/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
 
+~~~
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
+~~~
+{: .python }
+
+These 4 lines will be very instrumental through out the entire MPI program. The entire MPI software stack builds upon the notion of a communicator. Here, we see the MPI.COMM_WORLD communicator by which all processes that are created talk to each other. We will use it as a hub to initiate communications among all participating processes. Subsequently, we ask `comm` how many participants are connected by calling `comm.Get_size()`. Then we'll ask the communicator, what rank the current process is `comm.Get_rank()`. And with this, Lola has entered the dungeon of MPI. 
+
+> ## Every Line Is Running in Parallel!
+> As discussed in the previous section, a call to `<your scheduler> mpirun <your program>` will do the following:
+>     - `mpirun` will obtain a list of available nodes from the scheduler
+>     - mpirun will then `ssh` onto these nodes for you and instantiate a local mpirun there
+>     - this local mpirun will execute `<your program>` in parallel to all the others and call every line of it from top to bottom
+>     - only if your program reaches a statement of the form `comm.do_something(...)`, your program will start communicating through the mpi library with the other mpi processes; this communication can entail point-to-point data transfers or collective data transfers (that's why it's called 'message passing' because MPI does nothing else than provide mechanism to send messages around the cluster), depending on the type of communication, the MPI library might make your program wait until the all message passing has been completed
+>In case you want to do something only on one rank specifically, you can do that by:
+``` {python}
+if rank == 0:
+    print("Hello World")
+```
+{: .callout}
+
+Pushing the implementation further, the list of `partitions` needs to be established similar to what was done in the parallel implementation above. Also a list for the results is created and all items are initialized to `0`.
+
+~~~
+if rank == 0:
+    partitions = [ int(n_samples/size) for item in range(size)]
+    counts = [ int(0) ] *size
+else:
+    partitions = None
+    counts = None
+~~~
+{: .python}
+
+In this example, you can see how the lists are only created on one rank for now (rank `0` to be precise). At this, point the contents of `partitions` and `counts` reside on rank `0` only. They now have to send to all other participanting ranks.
+
+~~~
+partition_item = comm.scatter(partitions, root=0)
+count_item = comm.scatter(counts, root=0)
+~~~
+{: .python}
+
+Note how the input variable is `partitions` (aka a list of values) and the output variable is named `partition_item`. This is because, `mpi4py` returns only one item (namely the one item in `partitions` matching the rank of the current process, i.e. `partitions[rank]`) rather than the full list. Now, the actual work can be done.
+
+~~~
+count_item = inside_circle(partition_item)
+~~~
+{: .python}
+
+This is the known function call from the serial implementation. After this, the results have to be communicated back again.
+
+~~~
+counts = comm.gather(count_item, root=0)
+~~~
+{: .python}
+
+The logic from above is reverted now. A single item is used as input, aka `count_item`, and the result `counts` is a list again. In order to compute pi from this, the following operations should be restricted to `rank=0` in order to minimize redundant operations:
+
+~~~
+if rank == 0:
+    my_pi = 4.0 * sum(counts) / sum(partitions)
+~~~
+{: .python}
+
+And that's it. Now, Lola can submit her first MPI job.
+
+~~~
+$ bsub -n48 -o mpi_numpi.out -e mpi_numpi.err time mpirun python3 ./mpi_numpi.py 1000000000
+~~~
+{: .bash}
+
+The output file `mpi_numpi.out` yields the following lines:
+
+~~~
+[     mpi version] required memory 11444.092 MB
+[using  48 cores ] pi is 3.141679 from 1000000000 samples
+
+real    0m6.368s
+user    0m45.763s
+sys     0m6.681s
+~~~
+{: .output}
+
+Note here, that we are now free to scale this application to hundreds of core if we want to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the runtime that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
 
 > ## Use the batch system!
 >
