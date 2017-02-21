@@ -45,11 +45,17 @@
   \node [right=of x_num_10] () {\dots};
   \node [right=of y_num_10] () {\dots};
 
-  \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=red] at($(center)+(5cm,0)$) (partition_1) {};
-  \node [below=1em of partition_1.south,text=red] () {partition $1$};
-  \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=magenta] at($(center)+(13cm,0)$) (partition_2) {};
-  \node [below=1em of partition_2.south,text=magenta] () {partition $2$};
-  \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=blue] at($(center)+(21cm,0)$) (partition_3) {};
-  \node [below=1em of partition_3.south,text=blue] () {partition $3$};
+  \foreach \p/\c in {0/green, 1/red, 2/blue} {
+
+    \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=\c] at($(center)+(\p*8cm,0)$) (partition_\p) {};
+    \node [below=1em of partition_\p.south,text=\c] (partition_label_\p) {partition $\p$};
+
+  }
+  % \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=red] at($(center)+(5cm,0)$) (partition_1) {};
+  % \node [below=1em of partition_1.south,text=red] () {partition $1$};
+  % \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=magenta] at($(center)+(13cm,0)$) (partition_2) {};
+  % \node [below=1em of partition_2.south,text=magenta] () {partition $2$};
+  % \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=blue] at($(center)+(21cm,0)$) (partition_3) {};
+  % \node [below=1em of partition_3.south,text=blue] () {partition $3$};
 \end{tikzpicture}
 \end{document}
