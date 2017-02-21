@@ -2,7 +2,7 @@
 import sys
 
 import numpy as np
-import math
+
 from multiprocessing import cpu_count, Pool
 
 np.random.seed(2017)
@@ -37,7 +37,7 @@ if __name__=='__main__':
     if len(sys.argv) > 1:
         n_samples = int(sys.argv[1])
 
-    partitions = [ math.ceil(n_samples/ncores) for item in range(ncores)]
+    partitions = [ int(n_samples/ncores) for item in range(ncores)]
 
     sizeof = np.dtype(np.float32).itemsize
 
