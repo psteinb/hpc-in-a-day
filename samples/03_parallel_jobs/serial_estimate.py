@@ -22,4 +22,5 @@ if __name__=='__main__':
         n_iterations = int(sys.argv[1])
 
     my_pi = estimate_pi(n_iterations)
+
     print("[serial version] pi is %f from %i samples" % (my_pi,n_iterations))
