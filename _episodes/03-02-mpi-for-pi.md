@@ -5,21 +5,20 @@ exercises: 10
 questions:
 - "How do I exploit parallelism using MPI?"
 objectives:
-- "Perform a calculation of pi using one node, but all cores of it."
+- "Perform a calculation of pi using only one node, but all cores of it."
+- "Measure the runtime of both the serial and parallel version of the implementation."
 - "Perform a calculation of pi on multiple nodes with 8 CPUs in total."
-- "Perform a serial analysis on a lot of large files to extract a given text token."
-- "Map the serial execution of independent analysis steps onto a cluster of compute nodes that are connected by a parallel file system."
+- "Measure the runtime of both the parallel and mpi version of the implementation."
 key points:
 - "The estimation of pi with the monte carlo method is a compute bound problem as the generation of pseudo random numbers consumes the most time, thus the generation of random numbers needs to be parallelized."
-- "Scanning a file for text tokens is bound by the speed at which a file can be read."
-- "Scanning a number of files for the same text token is a i/o bound problem. To speed it up, the input of files needs to be parallelized, i.e. the result for each file is independent of each other and thus it can be performed in parallel (this is the map step of map-reduce)."
-- "After all files have been scanned, the results need to be collected (this is the reduce step of map-reduce)."
+- "Time consumption can be measured using the `time` utility."
+- "The ratio of the runtime of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
 
 Lola is told that her predecessors all worked on the same project. A high performant calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only aquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
 
-The algorithm to implement is very simple. It was pioneered by Georges-Louis Leclerc de Buffon in 1733. 
+The algorithm to implement is very simple. It was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
 ![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
 
@@ -114,7 +113,7 @@ def estimate_pi(n_samples,n_cores):
 
 We are using the `multiprocessing` module that comes with the python standard library. The first step is to create a list of numbers that contain the partitions. For this, `n_samples` is divided by the number of cores available on the machine, where this code is executed. The ratio has to be converted to an integer to ensure, that each partition is compatible to a length of an array. The construct used next is a process `Pool`. Due to technical details on how the python interpreter is built, we do not use a Pool of threads here. In other languages than python, `threads` are the more common idiom to represent independent strings of execution that share the same memory than the process they are created in. The process `Pool` creates `n_cores` processes and keeps them active as long as the `Pool` is active. Then `pool.map` will call `inside_circle` using an item of `partitions` as the argument. In other words, for each item in `partitions`, the `inside_circle` function is called once using the respective item as input argument. The result of these invocations of `inside_circle` are stored within the `counts` variable (which will have the same length as `partitions` eventually).
 
-![Partitioning `x` and `y` and results of reach partition](../tikz/partition_data_parallel_estimate_pi_wit_results.svg)
+![Partitioning `x` and `y` and results of reach partition](../tikz/partition_data_parallel_estimate_pi_with_results.svg)
 
 The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](../samples/03_parallel_jobs/parallel_numpi.py) and see what it gives:
 
@@ -161,9 +160,9 @@ sys     0m17.477s
 
 If the snipped from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
 
-    - `real` that denotes the time that has passed during our program as if you would have used a stop watch
-    - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
-    - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
+  - `real` that denotes the time that has passed during our program as if you would have used a stop watch
+  - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
+  - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
 So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m6.113s`). Apparently, her parallel program was _8.6_ times faster than the serial implementation. The latter number is called the speed-up of the parallelisation. Very good for a first attempt. 
 
@@ -196,10 +195,10 @@ These 4 lines will be very instrumental through out the entire MPI program. The 
 >     - this local mpirun will execute `<your program>` in parallel to all the others and call every line of it from top to bottom
 >     - only if your program reaches a statement of the form `comm.do_something(...)`, your program will start communicating through the mpi library with the other mpi processes; this communication can entail point-to-point data transfers or collective data transfers (that's why it's called 'message passing' because MPI does nothing else than provide mechanism to send messages around the cluster), depending on the type of communication, the MPI library might make your program wait until the all message passing has been completed
 >In case you want to do something only on one rank specifically, you can do that by:
-``` {python}
+~~~
 if rank == 0:
     print("Hello World")
-```
+~~~
 {: .callout}
 
 Pushing the implementation further, the list of `partitions` needs to be established similar to what was done in the parallel implementation above. Also a list for the results is created and all items are initialized to `0`.
@@ -263,7 +262,7 @@ sys     0m6.681s
 ~~~
 {: .output}
 
-Note here, that we are now free to scale this application to hundreds of core if we want to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the runtime that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
+Note here, that we are now free to scale this application to hundreds of core if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the runtime that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
 
 > ## Use the batch system!
 >
