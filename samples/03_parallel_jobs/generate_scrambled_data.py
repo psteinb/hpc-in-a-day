@@ -19,7 +19,7 @@ if __name__=='__main__':
 
     n_samples = 4*1024*1024
 
-    file_name = "lolas_pi_estimate.log"
+    file_name = "pi_estimate.log"
 
     if "help" in " ".join(sys.argv):
         print("usage: generate_scrambled_data.py <optional:file_name>")
