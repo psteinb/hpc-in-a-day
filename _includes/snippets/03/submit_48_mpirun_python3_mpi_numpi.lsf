@@ -1,1 +1,1 @@
-$ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun python3 print_hostname.py
+$ bsub -n 48 -o mpi_numpi.out -e mpi_numpi.err mpirun python3 mpi_numpi.py 1000000000
