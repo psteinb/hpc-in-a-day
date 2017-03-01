@@ -1,181 +1,120 @@
 ---
-title: "Computing the answer to life, the universe and everything"
+title: "Distributing computations among computers"
 teaching: 45
 exercises: 10
 questions:
-- "How do I exploit parallelism using MPI?"
+- "How do I exploit parallelism using the message passing interface (MPI)?"
 objectives:
-- "Perform a calculation of pi using only one node, but all cores of it."
-- "Measure the runtime of both the serial and parallel version of the implementation."
-- "Perform a calculation of pi on multiple nodes with 8 CPUs in total."
-- "Measure the runtime of both the parallel and mpi version of the implementation."
+- "Explain how message passing allows performing computations in more than 1 computer at the same time."
+- "Observe the effects of parallel execution of commands with a simple hostname call."
+- "Measure the runtime of parallel and mpi version of the implementation."
 key points:
-- "The estimation of pi with the monte carlo method is a compute bound problem as the generation of pseudo random numbers consumes the most time, thus the generation of random numbers needs to be parallelized."
-- "Time consumption can be measured using the `time` utility."
-- "The ratio of the runtime of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
+- "The mpi driver `mpirun` sends compute jobs to a set of allocated computers."
+- "The mpi software then executes these jobs on the remote hosts and synchronizes their state/memory."
+- "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different hostnames."
 ---
 
+Lola Lazy is now confident enough to work with the batch system of the cluster. She now turns her attention to the problem at hand, i.e. estimating the value of _Pi_ to very high precision. 
 
-Lola is told that her predecessors all worked on the same project. A high performant calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only aquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
+One of her more experienced colleagues has suggested to her, to use the _Message Passing Interface_ (in short _MPI_) for that matter. As she has no prior knowledge in the field, accepting this advice is as good as trying some other technique on her how. She first explores the documentation of MPI a bit to get a feeling about the philosophy behind this approach. 
 
-The algorithm to implement is very simple. It was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
+> ## Message Passing Interface
+> A long time before we had smart phones, tablets or laptops, [compute clusters](http://www.phy.duke.edu/~rgb/brahma/Resources/beowulf/papers/ICPP95/icpp95.html) were already around and consisted of interconnected computers that had merely enough memory to show the first two frames of a movie (`2*1920*1080*4 Bytes = 16 MB`). 
+> However, scientific problems back than were equally demanding more and more memory than today. 
+> To overcome the lack of available hardware memory, [specialists from academia and industry](https://en.wikipedia.org/wiki/Message_Passing_Interface#History) came about with the idea to consider the memory of several interconnected compute nodes as one. Given a standardized software that synchronizes the various states of memory between the client/slave nodes during the execution of driver application through the network interfaces. With this performing large calculations that required more memory than each individual cluster node can offer was possible. Moreover, this technique by passing messages (hence _Message Passing Interface_ or _MPI_) on memory updates in a controlled fashion allowed to write parallel programs that were capable of running on a diverse set of cluster architectures.
 
-![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
+![Schematic View of a Compute Cluster with 4 nodes (12 cores each)](../tikz/cluster_schematic.svg)
 
-Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the cirlce is denoted by `n`). `Pi` is then approximated by: 
-
-~~~
-     4*m
-Pi = ---
-      n
-~~~
-
-The implementation of this algorithm using `total_count` random number pairs in a nutshell is given in the below program:
+Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
 ~~~
-#!/usr/bin/env python3
-
-import numpy
-
-np.random.seed(2017)
-
-def inside_circle(total_count):
-    
-    x = np.float32(np.random.uniform(size=total_count))
-    y = np.float32(np.random.uniform(size=total_count))
-
-    radii = np.sqrt(x*x + y*y)
-
-    count = len(radii[np.where(radii<=1.0)])
-    
-    return count 
-    
-def estimate_pi(total_count):
-
-    return (4.0 * inside_circle(total_count) / total_count) 
-    
+$ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun hostname
 ~~~
-{: .python}
+{: .bash}
 
-This code is already written in a way to allow later reuse in parallel applications. So don't mind the two-fold indirection where `estimate_pi` calls `inside_circle`. For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
+The log file that is filled by the `bsub` command, contains the following lines after finishing the job:
 
-> ## Editing a file on a remote machine
-> If you are following the materials closely, this is the time where you might want to edit a file on your cluster and paste the contents of the code snippet above into it. The question is, how to do that?
+~~~
+n01
+n01
+n01
+n01
+~~~
+{: .output}
+
+The output makes her wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
+
+~~~
+$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun hostname
+~~~
+{: .bash}
+
+~~~
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n01
+n02
+n01
+n02
+n02
+n02
+~~~
+{: .output}
+
+![Execution of `mpirun hostname` on a Compute Cluster with 4 nodes (12 cores each)](../tikz/mpirunhostname_on_clusterschematic.svg)
+
+As the figure above shows, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleaque, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleaque explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
+
+Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as Fortran, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
+
+~~~
+$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun python3 print_hostname.py
+~~~
+{: .bash}
+
+~~~
+this is 16/16 running on n02
+this is 15/16 running on n02
+this is 13/16 running on n02
+this is 14/16 running on n02
+this is  3/16 running on n01
+this is  5/16 running on n01
+this is 11/16 running on n01
+this is  1/16 running on n01
+this is  7/16 running on n01
+this is  2/16 running on n01
+this is  4/16 running on n01
+this is  6/16 running on n01
+this is  8/16 running on n01
+this is  9/16 running on n01
+this is 10/16 running on n01
+this is 12/16 running on n01
+~~~
+{: .output}
+
+Again, the unordered output is visible. Now, the relation between the rank and the parameters `-n` to bsub becomes more clear. `-n` defines how many processors the current invocation of mpirun requires. If `-n 16` is defined, the rank can run from `0` to `15`.
+
+> ## Does `mpirun` really execute commands in parallel?
 >
-> You have several options: 
-> 1. run a editor inside the `ssh` session that you opened to work on the cluster (mostly vi/vim, emacs, nano or pico are programs commonly installed on HPC machines)
-> 2. connect to the cluster with `ssh` using the ssh `-X` switch, if done so, you can open editors like emacs, nedit, gedit, ... that are capable of spinning up a GUI (careful though, the GUI contents need to be transmitted through the network from the cluster to your workstation or laptop and vice verse, so in case you have a poor network connection, this approach can be visually painful)
-> 3. use remote editing capabilities of your preferred editor or IDE (emacs and vim has a built-in packages for this, check your preferred IDE manual for details)
-> 4. have a folder of your remote host mounted on your laptop (the details depend on the remote cluster and you should get in touch with the admin to find out what technologies are available), edit the files inside this folder (most of the time they are updated to the clsuter in real-time) and launch the applications from your `ssh` session
+> Launch the command `date` 16 times across your cluster. What do you observe? Play around with the precision of date through its flags (`+%N` for example) and study the distribution of the results.  
+> 
+{: .challenge}
 
-Lola finishes writing the pi estimation and comes up with a [small python script](../samples/03_parallel_jobs/serial_numpi.py), that she can launch from the command line:
+> ## Upgrade `print_hostname.py` and print the time-of-day as well
+>
+> Open the `print_hostname.py` script with your editor and use the python3 `datetime` module to print the time of day next to the host name and rank number.
+> 
+{: .challenge}
 
-~~~
-$ python3 ./serial_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
-~~~
-{: .output}
-
-She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
-
-One of the many ways of making a program faster, is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
-
-![Illustration of drawing random number pairs `x` and `y` and their dependency](../tikz/data_parallel_estimate_pi.svg)
-
-Keeping this in mind, splitting up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions.
-
-![Partitioning `x` and `y`](../tikz/partition_data_parallel_estimate_pi.svg)
-
-The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel:
-
-~~~
-from multiprocessing import Pool
-
-def estimate_pi(n_samples,n_cores):
-
-    partitions = [ ]
-    for i in range(n_cores):
-        partitions.append(int(n_samples/n_cores))
-
-    pool = Pool(processes=n_cores)
-    counts=pool.map(inside_circle, partitions)
-
-    total_count = sum(partitions)
-    return (4.0 * sum(counts) / total_count)
-
-~~~
-{: .python}
-
-We are using the `multiprocessing` module that comes with the python standard library. The first step is to create a list of numbers that contain the partitions. For this, `n_samples` is divided by the number of cores available on the machine, where this code is executed. The ratio has to be converted to an integer to ensure, that each partition is compatible to a length of an array. The construct used next is a process `Pool`. Due to technical details on how the python interpreter is built, we do not use a Pool of threads here. In other languages than python, `threads` are the more common idiom to represent independent strings of execution that share the same memory than the process they are created in. The process `Pool` creates `n_cores` processes and keeps them active as long as the `Pool` is active. Then `pool.map` will call `inside_circle` using an item of `partitions` as the argument. In other words, for each item in `partitions`, the `inside_circle` function is called once using the respective item as input argument. The result of these invocations of `inside_circle` are stored within the `counts` variable (which will have the same length as `partitions` eventually).
-
-![Partitioning `x` and `y` and results of reach partition](../tikz/partition_data_parallel_estimate_pi_with_results.svg)
-
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](../samples/03_parallel_jobs/parallel_numpi.py) and see what it gives:
-
-~~~
-$ python3 ./parallel_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[parallel version] required memory 11444.092 MB
-[using  20 cores ] pi is 3.141631 from 1000000000 samples
-~~~
-{: .output}
-
-The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
-
-~~~
-$ time python3 ./serial_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
-
-real    0m52.305s
-user    0m40.444s
-sys     0m11.655s
-~~~
-{: .output}
-~~~
-$ time python3 ./parallel_numpi.py 1000000000
-~~~
-{: .bash}
-~~~
-[parallel version] required memory 11444.092 MB
-[using  20 cores ] pi is 3.141631 from 1000000000 samples
-
-real    0m6.113s
-user    1m5.676s
-sys     0m17.477s
-~~~
-{: .output}
-
-If the snipped from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
-
-  - `real` that denotes the time that has passed during our program as if you would have used a stop watch
-  - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
-  - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
-    
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m6.113s`). Apparently, her parallel program was _8.6_ times faster than the serial implementation. The latter number is called the speed-up of the parallelisation. Very good for a first attempt. 
-
-> ## Adding up times
-> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decices which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
-> Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, time reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
-{: .callout}
-
-> ## Something is missing
-> A speed-up of _8.6x_ for a parallel python program is not bad. The luxury of python programming makes us pay the price of performance. In a perfect world, data parallel algorithms using one machine only are expected to scale perfectly, i.e. using 20 cores should give a speed-up of _20x_. Due to a myriad of reasons from the software or from the hardware side, this perfect scaling often remains a hard-to-achieve goal which projects attain only after months if not years of development.
-{: .callout}
-
-To finalize this day's work, Lola wants to tackle distributed memory parallelisation using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is preinstalled on her cluster. She again starts from the [serial implementation](../samples/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
+To finalize this day's work, Lola wants to tackle distributed memory parallelisation using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is preinstalled on her cluster. She again starts from the [serial implementation](code/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
 
 ~~~
 from mpi4py import MPI
