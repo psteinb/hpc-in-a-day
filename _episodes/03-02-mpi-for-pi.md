@@ -12,11 +12,12 @@ key points:
 - "The mpi driver `mpirun` sends compute jobs to a set of allocated computers."
 - "The mpi software then executes these jobs on the remote hosts and synchronizes their state/memory."
 - "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different hostnames."
+- "MPI can be used to split the random sampling into components and have several nodes generate random numbers and report back only the pi estimate of this partition."
 ---
 
 Lola Lazy is now confident enough to work with the batch system of the cluster. She now turns her attention to the problem at hand, i.e. estimating the value of _Pi_ to very high precision. 
 
-One of her more experienced colleagues has suggested to her, to use the _Message Passing Interface_ (in short _MPI_) for that matter. As she has no prior knowledge in the field, accepting this advice is as good as trying some other technique on her how. She first explores the documentation of MPI a bit to get a feeling about the philosophy behind this approach. 
+One of her more experienced colleagues has suggested to her, to use the _Message Passing Interface_ (in short: _MPI_) for that matter. As she has no prior knowledge in the field, accepting this advice is as good as trying some other technique on her how. She first explores the documentation of MPI a bit to get a feeling about the philosophy behind this approach. 
 
 > ## Message Passing Interface
 > A long time before we had smart phones, tablets or laptops, [compute clusters](http://www.phy.duke.edu/~rgb/brahma/Resources/beowulf/papers/ICPP95/icpp95.html) were already around and consisted of interconnected computers that had merely enough memory to show the first two frames of a movie (`2*1920*1080*4 Bytes = 16 MB`). 
@@ -27,10 +28,9 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 
 Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
-~~~
-$ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun hostname
-~~~
-{: .bash}
+{% highlight bash %}
+{% include /snippets/03/submit_4_mpirun_hostname.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
 
 The log file that is filled by the `bsub` command, contains the following lines after finishing the job:
 
@@ -44,10 +44,9 @@ n01
 
 The output makes her wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
 
-~~~
-$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun hostname
-~~~
-{: .bash}
+{% highlight bash %}
+{% include /snippets/03/submit_16_mpirun_hostname.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
 
 ~~~
 n01
@@ -75,10 +74,9 @@ As the figure above shows, 12 instances of `hostname` were called on `n01` and 4
 
 Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as Fortran, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
 
-~~~
-$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun python3 print_hostname.py
-~~~
-{: .bash}
+{% highlight bash %}
+{% include /snippets/03/submit_16_mpirun_python3_print_hostname.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
 
 ~~~
 this is 16/16 running on n02
@@ -100,7 +98,7 @@ this is 12/16 running on n01
 ~~~
 {: .output}
 
-Again, the unordered output is visible. Now, the relation between the rank and the parameters `-n` to bsub becomes more clear. `-n` defines how many processors the current invocation of mpirun requires. If `-n 16` is defined, the rank can run from `0` to `15`.
+Again, the unordered output is visible. Now, the relation between the rank and the parameters `-n` to submit command becomes more clear. `-n` defines how many processors the current invocation of mpirun requires. If `-n 16` is defined, the rank can run from `0` to `15`.
 
 > ## Does `mpirun` really execute commands in parallel?
 >
@@ -184,10 +182,9 @@ if rank == 0:
 
 And that's it. Now, Lola can submit her first MPI job.
 
-~~~
-$ bsub -n48 -o mpi_numpi.out -e mpi_numpi.err time mpirun python3 ./mpi_numpi.py 1000000000
-~~~
-{: .bash}
+{% highlight bash %}
+{% include /snippets/03/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
 
 The output file `mpi_numpi.out` yields the following lines:
 
@@ -207,4 +204,11 @@ Note here, that we are now free to scale this application to hundreds of core if
 >
 > Launch the serial and parallel version of the pi_estimate using the batch system. 
 > 
+{: .challenge}
+
+> ## Don't Stress the Network
+>
+> The MPI implementation given above transmits only the pi estimate per rank to the main program. Rewrite the program so that each rank generates the random numbers and sends them back to rank 0. 
+> 
+> Submit the job and look at the time it took. What do you observe? Why did the runtime change?
 {: .challenge}
