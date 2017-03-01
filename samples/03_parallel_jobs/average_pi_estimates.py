@@ -26,5 +26,5 @@ if __name__=='__main__':
     for s in pi_estimates_as_strings:
         pi_estimates.append(float(s))
 
-    print("pi estimates from %i estimates : %f" % (len(pi_estimates),sum(pi_estimates)/len(pi_estimates)))
+    print("averaged value of pi from %i estimates : %f" % (len(pi_estimates),sum(pi_estimates)/len(pi_estimates)))
     sys.exit(0)
