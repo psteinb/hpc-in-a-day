@@ -1,0 +1,75 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols,fit}
+\usepackage{ifthen}
+\pgfdeclarelayer{back}
+\pgfsetlayers{back,main}
+
+
+\makeatletter
+\tikzset{
+  fitting node/.style={
+    inner sep=0pt,
+    fill=none,
+    draw=none,
+    reset transform,
+    fit={(\pgf@pathminx,\pgf@pathminy) (\pgf@pathmaxx,\pgf@pathmaxy)}
+  },
+  reset transform/.code={\pgftransformreset}
+}
+\makeatother
+
+\pgfmathdeclarerandomlist{MyRandomColors}{%
+    {red}%
+    {magenta}%
+    {olive}%
+    {brown}%
+    {violet}%
+    {gray}%
+    {purple}%
+    {yellow}%
+    {orange}%
+    {cyan}%
+    {green}%    
+}
+
+\begin{document}
+\begin{tikzpicture}
+
+
+  \node at(-2,1) (x_pos) {$x =$};
+  \node at(3.,0.5) (center) {};
+  \node at(-2,0) (y_pos) {$y =$};
+
+  \pgfmathsetseed{2017}
+
+  \foreach \n in {1,...,10}{
+    
+    \pgfmathsetmacro{\xcoor}{rnd}% x-coordinate
+    \pgfmathsetmacro{\ycoor}{rnd}% y-coordinate
+
+    \node [draw,rectangle,dashed,minimum width=1.7cm] at($(x_pos)+(\n*2cm,0)$) (x_num_\n) {$\pgfmathprintnumber[precision=2]{\xcoor}$};
+    \node [draw,rectangle,dashed,minimum width=1.7cm] at($(y_pos)+(\n*2cm,0)$) (y_num_\n) {$\pgfmathprintnumber[precision=2]{\ycoor}$};
+
+  }
+
+  \node [right=of x_num_10] () {\dots};
+  \node [right=of y_num_10] () {\dots};
+
+  \foreach \p/\c in {0/green, 1/red, 2/blue} {
+
+    \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=\c] at($(center)+(\p*8cm,0)$) (partition_\p) {};
+    \node [below=1em of partition_\p.south,text=\c] (partition_label_\p) {partition $\p$};
+
+  }
+
+  \node [below=1em of partition_label_0] () {$\texttt{inside\_circle} = 3$};
+  \node [below=1em of partition_label_1] () {$\texttt{inside\_circle} = 2$};
+  \node [below=1em of partition_label_2] () {\dots};
+  % \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=magenta] at($(center)+(13cm,0)$) (partition_2) {};
+  % \node [below=1em of partition_2.south,text=magenta] () {partition $2$};
+  % \node [draw,rectangle,dashed,minimum width=8cm, minimum height=2cm,thick,color=blue] at($(center)+(21cm,0)$) (partition_3) {};
+  % \node [below=1em of partition_3.south,text=blue] () {partition $3$};
+\end{tikzpicture}
+\end{document}
