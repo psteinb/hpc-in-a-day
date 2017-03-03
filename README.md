@@ -1,4 +1,4 @@
-# hpc-novice
+# HPC-in-a-day
 
 Novice introduction to high performance computing. Note this material is still in Beta stadium. 
 
