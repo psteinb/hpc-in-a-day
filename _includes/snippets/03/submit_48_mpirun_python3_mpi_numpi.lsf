@@ -1,0 +1,1 @@
+$ bsub -n 48 -o mpi_numpi.out -e mpi_numpi.err mpirun python3 mpi_numpi.py 1000000000

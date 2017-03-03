@@ -1,0 +1,62 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols,fit}
+
+\pgfdeclarelayer{back}
+\pgfsetlayers{back,main}
+
+
+\makeatletter
+\tikzset{
+  fitting node/.style={
+    inner sep=0pt,
+    fill=none,
+    draw=none,
+    reset transform,
+    fit={(\pgf@pathminx,\pgf@pathminy) (\pgf@pathmaxx,\pgf@pathmaxy)}
+  },
+  reset transform/.code={\pgftransformreset}
+}
+\makeatother
+
+
+\begin{document}
+\begin{tikzpicture}
+
+  \node [draw,thick,rectangle, minimum width=10cm, minimum height=.5cm] at($(1.5*4.2,0)$) (switch) {\bfseries{}Network};
+  \node [draw,thick,rectangle, minimum width=10cm, minimum height=.5cm] at($(1.5*4.2,-1)$) (you) {\bfseries{}Your \texttt{ssh} session};
+  \path [thick,color=blue] (switch) edge (you) ;
+  
+  \foreach \n in {0,...,3}
+  {
+   
+    \node [draw,rectangle, minimum width=3.75cm, minimum height=3.5cm] at($(0,3)+(4.2*\n,0)$) (node_\n) {};
+    \node [node distance=2mm,above =of node_\n] (node_label_\n) {\bfseries{}Node $\n$};
+
+
+    \node [draw, above, minimum width=3cm] at($(node_\n.south)+(0,.25)$) (nic_\n) {Network Interface};
+    \path [thick] (nic_\n) edge (node_\n.south) 
+    (node_\n.south) edge (switch);
+
+    \node [draw, above, fill=gray,text=white,minimum width=3cm] at($(nic_\n.north)+(0,.25)$) (mem_\n) {Memory};
+    
+    \node [below] (cpus_\n) at($(node_\n.north)+(-1.4,-.25)$)  {};
+%    \node [above, minimum width=3cm, minimum height=1.5cm] at($(mem_\n.north)+(0,.25)$) (cpus_\n) {};
+
+    \foreach \y in {0,...,2}{
+      
+      \foreach \x in {0,...,3}{
+        \pgfmathsetmacro\result{(\y * 4 + \x)+1}
+        \node [draw,dashed,rectangle,minimum width=.75cm,minimum height=.5cm,anchor=north west] at($(cpus_\n.north west)+(\x*.75,\y*-.5)$) (node_\n_core_\x_\y) {\pgfmathprintnumber{\result}};
+      
+      }
+    }
+  
+
+  }
+
+
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,1 @@
+$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun hostname
