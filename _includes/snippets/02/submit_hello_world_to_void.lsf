@@ -1,1 +1,1 @@
-$ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun hostname
+$ lsrun echo Hello World

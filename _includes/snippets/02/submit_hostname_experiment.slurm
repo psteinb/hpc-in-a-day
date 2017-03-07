@@ -1,0 +1,2 @@
+$ salloc  
+$ srun hostname
