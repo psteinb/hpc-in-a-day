@@ -1,5 +1,6 @@
 $ cat multiple_commands.sh
 #!/bin/bash
 
-hostnamedate
+hostname
+date
 $ bsub < multiple_commands.sh
