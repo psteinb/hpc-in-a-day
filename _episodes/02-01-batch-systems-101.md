@@ -1,6 +1,6 @@
 ---
 title: "Batch systems and schedulers 101"
-teaching: 20
+teaching: 30
 exercises: 0
 questions:
 - "Why is a scheduler necessary?"
@@ -12,7 +12,10 @@ objectives:
 - "Use the batch system command line tools to monitor the execution of your job."
 - "Inspect the output and error files of your jobs."
 key points:
-- "n.n."
+- "The scheduler tries to guarantee a fair availability of resources on a cluster for all users."
+- "If programs are to be run, they need to be specified to the scheduler."
+- "Jobs can be defined in an interactive mode or in a batch script mode."
+- "The user can advise the scheduler that the terminal output of a job can be redirected to a file on disk."
 ---
 
 Whenever large corporate or academic instituions aquire large super computers, the competition to obtain time to run programs is typically fierce. On other hand, expectations by users are high, that their code will run very fast and provide them with answers to their scientific questions at a high turn-around time. As supercomputers are multi-purpose machines, they are required not only to provide good or even excellent performance, but also that they distribute this performance among all users in a fair manner.
@@ -97,3 +100,9 @@ Tue Mar  7 11:14:11 CET 2017
 {% include /snippets/02/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 {: .callout}
+
+> ## How long has this node been running
+>
+> Write a batch script that prints the `hostname` and the time the node has been running so far (using the `uptime` command). Advice the scheduler to store the output in a log file. Submit this script multiple times and see, if you find a node that has been running the longest or the shortest. Compare with your neighbor! 
+>
+{: .challenge}
