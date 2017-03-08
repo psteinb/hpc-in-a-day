@@ -44,12 +44,16 @@ Lola is quite happy with her progress so far. All of a sudden, she detects a mis
 {% include /snippets/02/submit_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
-No, that shouldn't happen. She doesn't want to wait 5 minutes for the job to complete. So she wants to cancel this job. 
+No, that shouldn't happen! She doesn't want to wait 5 minutes for the job to complete. So Lola would love to cancel this job. 
 
 {% highlight bash %}
 {% include /snippets/02/find_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
+For this, she needs to find job ID of the job that she would like to stop. With this, she can ask the scheduler to cancel her job.
+
 {% highlight bash %}
 {% include /snippets/02/kill_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
+
+Right before lunch on that day, Lola notices that more and more staff members of her lab start using the cluster.
