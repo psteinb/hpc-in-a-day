@@ -21,3 +21,7 @@ While submitting more tests jobs, Lola observes that she always mirrors the curr
 {% highlight bash %}
 {% include /snippets/02/monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
+
+{% highlight bash %}
+{% include /snippets/02/output_monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
