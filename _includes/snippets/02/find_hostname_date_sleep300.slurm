@@ -1,3 +1,3 @@
 $ squeue -u ${USER}
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-           2047172     batch   sbatch steinbac  R       0:02      1 c07n01
+           2047172     batch   sbatch     lola  R       0:02      1 n02   
