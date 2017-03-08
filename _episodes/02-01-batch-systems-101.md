@@ -31,7 +31,7 @@ One day, she and her colleaque start to run calculations on the machine. Lola wa
 
 Lola's colleaque has the task to check on the cluster every now and then. This colleaque wrote a program, that collects some telemetry data from each node every now and then. Today, some detailed statistics have to be collected from every node. As this task can be performed for every node independent of it's neighboring node, it is performed in parallel.
 
-![Lola's and her colleaque'sjobs on the 4-node cluster](../tikz/cluster_schematic_lolas_jobs_and_heartbeat.svg)
+![Lola's and her colleaque's jobs on the 4-node cluster](../tikz/cluster_schematic_lolas_jobs_and_heartbeat.svg)
 
 Both now wonder why the tasks on node 0 take longer than on average on any other given day. The reason is, the Lola's jobs there require all 12 CPU cores to run. If a new job comes in and wants to perform a task, the node has to decide which task has the higher priority. For sure, this decision is not made based on the sender of task but on other parameters. Operating systems (just as schedulers) try to distribute the compute power of a machine in a fair share fashion as well. But that means, that these two tasks will take longer than expected as they block each other or they steal each others resources.
 
@@ -64,10 +64,10 @@ n01
 
 If she repeats this command, over and over again, the output changes. So these commands must be running on another node. 
 
-Individual commands are fine, but Lola knows from experience that very often her work requires her to do more complex tasks, i.e. to execute a coule of commands after one another. To simulate this,  
+Individual commands are fine, but Lola knows from experience that very often her work requires her to do more complex tasks, i.e. to execute a coule of commands after one another. To simulate this, she writes a small script that can be run on the node that runs her job.  
 
 {% highlight bash %}
-{% include /snippets/02/submit_hostname_date_script.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_hostname_date.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
 ~~~
@@ -76,3 +76,24 @@ Tue Mar  7 11:04:11 CET 2017
 ~~~
 {: .output}
 
+Ok, but Lola wonders where the output of the job goes. Is there a way to reliably store the output of the command permanently? Reading the documentation of the submit command, she finds out that the output of her command can be stored into a file of Lola's liking.
+
+
+{% highlight bash %}
+{% include /snippets/02/submit_with_output_hostname_date.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+
+Once the job is done, the file `multiple_commands.log` is created in the current directory and yields the following output:
+
+~~~
+n12
+Tue Mar  7 11:14:11 CET 2017
+~~~
+{: .output}
+
+> ## Errors are important as well
+> The *nix operating systems has some special quirks to it. One of it is, that there is not only one way to print something to the terminal. There is the so called standard output and standard error output. Text that is sent to one of them is not seen by the other. Typically, error messages are sent to the standard error (the word output is often omitted) and status messages are sent to standard output. When executing commands on the commandline, the difference between the two ways is not noticable. The scheduler however allows you to split the two and write them to individual files. For example like this:
+{% highlight bash %}
+{% include /snippets/02/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+{: .callout}
