@@ -56,4 +56,6 @@ For this, she needs to find job ID of the job that she would like to stop. With 
 {% include /snippets/02/kill_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
-Right before lunch on that day, Lola notices that more and more staff members of her lab start using the cluster.
+Right before lunch on that day, Lola notices that more and more staff members of her lab start using the cluster. Her own jobs that she would like to have done before lunch tend to wait for longer than expected before they are actually started. Lola revisits the cluster documentation. Maybe she oversaw something there? She finds a passage that talks about the possibility to provide the scheduler the estimated runtime of her job (sometimes also referred to as _walltime_).
+
+
