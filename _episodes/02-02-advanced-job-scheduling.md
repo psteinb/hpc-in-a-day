@@ -18,10 +18,38 @@ While submitting more tests jobs, Lola observes that she always mirrors the curr
 {% include /snippets/02/submit_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
+Now Lola tries one of the monitoring commands, the she discovered in the manpages of her scheduler:
+
 {% highlight bash %}
 {% include /snippets/02/monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
 
 {% highlight bash %}
 {% include /snippets/02/output_monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+
+The output of the monitoring command provides her some telemetry data of her job: 
+
+- in what state is her job (waiting to start also known as 'pending', is running, is it failing)
+- on what node is her job running 
+- where did she submit the job to
+- the time she submitted the job
+- the job name
+
+All of these information might appear pointless when submitting only one job at a time. But in larger data analysis or simulation campaigns, when individual users submit hundreds or thousands of jobs, these information become crucial. 
+
+Lola is quite happy with her progress so far. All of a sudden, she detects a mistake in one of her scripts. 
+
+{% highlight bash %}
+{% include /snippets/02/submit_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+
+No, that shouldn't happen. She doesn't want to wait 5 minutes for the job to complete. So she wants to cancel this job. 
+
+{% highlight bash %}
+{% include /snippets/02/find_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+
+{% highlight bash %}
+{% include /snippets/02/kill_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 {% endhighlight %}
