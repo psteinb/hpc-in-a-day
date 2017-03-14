@@ -3,12 +3,12 @@ title: "Searching for the answer to life, the universe and everything"
 teaching: 40
 exercises: 10
 questions:
-- "How do I analyse a lot of large files efficiently?"
+- "How do I analyze a lot of large files efficiently?"
 objectives:
 - "Perform a Map-Reduce style operation to extract information from large files and collect these into one final answer."
 key points:
 - "Searching through a large file is bound by the speed that I can read-in the file."
-- "Having a set of files, the result of searching one file is indepent of searching its sibling."
+- "Having a set of files, the result of searching one file is independent of searching its sibling."
 - "HPC clusters have very powerful parallel file systems, that offer the best speed if data is accessed in parallel."
 - "The operation of searching through a file can be mapped to individual nodes on the cluster. (map step)"
 - "After the map step has been completed, all sub-results have to be reduced to one final result. (reduce step)"
@@ -28,7 +28,7 @@ pi_estimate_03.data  pi_estimate_06.data  pi_estimate_09.data  pi_estimate_12.da
 ```
 {: .output}
 
-Examining the files shows, that their size has been increased by some orders of magnitude in size. She opens one of her files and finds out that the results are still there, but they are scrambled with random symbols that she never saw before. Certainly, nothing human readable. But she notices that the pi estimates are always printed on an isolated line. This is something she can exploit to extract these lines. She immediately sits down and writes a [simple program](code/03_parallel_jobs/count_pi_estimates.py) to count the number of occurences of pi along the lines of:
+Examining the files shows, that their size has been increased by some orders of magnitude in size. She opens one of her files and finds out that the results are still there, but they are scrambled with random symbols that she never saw before. Certainly, nothing human readable. But she notices that the pi estimates are always printed on an isolated line. This is something she can exploit to extract these lines. She immediately sits down and writes a [simple program](code/03_parallel_jobs/count_pi_estimates.py) to count the number of occurrences of pi along the lines of:
 
 ```
 import sys
