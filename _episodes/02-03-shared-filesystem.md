@@ -1,6 +1,6 @@
 ---
 title: "Working with the shared file system"
-teaching: 10
+teaching: 15
 exercises: 5
 questions:
 - "How do I store a file on node so that another node can see it?"
@@ -14,3 +14,5 @@ key points:
 - "`scp` and friends are rarely needed on a HPC cluster."
 - "A shared file system is a resource for all users, so use it wisely to not affect others."
 ---
+
+More content to come!
