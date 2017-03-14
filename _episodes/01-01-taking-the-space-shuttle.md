@@ -1,6 +1,6 @@
 ---
 title: "Taking the space shuttle"
-teaching: 15
+teaching: 20
 exercises: 0
 questions:
 - "What is a super computer?"
@@ -21,7 +21,7 @@ key points:
 
 Through out this material, we will assist Lola Curious over her shoulder while she is starting to work at the Institute of Things as a side job to earn some extra money. 
 
-On the first day, her supervisor greets her friendly and welcomes her to the job. He explains what her task is and suggests her that she will need to use the HPC cluster on the campus. Lola has so far used her Laptop at home for her studies, so the idea of using a super computer appears a bit intimitating to her. Her supervisor notices her anxiety and tells her that she will receive an introduction to the super computer after she has requested an account on the cluster. The word _super computer_ however doesn't bring Lola to ease.
+On the first day, her supervisor greets her friendly and welcomes her to the job. He explains what her task is and suggests her that she will need to use the HPC cluster on the campus. Lola has so far used her Laptop at home for her studies, so the idea of using a super computer appears a bit intimidating to her. Her supervisor notices her anxiety and tells her that she will receive an introduction to the super computer after she has requested an account on the cluster. The word _super computer_ however doesn't bring Lola to ease.
 
 Lola walks to the IT department and finishes the paper work to get an account. One of the admins, called Rob, promises to sit down with her in the morning to show her the way around the machine. And as Lola expected, they don't own a super computer. Rob explains that Lola will use a small to mid-range HPC cluster.
 
@@ -31,12 +31,151 @@ Lola walks to the IT department and finishes the paper work to get an account. O
 
 First of all, Rob asks Lola to connect to the super computer. For this, Lola has to open a terminal on her Laptop and type in the following commands:
 
-~~~ bash
-ssh lola@{{ site.workshop_login_host }}
+~~~ 
+$ ssh lola@{{ site.workshop_login_host }}
 ~~~
+{: .bash}
 
-~~~ output
+~~~ 
 Last login: Tue Mar 14 14:13:14 2017 from lolas_laptop
 -bash-4.1$ 
 ~~~
+{: .output}
+
+Rob explains to Lola that she is using the secure shell or `ssh`. This establishes a temporary encrypted connection between Lola's laptop and `{{ site.workshop_login_host }}`. The word before the `@` symbol, e.g. `lola` here, is the user account name that Lola has access permissions for on the cluster. 
+
+Rob tells her to use a UNIX command called `ls` (for list directory contents) to have a look around. 
+
+~~~ 
+$ ls
+~~~
+{: .bash}
+
+~~~ 
+~~~
+{: .output}
+
+To no surprise, there is nothing in there. Rob asks Lola to issue a command to see on what machine she currently is on.
+
+~~~ 
+$ hostname
+~~~
+{: .bash}
+
+~~~ 
+{{ site.workshop_login_host }}
+~~~
+{: .output}
+
+Lola wonders a bit what this may be about, that you need a dedicated command to tell you where you are, but Rob explains to her that he has so many machines under his responsibility, that the output of `hostname` is often very valuable.
+
+> ## Am I in the cloud now?
+> Not really, sorry. At the time of writing, there are a couple of distinctive features that separate cloud computing from HPC.
+> + *HPC*:
+>   + machines are always available, i.e. the URL or address that you give to ssh doesn't change over time typically and the servers of an HPC infrastructure are operating 24/7 at this address
+>   + machines typically run so called bare metal operating systems, i.e. when you ssh into an HPC cluster, the operating system that you will use is the same one the server was booted into
+> - *cloud*:
+>   - instances have to be requested (albeit this can be automated) e.g. on a web page and then a user will be supplied a URL or address to point ssh to
+>   - cloud instances are run in so called virtual machines, i.e. an operating system inside an operating system, this is one of the reasons why the performance of cloud instances often is inferior to HPC clusters for typical HPC workloads
+{: .callout}
+
+Rob explains to Lola that she has to work with this remote shell session in order to run programs on the HPC cluster. Launching programs that open a Graphical User Interface (GUI) is possible, but the interaction with the GUI will be slow as everything will have to transferred through the WiFi network her laptop is currently logged into. Before Rob continues, he suggests to leave the cluster node again. For this, Lola can type in `logout` or `exit`.
+
+~~~ 
+$ logout
+~~~
+{: .bash}
+
+He continues to explain, that typically people perform computationally heavy tasks on the cluster and prepare files that contain the results or a subset of data to create final results. So communication to and from the cluster is done mostly by transferring files. For example, Rob asks Lola to use a file of her liking and transfer it over. For this, he advises her to use the secure copy command, `scp`. As before, this establishes a secure encrypted temporary connection between Lola's laptop and the cluster just for the sake of transferring the files. After the transfer has completed, scp will close the connection again.
+
+~~~ 
+$ scp todays_canteen_menu.pdf lola@{{ site.workshop_login_host }}:todays_canteen_menu.pdf
+~~~
+{: .bash}
+
+~~~ 
+todays_canteen_menu.pdf                                              100%   28KB  27.6KB/s   00:00
+~~~
+{: .output}
+
+She can now `ssh` into the cluster again and check, if the file has arrived after she just uploaded it:
+
+~~~ 
+$ ssh lola@{{ site.workshop_login_host }}
+Last login: Tue Mar 14 14:17:44 2017 from lolas_laptop
+-bash-4.1$ ls
+~~~
+{: .bash}
+
+~~~ 
+todays_canteen_menu.pdf
+~~~
+{: .output}
+
+Great. Now, let's try the other way around, i.e. downloading a file from the cluster to Lola's laptop. For this, Lola has to swap the two arguments of the `scp` command she just issued.
+
+~~~ 
+$ scp lola@{{ site.workshop_login_host }}:todays_canteen_menu.pdf todays_canteen_menu_downloaded.pdf
+~~~
+{: .bash}
+
+Lola notices how the command line changed. First, she has to enter the source (`lola@{{ site.workshop_login_host }}`) then put a `:` and continue with the path of the file she wants to download. After that, separated by a space, the destination has to be provided, which in this case is a file `todays_canteen_menu_downloaded.pdf` in the current directory.
+
+~~~
+todays_canteen_menu.pdf                                                100%   28KB  27.6KB/s   00:00
+~~~
+{: .output}
+
+Lola has a look in the current directory and indeed `todays_canteen_menu_downloaded.pdf`. She opens it with her pdf reader and can tell that it contains indeed the same content as the original one. Rob explains that if she would have used the same name as the destination, i.e. `todays_canteen_menu.pdf`, `scp` would have overwritten her local copy.
+
+To finish, Rob tells Lola that she can also transfer entire directories. He prepared a temporary directory on the cluster for her under `/tmp/this_weeks_canteen_menus`. He asks Lola to obtain a copy of the entire directory onto her laptop.
+
+~~~ 
+$ scp -r lola@{{ site.workshop_login_host }}:/tmp/this_weeks_canteen_menus .
+~~~
+{: .bash}
+
+~~~ 
+canteen_menu_day_2.pdf                                                 100%   28KB  27.6KB/s   00:00    
+canteen_menu_day_3.pdf                                                 100%   28KB  27.6KB/s   00:00    
+canteen_menu_day_5.pdf                                                 100%   28KB  27.6KB/s   00:00    
+canteen_menu_day_4.pdf                                                 100%   28KB  27.6KB/s   00:00    
+canteen_menu_day_1.pdf                                                 100%   28KB  27.6KB/s   00:00
+~~~
+{: .output}
+
+The trailing `.` is a short-hand to signify the current working directory that Lola calls `scp` from. When inspecting the current directory, Lola sees the transferred directory:
+
+~~~ 
+$ ls
+~~~
+{: .bash}
+
+~~~
+this_weeks_canteen_menus/  todays_canteen_menu_downloaded.pdf  todays_canteen_menu.pdf
+~~~
+{: .output}
+
+A closer look into that directory using the relative path with respect to the current one:
+
+~~~ 
+$ ls this_weeks_canteen_menus/
+~~~
+{: .bash}
+
+reveals the transferred files.
+
+~~~ 
+canteen_menu_day_1.pdf  canteen_menu_day_2.pdf  canteen_menu_day_3.pdf  canteen_menu_day_4.pdf  canteen_menu_day_5.pdf
+~~~
+{: .output}
+
+Rob suggests to Lola to consult the man page of `scp` for further details by calling:
+
+~~~ 
+$ man scp
+~~~
+{: .bash}
+
+
 
