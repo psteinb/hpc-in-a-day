@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questionnaire id="392817">
+  <title>HPC-in-a-day participant survey</title>
+  <investigator/>
+  <dataCollector/>
+  <questionnaireInfo>
+    <position>before</position>
+    <text>&lt;p&gt;Welcome, future HPC power user.&lt;/p&gt;&#13;
+&#13;
+&lt;p&gt;The following questions will try to estimate your expertise in using the terminal, solving algorithmic problems with the programming language of your choice and will present you the acceptance test for starting the course.&lt;/p&gt;</text>
+    <administration>self</administration>
+  </questionnaireInfo>
+  <questionnaireInfo>
+    <position>after</position>
+    <text>&lt;p&gt;Thank you for participating in the survey. If you encountered any problems or have further questions, please get in touch with me at steinbac@mpi-cbg.de !&lt;/p&gt;&#13;
+&#13;
+&lt;p&gt;The final part of the survey entails a small acceptance tests, that we'd like you to perform so that we know that you are ready to go:&lt;/p&gt;&#13;
+&#13;
+&#13;
+	Please use an ssh client of your choice on the laptop that you'll bring to the workshop and connect to madmax-falcon.mpi-cbg.de.&#13;
+	Execute the command hostname (type hostname and press 'Enter')&#13;
+	Send us the output of 2. to steinbac@mpi-cbg.de&#13;
+&#13;
+&#13;
+&lt;p&gt; &lt;/p&gt;</text>
+    <administration>self</administration>
+  </questionnaireInfo>
+  <section id="54">
+    <sectionInfo>
+      <position>title</position>
+      <text>Using the Terminal</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>Launching a terminal application on the computer I work with on a daily basis, is </text>
+      <response varName="terminalapp">
+        <fixed>
+          <category>
+            <label>something I do every day</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>something I do about once a month</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>something I do only if required with the help of google or a colleague</label>
+            <value>A3</value>
+          </category>
+          <category>
+            <label>I never do</label>
+            <value>A4</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>On the terminal, finding out how much space I have left on my computer will take me</text>
+      <response varName="spaceavailable">
+        <fixed>
+          <category>
+            <label>just a second</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>some time for googling the right command</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>forever as I never use the terminal</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>You'd like to rename the directory you are currently working in with the terminal, you can do this task</text>
+      <response varName="renamecwd">
+        <fixed>
+          <category>
+            <label>with 1 or 2 strokes at the command line</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>I'll manage with the help of google or a  colleague</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>no clue what to do</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>A collaborator sends you an executable program that you need to analyze his data. You download it and want to use it from the command line. This task appears</text>
+      <response varName="externalapp">
+        <fixed>
+          <category>
+            <label>as easy as listing the current directories content.</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>doable for you with some help of google or a colleague.</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>to be a problem that I didn't know existed.</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>You notice that you accumulated quite some large files in a given directory. Using the terminal, you want to find the files that are larger than 10 MB and that you have created in the last 2 days. You can perform this task on command line </text>
+      <response varName="directoryconsumer">
+        <fixed>
+          <category>
+            <label>with a single command.</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>with some research on the web or asking a colleague.</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>with spinning up a flie explorer and sorting the output as best as I could</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+  <section id="55">
+    <sectionInfo>
+      <position>title</position>
+      <text>Solving Problems</text>
+      <administration>self</administration>
+    </sectionInfo>
+    <question>
+      <text>In my daily job, I use programming </text>
+      <response varName="programminggeneral">
+        <fixed>
+          <category>
+            <label>to solve the tasks given to me.</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>from time to time when I have to e.g. do some data analysis.</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>not at all.</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>In the programming language of my choice, create an array or list of 1000 elements </text>
+      <response varName="arrayconstruction">
+        <fixed>
+          <category>
+            <label>is something I constantly need to do.</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>is something I do from time to time.</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>is something I could do with the help of google or a colleague.</label>
+            <value>A3</value>
+          </category>
+          <category>
+            <label>is something I do not know how to do.</label>
+            <value>A4</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+    <question>
+      <text>When I program, creating applications that can be run on the command line</text>
+      <response varName="launchmyapp">
+        <fixed>
+          <category>
+            <label>is something I do every day.</label>
+            <value>A1</value>
+          </category>
+          <category>
+            <label>is something I can do with a bit of google or the help of a colleague.</label>
+            <value>A2</value>
+          </category>
+          <category>
+            <label>is something I never did.</label>
+            <value>A3</value>
+          </category>
+        </fixed>
+      </response>
+    </question>
+  </section>
+</questionnaire>
