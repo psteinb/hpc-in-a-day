@@ -1,6 +1,7 @@
 #!/bin/bash
 
-echo "checking the CPU of this machine"
-grep 'model name' /proc/cpuinfo|head -n1
-echo "Done."
-echo "No Errors occurred!" >&2
+echo "[INFO] checking the CPU of this machine"
+echo -n "[INFO] "
+grep 'model name' /proc/cpuinfo|head -n1|sed -e 's/^.*: //'
+echo "[INFO] Done."
+echo "[ERROR] No Errors occurred!" >&2
