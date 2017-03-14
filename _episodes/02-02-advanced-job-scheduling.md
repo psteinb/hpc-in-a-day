@@ -58,4 +58,21 @@ For this, she needs to find job ID of the job that she would like to stop. With 
 
 Right before lunch on that day, Lola notices that more and more staff members of her lab start using the cluster. Her own jobs that she would like to have done before lunch tend to wait for longer than expected before they are actually started. Lola revisits the cluster documentation. Maybe she oversaw something there? She finds a passage that talks about the possibility to provide the scheduler the estimated runtime of her job (sometimes also referred to as _walltime_).
 
+> ## Walltime ?
+> Wall-clock time, or wall time, is the human perception of the passage of time from the start to the completion of a task. In the context of a task being performed on a computer, wall-clock time is a measure of the real time that elapses from start to end, including time that passes due to programmed (artificial) delays or waiting for resources to become available. In other words, it is the difference between the time at which a task finishes and the time at which the task started. Wall-clock time is the time that a clock on the wall (or a stopwatch in hand) would measure as having elapsed between the start of the process and "now". (from [en.wikipedia.org/wiki/Wall-clock_time](en.wikipedia.org/wiki/Wall-clock_time))
+{: .callout}
 
+
+The documentation indicates that she can provide an estimate of the _walltime_ of her job to the scheduler. 
+
+{% highlight bash %}
+{% include /snippets/02/submit_walltime_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% endhighlight %}
+
+As the default walltime limit of the jobs is much higher than 6 minutes, Lola's job is started a lot earlier than the one of her colleagues and she does finish her tasks before she goes to lunch.
+
+> ## errors and outputs
+>
+> Submit [this script](/snippets/02/errors_and_outputs.sh) to your cluster and split the output in stdout and stderr. Check the contents of the logfiles that were created. Use the manpage(s) of your scheduler to make the scheduler send both stdout and stderr to the same file.
+>
+{: .challenge}
