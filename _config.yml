@@ -38,6 +38,7 @@ training_site: "https://swcarpentry.github.io/instructor-training"
 # this is the scheduler to be used for the workshop
 # possible values: lsf, slurm
 workshop_scheduler: "lsf"
+workshop_login_host: "cray-1"
 
 # Surveys.
 pre_survey: "https://www.surveymonkey.com/r/swc_pre_workshop_v1?workshop_id="
