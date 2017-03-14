@@ -29,7 +29,7 @@ Lola walks to the IT department and finishes the paper work to get an account. O
 > Generally, a super computer refers to the worlds fastest machines available irrespective of their design but with the limitations that they need to be general purpose. Smaller computers of similar design than the above are commonly referred to as High performance computing (HPC) farms, batch farms, HPC clusters etc. A list of the fastest super computers is available on [top500.org](https://www.top500.org/lists/).
 {: .callout}
 
-First of all, Rob asks Lola to connect to the super computer. For this, Lola has to open a terminal on her Laptop and type in the following commands:
+First of all, Rob asks Lola to connect to the super computer. Rob mentions that in the past, compute clusters were named after planets or moons as they often presented distant somehwat mythological places. One of Rob's first instructors then often said, that they would use the Space Shuttle (or `ssh` briefly) to reach that plant or moon. So Rob asks Lola to open a terminal on her Laptop and type in the following commands:
 
 ~~~ 
 $ ssh lola@{{ site.workshop_login_host }}
@@ -43,6 +43,11 @@ Last login: Tue Mar 14 14:13:14 2017 from lolas_laptop
 {: .output}
 
 Rob explains to Lola that she is using the secure shell or `ssh`. This establishes a temporary encrypted connection between Lola's laptop and `{{ site.workshop_login_host }}`. The word before the `@` symbol, e.g. `lola` here, is the user account name that Lola has access permissions for on the cluster. 
+
+> ## Where do I get this `ssh` from ?
+> At the time of writing, many Microsoft Windows operating systems do not have a program called `ssh` installed. To still be able to use the secure shell to a remote machine, use a program called [putty](http://www.putty.org), [bitvise SSH](https://www.bitvise.com/ssh-client-download) or [mRemoteNG](https://mremoteng.org/). Download it, install it and open the GUI. They typically as for your username and the destination address or IP. Once provided, you will be queried for your password.
+{: .callout}
+
 
 Rob tells her to use a UNIX command called `ls` (for list directory contents) to have a look around. 
 
