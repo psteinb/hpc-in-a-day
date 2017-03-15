@@ -10,8 +10,8 @@ all : $(DST_FILES)
 	$(PANDOC_APP) $(PANDOC_FLAGS) -o $@ $^
 
 install : $(DST_FILES)
-	@mkdir ../this_weeks_canteen_menus
-	@cp $^ ../this_weeks_canteen_menus
+	@mkdir -p ../this_weeks_canteen_menus
+	@cp -v $^ ../this_weeks_canteen_menus
 
 clean :
 	@rm -vf $(DST_FILES)
