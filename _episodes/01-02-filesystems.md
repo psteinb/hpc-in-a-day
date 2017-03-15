@@ -11,19 +11,19 @@ objectives:
 - "Translate an absolute path into a relative path and vice versa."
 - "Construct absolute and relative paths that identify specific files and directories."
 - "Explain the steps in the shell's read-run-print cycle."
-- "Identify the actual command, flags, and filenames in a command-line call."
+- "Identify the actual command, flags, and file names in a command-line call."
 - "Demonstrate the use of tab completion, and explain its advantages."
 keypoints:
-- "The file system is responsible for managing information on the disk."
+- "The filesystem is responsible for managing information on the disk."
 - "Information is stored in files, which are stored in directories (folders)."
 - "Directories can also store other directories, which forms a directory tree."
 - "`cd path` changes the current working directory."
 - "`ls path` prints a listing of a specific file or directory; `ls` on its own lists the current working directory."
 - "`pwd` prints the user's current working directory."
 - "`whoami` shows the user's current identity."
-- "`/` on its own is the root directory of the whole file system."
+- "`/` on its own is the root directory of the whole filesystem."
 - "A relative path specifies a location starting from the current location."
-- "An absolute path specifies a location from the root of the file system."
+- "An absolute path specifies a location from the root of the filesystem."
 - "Directory names in a path are separated with '/' on Unix, but '\\\\' on Windows."
 - "'..' means 'the directory above the current one'; '.' on its own means 'the current directory'."
 - "Most files' names are `something.extension`. The extension isn't required, and doesn't guarantee anything, but is normally used to indicate the type of data in the file."
@@ -36,7 +36,7 @@ She also wants to know how to organize the files and folders for her project
 on the cluster.
 
 The part of the operating system responsible for managing files and directories
-is called the **file system**.
+is called the **filesystem**.
 It organizes our data into files,
 which hold information,
 and directories (also called "folders"),
@@ -129,7 +129,7 @@ Here,
 the computer's response is `/home/lola`,
 which is Lola's **home directory**:
 
-> ## Username Variation
+> ## username Variation
 >
 > In this lesson, we have used the username `lola` (associated
 > with our hypothetical scientist Lola) in example input and output throughout.  
@@ -153,7 +153,7 @@ which is Lola's **home directory**:
 {: .callout}
 
 To understand what a "home directory" is,
-let's have a look at how the file system as a whole is organized.  For the
+let's have a look at how the filesystem as a whole is organized.  For the
 sake of example, we'll be
 illustrating the filesystem on our scientist Lola's computer.  After this
 illustration, you'll be learning commands to explore your own filesystem,
@@ -161,7 +161,7 @@ which will be constructed in a similar way, but not be exactly identical.
 
 On Lola's computer, the filesystem looks like this:
 
-![The File System](../fig/filesystem.svg)
+![The Filesystem](../fig/filesystem.svg)
 
 At the top is the **root directory**
 that holds everything else.
@@ -359,7 +359,7 @@ $ cd /home/lola
 In the above command, we specify the **absolute path**
 to the home directory, indicated by the leading slash.
 The leading `/` tells the computer to
-follow the path from the root of the file system.
+follow the path from the root of the filesystem.
 To understand the idea of an absolute path better,
 let's now try to change our working directory back
 to the `this_weeks_canteen_menus` directory.
@@ -385,7 +385,7 @@ earlier, which is the path beginning from the working directory.
 
 ### Creating, Deleting, Copying and Moving Directories
 
-Now that Lola knows how to navigate the file system
+Now that Lola knows how to navigate the filesystem
 and about relative and absolute paths,
 she is ready to learn how to create, delete, copy, move and rename
 directories.
@@ -427,7 +427,7 @@ a directory called `revised-revised-results-3`.)
 > means that June 2016 will come before June 2017.
 {: .callout}
 
-Each of her estimation samples is labelled according to her predecesors convention
+Each of her estimation samples is labeled according to her predecessors convention
 with a unique ten-character ID,
 such as "ESTPI01729A".
 This is what she found in the lab notebook given to her to record the program, version, machine, and other characteristics of the sample,
@@ -512,7 +512,7 @@ At this point, Rob is called for an emergency into the machine room. He apologiz
 > 3.  `2012-12-01/ 2013-01-08/ 2013-01-27/`
 > 4.  `original pnas_final pnas_sub`
 >
-> ![File System for Challenge Questions](../fig/filesystem-challenge.svg)
+> ![Filesystem for Challenge Questions](../fig/filesystem-challenge.svg)
 >
 > > ## Solution
 > > 1. No: there *is* a directory `backup` in `/home`.
@@ -527,7 +527,7 @@ At this point, Rob is called for an emergency into the machine room. He apologiz
 > ## `ls` Reading Comprehension
 >
 > Assuming a directory structure as in the above Figure
-> (File System for Challenge Questions), if `pwd` displays `/home/backup`,
+> (Filesystem for Challenge Questions), if `pwd` displays `/home/backup`,
 > and `-r` tells `ls` to display things in reverse order,
 > what command will display:
 >
@@ -573,7 +573,7 @@ At this point, Rob is called for an emergency into the machine room. He apologiz
 > at each level. The command `ls -t` lists things by time of last change, with
 > most recently changed files or directories first.
 > In what order does `ls -R -t` display things? Hint: `ls -l` uses a long listing
-> format to view timestamps.
+> format to view time stamps.
 >
 > > ## Solution
 > > The directories are listed alphabetical at each level, the files/directories
