@@ -9,5 +9,14 @@ all : $(DST_FILES)
 %.pdf : %.md
 	$(PANDOC_APP) $(PANDOC_FLAGS) -o $@ $^
 
+install : $(DST_FILES)
+	@mkdir ../this_weeks_canteen_menus
+	@cp $^ ../this_weeks_canteen_menus
+
 clean :
 	@rm -vf $(DST_FILES)
+
+help :
+	@echo "all     : translate all markdown files in the current folder to .pdf using pandoc"
+	@echo "install : create folder ../this_weeks_canteen_menus and copy all .pdfs there (rebuild them if needed)"
+	@echo "clean   : remove all pdfs in this folder"
