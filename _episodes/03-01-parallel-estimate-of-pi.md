@@ -180,31 +180,32 @@ $ python3 ./parallel_numpi.py 1000000000
 The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
 
 ~~~
-$ time python3 ./serial_numpi.py 1000000000
+$ time python3 ./serial_numpi.py 200000000
 ~~~
 {: .bash}
 
 ~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
+[serial version] required memory 2288.818 MB
+[serial version] pi is 3.141604 from 200000000 samples
 
-real    0m52.305s
-user    0m40.444s
-sys     0m11.655s
+real	0m12.766s
+user	0m10.543s
+sys		0m2.101s
 ~~~
 {: .output}
 
 ~~~
-$ time python3 ./parallel_numpi.py 1000000000
+$ time python3 ./parallel_numpi.py 2000000000
 ~~~
 {: .bash}
-~~~
-[parallel version] required memory 11444.092 MB
-[using  12 cores ] pi is 3.141631 from 1000000000 samples
 
-real    0m12.113s
-user    2m10.676s
-sys     0m34.477s
+~~~
+[parallel version] required memory 2288.818 MB
+[using  12 cores ] pi is 3.141642 from 200000000 samples
+
+real	0m1.942s
+user	0m12.097s
+sys		0m2.813s
 ~~~
 {: .output}
 
