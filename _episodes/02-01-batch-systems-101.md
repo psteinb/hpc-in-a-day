@@ -71,6 +71,16 @@ n01
 
 If she repeats this command, over and over again, the output changes. So these commands must be running on another node. 
 
+> ## Editing a file on a remote machine
+> If you are following the materials closely, this is the time where you might want to edit a file on your cluster and paste the contents of the code snippet above into it. The question is, how to do that?
+>
+> You have several options: 
+> 1. run a editor inside the `ssh` session that you opened to work on the cluster (mostly vi/vim, emacs, nano or pico are programs commonly installed on HPC machines)
+> 2. connect to the cluster with `ssh` using the ssh `-X` switch, if done so, you can open editors like emacs, nedit, gedit, ... that are capable of spinning up a GUI (careful though, the GUI contents need to be transmitted through the network from the cluster to your workstation or laptop and vice verse, so in case you have a poor network connection, this approach can be visually painful)
+> 3. use remote editing capabilities of your preferred editor or IDE (emacs and vim has a built-in packages for this, check your preferred IDE manual for details)
+> 4. have a folder of your remote host mounted on your laptop (the details depend on the remote cluster and you should get in touch with the admin to find out what technologies are available), edit the files inside this folder (most of the time they are updated to the clsuter in real-time) and launch the applications from your `ssh` session
+
+
 Individual commands are fine, but Lola knows from experience that very often her work requires her to do more complex tasks, i.e. to execute a coule of commands after one another. To simulate this, she writes a small script that can be run on the node that runs her job.  
 
 ~~~
