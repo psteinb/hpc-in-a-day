@@ -126,7 +126,7 @@ $ pwd
 {: .output}
 
 Here,
-the computer's response is `/Home/lola`,
+the computer's response is `/home/lola`,
 which is Lola's **home directory**:
 
 > ## Username Variation
@@ -403,12 +403,12 @@ The paths above can be relative or absolute.
 ### Lola's Pipeline: Organizing Files
 
 Knowing just this much about files and directories,
-Lola is ready to organize the files that the protein assay machine will create.
+Lola is ready to organize data files that her predecessors left to her. 
 First,
-she creates a directory called `north-pacific-gyre`
+she creates a directory called `iot-estimate-of-pi`
 (to remind herself where the data came from).
 Inside that,
-she creates a directory called `2012-07-03`,
+she creates a directory called `2017-03-15`,
 which is the date she started processing the samples.
 She used to use names like `conference-paper` and `revised-results`,
 but she found them hard to understand after a couple of years.
@@ -424,24 +424,23 @@ a directory called `revised-revised-results-3`.)
 > December would come before July;
 > if she didn't use leading zeroes,
 > November ('11') would come before July ('7'). Similarly, putting the year first
-> means that June 2012 will come before June 2013.
+> means that June 2016 will come before June 2017.
 {: .callout}
 
-Each of her physical samples is labelled according to her lab's convention
+Each of her estimation samples is labelled according to her predecesors convention
 with a unique ten-character ID,
-such as "NENE01729A".
-This is what she used in her collection log
-to record the location, time, depth, and other characteristics of the sample,
+such as "ESTPI01729A".
+This is what she found in the lab notebook given to her to record the program, version, machine, and other characteristics of the sample,
 so she decides to use it as part of each data file's name.
 Since the assay machine's output is plain text,
-she will call her files `NENE01729A.txt`, `NENE01812A.txt`, and so on.
+she will call her files `ESTPI01729A.txt`, `ESTPI01812A.txt`, and so on.
 All 1520 files will go into the same directory.
 
 Now in her current directory `data-shell`,
 Lola can see what files she has using the command:
 
 ~~~
-$ ls north-pacific-gyre/2012-07-03/
+$ ls iot-estimate-of-pi/2017-03-15/
 ~~~
 {: .bash}
 
@@ -450,7 +449,7 @@ but she can let the shell do most of the work through what is called **tab compl
 If she types:
 
 ~~~
-$ ls nor
+$ ls iot-
 ~~~
 {: .bash}
 
@@ -458,12 +457,12 @@ and then presses tab (the tab key on her keyboard),
 the shell automatically completes the directory name for her:
 
 ~~~
-$ ls north-pacific-gyre/
+$ ls iot-estimate-of-pi/
 ~~~
 {: .bash}
 
 If she presses tab again,
-Bash will add `2012-07-03/` to the command,
+Bash will add `2017-03-15/` to the command,
 since it's the only possible completion.
 Pressing tab again does nothing,
 since there are 19 possibilities;
