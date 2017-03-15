@@ -111,12 +111,16 @@ Tue Mar  7 11:14:11 CET 2017
 {: .output}
 
 > ## Errors are important as well
-> The *nix operating systems has some special quirks to it. One of it is, that there is not only one way to print something to the terminal. There is the so called standard output and standard error output. Text that is sent to one of them is not seen by the other. Typically, error messages are sent to the standard error (the word output is often omitted) and status messages are sent to standard output. When executing commands on the command line, the difference between the two ways is not noticeable. The scheduler however allows you to split the two and write them to individual files. For example like this:
+> The *nix operating systems has some special quirks to it. One of it is, that there is not only one way to print something to the terminal. There is the so called standard output and standard error output. Text that is sent to one of them is not seen by the other. Typically, error messages are sent to the standard error (the word output is often omitted) and status messages are sent to standard output. When executing commands on the command line, the difference between the two ways is not noticeable interactively. 
+> 
+{: .callout}
+
+The scheduler allows Lola to split the two and write them to individual files. For example like this:
+ 
 ~~~
 {% include /snippets/02/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
-{: .callout}
 
 > ## How long has this node been running
 >
