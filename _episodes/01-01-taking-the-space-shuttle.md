@@ -91,7 +91,7 @@ $ logout
 ~~~
 {: .bash}
 
-He continues to explain, that typically people perform computationally heavy tasks on the cluster and prepare files that contain the results or a subset of data to create final results. So communication to and from the cluster is done mostly by transferring files. For example, Rob asks Lola to use a file of her liking and transfer it over. For this, he advises her to use the secure copy command, `scp`. As before, this establishes a secure encrypted temporary connection between Lola's laptop and the cluster just for the sake of transferring the files. After the transfer has completed, scp will close the connection again.
+He continues to explain, that typically people perform computationally heavy tasks on the cluster and prepare files that contain the results or a subset of data to create final results on the individuals laptop. So communication to and from the cluster is done mostly by transferring files. For example, Rob asks Lola to use a [file of her liking](../filesystem/home/rob/this_weeks_canteen_menus/todays_canteen_menu.pdf) and transfer it over. For this, he advises her to use the secure copy command, `scp`. As before, this establishes a secure encrypted temporary connection between Lola's laptop and the cluster just for the sake of transferring the files. After the transfer has completed, scp will close the connection again.
 
 ~~~ 
 $ scp todays_canteen_menu.pdf lola@{{ site.workshop_login_host }}:todays_canteen_menu.pdf
