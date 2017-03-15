@@ -471,6 +471,8 @@ and so on.
 This is called **tab completion**,
 and we will see it in many other tools as we go on.
 
+At this point, Rob is called for an emergency into the machine room. He apologizes to Lola and suggests that she takes a look at the wiki the computer center has or browse the internet for helpful videos. Lola is left a bit startled as she knows that the group she works for just bought their own small cluster. So there is no documentation what so ever. Lola leaves a bit uncertain for her office.
+
 > ## Absolute vs Relative Paths
 >
 > Starting from `/home/amanda/data/`,
