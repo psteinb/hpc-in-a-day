@@ -1,0 +1,1 @@
+$ srun -o filter-pi.log -e filter-pi.err python3 filter_pi_estimates.py pi_estimate_01.data
