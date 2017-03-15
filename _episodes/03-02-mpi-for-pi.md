@@ -196,13 +196,13 @@ The output file `mpi_numpi.out` yields the following lines:
 [     mpi version] required memory 11444.092 MB
 [using  48 cores ] pi is 3.141679 from 1000000000 samples
 
-real    0m6.368s
-user    0m45.763s
-sys     0m6.681s
+real    0m6.546s
+user    0m36.436s
+sys     0m8.445s
 ~~~
 {: .output}
 
-Note here, that we are now free to scale this application to hundreds of cores if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the run time that her MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation before. That is quite an achievement of the day as it is faster relative to the number of cores used!
+Note here, that we are now free to scale this application to hundreds of cores if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the run time that her MPI job consumed. `6.5` seconds for a job that ran on four times as much cores as here parallel implementation before (which took `12s` for the same configuration). That is quite an achievement of the day!
 
 > ## Use the batch system!
 >
