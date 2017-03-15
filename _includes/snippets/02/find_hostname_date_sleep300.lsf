@@ -1,0 +1,3 @@
+$ bjobs
+JOBID   USER    STAT  QUEUE      FROM_HOST   EXEC_HOST   JOB_NAME   SUBMIT_TIME
+743866  lola    PEND  short      lolas_pc                *eep300.sh Mar  8 11:38

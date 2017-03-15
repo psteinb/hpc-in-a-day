@@ -1,0 +1,6 @@
+$ cat multiple_commands.sh
+#!/bin/bash
+
+hostname
+date
+$ bsub -o multiple_commands.log -e -e multiple_commands.err < multiple_commands.sh

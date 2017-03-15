@@ -1,0 +1,1 @@
+$ squeue -u $USER

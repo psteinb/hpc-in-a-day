@@ -1,0 +1,8 @@
+$ cat multiple_commands_and_sleep.sh
+#!/bin/bash
+
+hostname
+date
+sleep 30
+date
+$ sbatch -o multiple_commands_and_sleep.log < multiple_commands_and_sleep.sh

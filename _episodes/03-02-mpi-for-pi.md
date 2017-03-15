@@ -28,9 +28,10 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 
 Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
-{% highlight bash %}
+~~~
 {% include /snippets/03/submit_4_mpirun_hostname.{{ site.workshop_scheduler }} %}
-{% endhighlight %}
+~~~
+{: .bash}
 
 The log file that is filled by the `bsub` command, contains the following lines after finishing the job:
 
@@ -44,9 +45,10 @@ n01
 
 The output makes her wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
 
-{% highlight bash %}
+~~~
 {% include /snippets/03/submit_16_mpirun_hostname.{{ site.workshop_scheduler }} %}
-{% endhighlight %}
+~~~
+{: .bash}
 
 ~~~
 n01
@@ -74,9 +76,10 @@ As the figure above shows, 12 instances of `hostname` were called on `n01` and 4
 
 Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as Fortran, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
 
-{% highlight bash %}
+~~~
 {% include /snippets/03/submit_16_mpirun_python3_print_hostname.{{ site.workshop_scheduler }} %}
-{% endhighlight %}
+~~~
+{: .bash}
 
 ~~~
 this is 16/16 running on n02
@@ -182,9 +185,10 @@ if rank == 0:
 
 And that's it. Now, Lola can submit her first MPI job.
 
-{% highlight bash %}
+~~~
 {% include /snippets/03/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
-{% endhighlight %}
+~~~
+{: .bash}
 
 The output file `mpi_numpi.out` yields the following lines:
 
