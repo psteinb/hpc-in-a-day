@@ -7,22 +7,22 @@ questions:
 objectives:
 - "Perform a calculation of pi using only one CPU core."
 - "Perform a calculation of pi using multiple CPU cores on one machine."
-- "Measure the runtime of both the serial and parallel version of the implementation and compare them."
+- "Measure the run time of both the serial and parallel version of the implementation and compare them."
 key points:
-- "The estimation of pi with the monte carlo method is a compute bound problem."
+- "The estimation of pi with the Monte Carlo method is a compute bound problem."
 - "The generation of pseudo random numbers consumes the most time."
 - "The generation of random numbers can be parallelized."
 - "Time consumption of a single application can be measured using the `time` utility."
-- "The ratio of the runtime of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
+- "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
-Lola is told that her predecessors all worked on the same project. A high performant calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only aquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
+Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
 
 The algorithm to implement is very simple. It was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
 ![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
 
-Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the cirlce is denoted by `n`). `Pi` is then approximated by: 
+Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `n`). `Pi` is then approximated by: 
 
 ~~~
      4*m
@@ -153,10 +153,10 @@ If the snipped from above is compared to the snippets earlier, you can see that 
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
   - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m6.113s`). Apparently, her parallel program was _8.6_ times faster than the serial implementation. The latter number is called the speed-up of the parallelisation. Very good for a first attempt. 
+So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m6.113s`). Apparently, her parallel program was _8.6_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
 
 > ## Adding up times
-> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decices which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
+> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, time reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
 

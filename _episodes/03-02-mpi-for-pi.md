@@ -7,11 +7,11 @@ questions:
 objectives:
 - "Explain how message passing allows performing computations in more than 1 computer at the same time."
 - "Observe the effects of parallel execution of commands with a simple hostname call."
-- "Measure the runtime of parallel and mpi version of the implementation."
+- "Measure the run time of parallel and MPI version of the implementation."
 key points:
-- "The mpi driver `mpirun` sends compute jobs to a set of allocated computers."
-- "The mpi software then executes these jobs on the remote hosts and synchronizes their state/memory."
-- "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different hostnames."
+- "The MPI driver `mpirun` sends compute jobs to a set of allocated computers."
+- "The MPI software then executes these jobs on the remote hosts and synchronizes their state/memory."
+- "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different host names."
 - "MPI can be used to split the random sampling into components and have several nodes generate random numbers and report back only the pi estimate of this partition."
 ---
 
@@ -26,7 +26,7 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 
 ![Schematic View of a Compute Cluster with 4 nodes (12 cores each)](../tikz/cluster_schematic.svg)
 
-Lola becomes curious. She wants to experiment with this parallelisation technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
+Lola becomes curious. She wants to experiment with this parallelization technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
 ~~~
 {% include /snippets/03/submit_4_mpirun_hostname.{{ site.workshop_scheduler }} %}
@@ -72,9 +72,9 @@ n02
 
 ![Execution of `mpirun hostname` on a Compute Cluster with 4 nodes (12 cores each)](../tikz/mpirunhostname_on_clusterschematic.svg)
 
-As the figure above shows, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleaque, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleaque explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
+As the figure above shows, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleague, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleague explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` app. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
 
-Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as Fortran, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
+Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as FORTRAN, C, C++, python and many more. As Lola is most confident with python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This python script called `print_hostname.py` prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
 
 ~~~
 {% include /snippets/03/submit_16_mpirun_python3_print_hostname.{{ site.workshop_scheduler }} %}
@@ -115,7 +115,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > 
 {: .challenge}
 
-To finalize this day's work, Lola wants to tackle distributed memory parallelisation using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is preinstalled on her cluster. She again starts from the [serial implementation](code/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
+To finalize this day's work, Lola wants to tackle distributed memory parallelization using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is pre-installed on her cluster. She again starts from the [serial implementation](code/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
 
 ~~~
 from mpi4py import MPI
@@ -153,7 +153,7 @@ else:
 ~~~
 {: .python}
 
-In this example, you can see how the lists are only created on one rank for now (rank `0` to be precise). At this, point the contents of `partitions` and `counts` reside on rank `0` only. They now have to send to all other participanting ranks.
+In this example, you can see how the lists are only created on one rank for now (rank `0` to be precise). At this, point the contents of `partitions` and `counts` reside on rank `0` only. They now have to send to all other participating ranks.
 
 ~~~
 partition_item = comm.scatter(partitions, root=0)
@@ -202,7 +202,7 @@ sys     0m6.681s
 ~~~
 {: .output}
 
-Note here, that we are now free to scale this application to hundreds of core if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the runtime that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
+Note here, that we are now free to scale this application to hundreds of core if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the run time that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
 
 > ## Use the batch system!
 >
@@ -214,5 +214,5 @@ Note here, that we are now free to scale this application to hundreds of core if
 >
 > The MPI implementation given above transmits only the pi estimate per rank to the main program. Rewrite the program so that each rank generates the random numbers and sends them back to rank 0. 
 > 
-> Submit the job and look at the time it took. What do you observe? Why did the runtime change?
+> Submit the job and look at the time it took. What do you observe? Why did the run time change?
 {: .challenge}

@@ -49,7 +49,7 @@ if __name__=='__main__':
 
 She launches the application and waits for quite a while until the she receives an answer (1 minute in this case). She thinks that this is strange. Looking through a some lines of text and checking if a line starts with `3.1` doesn't sound complicated, so why is it taking so long. She expected to get an answer back instantly. Given that she has 16 of these files, if she wants to look through all of them, this means that she has to wait at least 16 minutes for the answer to come along.
 
-Lola wonders, but what do we have a cluster for then? She decides to submit 16 jobs that filter out the estimates of pi for each file. She sits down and alters her previous program to [filter-out the occurences of pi](code/03_parallel_jobs/filter_pi_estimates.py). The idea of her code is the following:
+Lola wonders, but what do we have a cluster for then? She decides to submit 16 jobs that filter out the estimates of pi for each file. She sits down and alters her previous program to [filter-out the occurrences of pi](code/03_parallel_jobs/filter_pi_estimates.py). The idea of her code is the following:
 
 ```
 import sys
@@ -66,7 +66,7 @@ if __name__=='__main__':
 ```
 {: .python}
 
-She tests her python program on a single input file. As she knows how long it'll take approximately, she can provide a good estimate of the runtime of the job. If the cluster is busy, that allows the scheduler to start her job faster.
+She tests her python program on a single input file. As she knows how long it'll take approximately, she can provide a good estimate of the run time of the job. If the cluster is busy, that allows the scheduler to start her job faster.
 
 ```
 $ bsub -W 00:05 -o filter-pi.log -e filter-pi.err python3 filter_pi_estimates.py pi_estimate_01.data
@@ -129,7 +129,7 @@ $ bsub < map_step.sh
 ```
 {: .bash}
 
-The above is called an _array job_. The same commands are executed on an array of files which share a similar filename. In this case, it is `pi_estimate_1.data, pi_estimate_2.data, pi_estimate_3.data, ...`. When the job runs on the cluster, the shell variable 
+The above is called an _array job_. The same commands are executed on an array of files which share a similar file name. In this case, it is `pi_estimate_1.data, pi_estimate_2.data, pi_estimate_3.data, ...`. When the job runs on the cluster, the shell variable 
 
 ```
 ${LSB_JOBINDEX} 
@@ -143,7 +143,7 @@ $ python3 average_pi_estimates.py map_step.1.log map_step.2.log map_step.3.log m
 ```
 {: .bash}
 
-It's tedious to type in all the 16 file names. Lola asks an admin for help that has been using the terminal for quite a while. He mentions the wildcard character to use.
+It's tedious to type in all the 16 file names. Lola asks an admin for help that has been using the terminal for quite a while. He mentions the wild card character to use.
 
 ```
 $ python3 average_pi_estimates.py map_step.*.log
