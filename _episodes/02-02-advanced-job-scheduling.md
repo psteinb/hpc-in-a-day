@@ -8,7 +8,7 @@ questions:
 - "How do I cancel a job?"
 objectives:
 - ""
-key points:
+keypoints:
 - "n.n."
 ---
 

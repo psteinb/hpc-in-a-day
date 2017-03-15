@@ -8,7 +8,7 @@ objectives:
 - "Explain how message passing allows performing computations in more than 1 computer at the same time."
 - "Observe the effects of parallel execution of commands with a simple hostname call."
 - "Measure the run time of parallel and MPI version of the implementation."
-key points:
+keypoints:
 - "The MPI driver `mpirun` sends compute jobs to a set of allocated computers."
 - "The MPI software then executes these jobs on the remote hosts and synchronizes their state/memory."
 - "The `print_hostname.py` infers the hostname of the current machine. If run in parallel with `mpirun`, it prints several different host names."

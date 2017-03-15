@@ -6,7 +6,7 @@ questions:
 - "How do I analyze a lot of large files efficiently?"
 objectives:
 - "Perform a Map-Reduce style operation to extract information from large files and collect these into one final answer."
-key points:
+keypoints:
 - "Searching through a large file is bound by the speed that I can read-in the file."
 - "Having a set of files, the result of searching one file is independent of searching its sibling."
 - "HPC clusters have very powerful parallel file systems, that offer the best speed if data is accessed in parallel."

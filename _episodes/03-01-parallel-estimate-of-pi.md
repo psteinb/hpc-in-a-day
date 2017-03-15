@@ -8,7 +8,7 @@ objectives:
 - "Perform a calculation of pi using only one CPU core."
 - "Perform a calculation of pi using multiple CPU cores on one machine."
 - "Measure the run time of both the serial and parallel version of the implementation and compare them."
-key points:
+keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem."
 - "The generation of pseudo random numbers consumes the most time."
 - "The generation of random numbers can be parallelized."

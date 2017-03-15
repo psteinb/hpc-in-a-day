@@ -10,7 +10,7 @@ objectives:
 - "Submit a job that fills a file with arbitrary but known data and store it in the shared file system."
 - "Submit a job that fills a file with arbitrary but known data and store it in the local file system of the execution host."
 - "Raise the attention that a common file system also makes big problems common to all users very quickly."
-key points:
+keypoints:
 - "A shared file system is one of the key components of modern HPC clusters."
 - "`scp` and friends are rarely needed on a HPC cluster."
 - "A shared file system is a resource for all users, so use it wisely to not affect others."

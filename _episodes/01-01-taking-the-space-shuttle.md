@@ -11,7 +11,7 @@ objectives:
 - "Inspect a directory with ls."
 - "Transfer a file to the cluster."
 - "Transfer from the cluster."
-key points:
+keypoints:
 - "Super computers do not have screens."
 - "Super computers are setup in remote places."
 - "Super computers can be reached with ssh."

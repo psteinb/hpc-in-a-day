@@ -11,7 +11,7 @@ objectives:
 - "Submit a simple Hello World style script to the cluster."
 - "Use the batch system command line tools to monitor the execution of your job."
 - "Inspect the output and error files of your jobs."
-key points:
+keypoints:
 - "The scheduler tries to guarantee a fair availability of resources on a cluster for all users."
 - "If programs are to be run, they need to be specified to the scheduler."
 - "Jobs can be defined in an interactive mode or in a batch script mode."
