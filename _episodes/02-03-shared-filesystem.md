@@ -16,9 +16,9 @@ key points:
 - "A shared file system is a resource for all users, so use it wisely to not affect others."
 ---
 
-After all these first attempts to make use of the cluster, Lola wonders about something. If she submit's a job, how would she be able to store data and access it from her laptop?
+After all these first attempts to make use of the cluster, Lola wonders about something. If she submits a job, how would she be able to store data and access it from her laptop?
 
-Lola comes up with a small example job, that collects information on the node that the jobs is run on and submit's it.
+Lola comes up with a small example job, that collects information on the node that the jobs is run on and submits it.
 
 ~~~
 {% include /snippets/02/submit_node_info.{{ site.workshop_scheduler }} %}
@@ -32,7 +32,7 @@ FILENAME=/tmp/`hostname`_info.log
 ~~~
 {: .bash }
 
-She checks the contents of `/tmp`. Nothing as well. That means that whereever Lola's script runs, the output is stored under `/tmp/` but not on the node where she submitted her job from. The problem is that this directory is local to the node where the script is run. There is no automated synchronisation, so the file will never appear on the machine where Lola is currently working.
+She checks the contents of `/tmp`. Nothing as well. That means that where ever Lola's script runs, the output is stored under `/tmp/` but not on the node where she submitted her job from. The problem is that this directory is local to the node where the script is run. There is no automated synchronization, so the file will never appear on the machine where Lola is currently working.
 
 > ## tmp
 > This is the canonical Linux temporary directory where anyone (i.e. the operating system as well as any user or user application) is allowed to create, write, read and delete files and directories. The directory is typically cleared of any content when the node is rebooted.
@@ -42,7 +42,7 @@ Lola asks her colleague how to proceed. He mentions that `{{ site.workshop_share
 
 > ## parallel file system
 >
-> Parallel file systems such as, [lustre](http://lustre.org/), [GPFS](https://www.ibm.com/support/knowledgecenter/en/SSFKCN/gpfs_welcome.html), [BeeGeeFS](http://www.beegfs.com/content/) etc, are the limbs of a multi-purpose HPC cluster. These file systems consist of a software layer that needs to be installed on all nodes of a cluster and dedicated hardware external to the compute nodes. The mere goal of these systems is to provide high bandwidth for writing and reading in parallel, i.e. from multiple nodes at the same time, of large volumes of data. If it wouldn't be for them, simulations and data analysis jobs would have nowhere to put their results or read their inputs from.
+> Parallel file systems such as, [lustre](http://lustre.org/), [GPFS](https://www.ibm.com/support/knowledgecenter/en/SSFKCN/gpfs_welcome.html), [BeeGFS](http://www.beegfs.com/content/) etc, are the limbs of a multi-purpose HPC cluster. These file systems consist of a software layer that needs to be installed on all nodes of a cluster and dedicated hardware external to the compute nodes. The mere goal of these systems is to provide high bandwidth for writing and reading in parallel, i.e. from multiple nodes at the same time, of large volumes of data. If it wouldn't be for them, simulations and data analysis jobs would have nowhere to put their results or read their inputs from.
 
 Lola doesn't bother with the technical details for a moment. She simply wants to get the job done. So she changes the offending line to:
 
