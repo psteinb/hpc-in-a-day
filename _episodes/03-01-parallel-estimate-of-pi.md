@@ -72,6 +72,66 @@ $ python3 ./serial_numpi.py 1000000000
 
 She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
 
+> ## Where is the problem ?
+>
+> Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
+> 
+> In order to install the profiler, please call:
+> ~~~
+> $ pip3 install line_profiler
+> ~~~
+> {: .bash }
+> 
+> When this is done, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we change the `inside_circle` function definition:
+> 
+> ~~~
+> ...
+> @profile
+> def inside_circle(total_count):
+>   ...
+> ~~~
+> 
+> Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
+> 
+> ~~~
+> $ kernprof-3.5 -l ./serial_numpi_annotated.py 50000000
+> [serial version] required memory 572.205 MB
+> [serial version] pi is 3.141728 from 50000000 samples
+> Wrote profile results to serial_numpi_annotated.py.lprof
+> ~~~
+> {: .bash }
+> 
+> You can see that the profiler just adds one line to the output, i.e. the last line. In order to view, the output we can use the line_profile module in python:
+> 
+> ~~~
+> $ python3 -m line_profiler serial_numpi_profiled.py.lprof
+> Timer unit: 1e-06 s
+> 
+> Total time: 2.40138 s
+> File: ./serial_numpi_profiled.py
+> Function: inside_circle at line 7
+> 
+> Line #      Hits         Time  Per Hit   % Time  Line Contents
+> ==============================================================
+>      7                                           @profile
+>      8                                           def inside_circle(total_count):
+>      9                                           
+>     10         1       827103 827103.0     34.4      x = np.float32(np.random.uniform(size=total_count))
+>     11         1       891397 891397.0     37.1      y = np.float32(np.random.uniform(size=total_count))
+>     12                                           
+>     13         1       322505 322505.0     13.4      radii = np.sqrt(x*x + y*y)
+>     14                                           
+>     15         1       360375 360375.0     15.0      count = len(radii[np.where(radii<=1.0)])
+>     16                                           
+>     17         1            4      4.0      0.0      return count
+> ~~~
+> {: .output }
+>
+> So generating the random numbers appears to be the bottleneck as it accounts for 70% of the time. So this is a prime candidate for acceleration.
+>
+{: .callout}
+
+
 One of the many ways of making a program faster, is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
 
 ![Illustration of drawing random number pairs `x` and `y` and their dependency](../tikz/data_parallel_estimate_pi.svg)
