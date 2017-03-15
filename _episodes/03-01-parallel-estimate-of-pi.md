@@ -72,9 +72,9 @@ $ python3 ./serial_numpi.py 1000000000
 
 She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
 
-> ## Where is the problem ?
+> ## Premature Optimisation is the root of all evil!
 >
-> Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
+> Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 > 
 > In order to install the profiler, please call:
 > ~~~
@@ -193,17 +193,18 @@ user    0m40.444s
 sys     0m11.655s
 ~~~
 {: .output}
+
 ~~~
 $ time python3 ./parallel_numpi.py 1000000000
 ~~~
 {: .bash}
 ~~~
 [parallel version] required memory 11444.092 MB
-[using  20 cores ] pi is 3.141631 from 1000000000 samples
+[using  12 cores ] pi is 3.141631 from 1000000000 samples
 
-real    0m6.113s
-user    1m5.676s
-sys     0m17.477s
+real    0m12.113s
+user    2m10.676s
+sys     0m34.477s
 ~~~
 {: .output}
 
@@ -213,7 +214,7 @@ If the snipped from above is compared to the snippets earlier, you can see that 
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
   - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m6.113s`). Apparently, her parallel program was _8.6_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
+So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m12.113s`). Apparently, her parallel program was _4.3_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
 
 > ## Adding up times
 > The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.

@@ -202,7 +202,7 @@ sys     0m6.681s
 ~~~
 {: .output}
 
-Note here, that we are now free to scale this application to hundreds of core if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the run time that here MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation. That is quite an achievement of the day!
+Note here, that we are now free to scale this application to hundreds of cores if we wanted to. We are only restricted by the size of our compute cluster. Before finishing the day, Lola looks at the run time that her MPI job consumed. `6.4` seconds for a job that ran on twice as much cores as here parallel implementation before. That is quite an achievement of the day as it is faster relative to the number of cores used!
 
 > ## Use the batch system!
 >
