@@ -84,7 +84,7 @@ Lola wonders a bit what this may be about, that you need a dedicated command to 
 >   - cloud instances are run in so called virtual machines, i.e. an operating system inside an operating system, this is one of the reasons why the performance of cloud instances often is inferior to HPC clusters for typical HPC workloads
 {: .callout}
 
-Rob explains to Lola that she has to work with this remote shell session in order to run programs on the HPC cluster. Launching programs that open a Graphical User Interface (GUI) is possible, but the interaction with the GUI will be slow as everything will have to transferred through the WiFi network her laptop is currently logged into. Before Rob continues, he suggests to leave the cluster node again. For this, Lola can type in `logout` or `exit`.
+Rob explains to Lola that she has to work with this remote shell session in order to run programs on the HPC cluster. Launching programs that open a Graphical User Interface (GUI) is possible, but the interaction with the GUI will be slow as everything will have to get transferred through the WiFi network her laptop is currently logged into. Before Rob continues, he suggests to leave the cluster node again. For this, Lola can type in `logout` or `exit`.
 
 ~~~ 
 $ logout
