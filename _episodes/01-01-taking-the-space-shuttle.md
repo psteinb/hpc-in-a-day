@@ -45,7 +45,7 @@ Last login: Tue Mar 14 14:13:14 2017 from lolas_laptop
 Rob explains to Lola that she is using the secure shell or `ssh`. This establishes a temporary encrypted connection between Lola's laptop and `{{ site.workshop_login_host }}`. The word before the `@` symbol, e.g. `lola` here, is the user account name that Lola has access permissions for on the cluster. 
 
 > ## Where do I get this `ssh` from ?
-> At the time of writing, many Microsoft Windows operating systems do not have a program called `ssh` installed. To still be able to use the secure shell to a remote machine, use a program called [putty](http://www.putty.org), [bitvise SSH](https://www.bitvise.com/ssh-client-download) or [mRemoteNG](https://mremoteng.org/). Download it, install it and open the GUI. They typically as for your user name and the destination address or IP. Once provided, you will be queried for your password.
+> At the time of writing, many Microsoft Windows operating systems do not have a program called `ssh` installed. To still be able to use the secure shell to a remote machine, use a program called [putty](http://www.putty.org), [bitvise SSH](https://www.bitvise.com/ssh-client-download) or [mRemoteNG](https://mremoteng.org/). Download it, install it and open the GUI. They typically ask for your user name and the destination address or IP. Once provided, you will be queried for your password.
 {: .callout}
 
 
