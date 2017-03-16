@@ -29,7 +29,7 @@ Lola walks to the IT department and finishes the paper work to get an account. O
 > Generally, a super computer refers to the worlds fastest machines available irrespective of their design but with the limitations that they need to be general purpose. Smaller computers of similar design than the above are commonly referred to as High performance computing (HPC) farms, batch farms, HPC clusters etc. A list of the fastest super computers is available on [top500.org](https://www.top500.org/lists/).
 {: .callout}
 
-First of all, Rob asks Lola to connect to the super computer. Rob mentions that in the past, compute clusters were named after planets or moons as they often presented distant somewhat mythological places. One of Rob's first instructors then often said, that they would use the Space Shuttle (or `ssh` briefly) to reach that planet or moon. So Rob asks Lola to open a terminal on her Laptop and type in the following commands:
+First of all, Rob asks Lola to connect to the super computer. Rob mentions that in the past, compute clusters were named after planets or moons as they often presented distant somewhat mythological places. One of Rob's first instructors then often said, that they would use the Space Shuttle (or `ssh` briefly) to reach that planet or moon. So Rob asks Lola to open a terminal on her laptop and type in the following commands:
 
 ~~~ 
 $ ssh lola@{{ site.workshop_login_host }}
