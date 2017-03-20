@@ -25,6 +25,15 @@ Lola comes up with a small example job, that collects information on the node th
 ~~~
 {: .bash }
 
+> ## What's the fuzz about < and > ?
+> 
+> On the unix command line, the symbols '<' and '>' have a special meaning. They are called output redirection operators. 
+>
+> `>` takes the output it receives from the left-hand side and stores it into, e.g. a file, on its right-hand side. For example, `date > date.log` stores the output of the date command and stores it inside a file called date.log. 
+> 
+> `<` takes the content of it's right-hand side, e.g. typically a file, and it provides it as the *input* of the command listed on the left-hand side. `wc < /proc/cpuinfo` takes in the contents of the file `/proc/cpuinfo` and uses it as the input to the wc command (which performs a word count and prints the result).
+{: .callout }
+
 When the job is done, she scans the current directory from where she submitted the job. But the file that she expects does not appear. Lola goes back to the script she wrote. There is one line that looks suspicious.
 
 ~~~
@@ -54,35 +63,11 @@ FILENAME={{ site.workshop_shared_fast_filesystem }}/lola/`hostname`_info.log
 and submits the job. And voila, the file appears in `{{ site.workshop_shared_fast_filesystem }}/lola/` with the expected input: 
 
 ~~~
-n01
-             total       used       free     shared    buffers     cached
-Mem:           125         87         38          0          0         67
--/+ buffers/cache:         19        106
-Swap:            1          0          1
 processor       : 0
 vendor_id       : GenuineIntel
 cpu family      : 6
 model           : 45
 model name      : Intel(R) Xeon(R) CPU E5-2640 0 @ 2.50GHz
-stepping        : 7
-cpu MHz         : 2500.122
-cache size      : 15360 KB
-physical id     : 0
-siblings        : 6
-core id         : 0
-cpu cores       : 6
-apicid          : 0
-initial apicid  : 0
-fpu             : yes
-fpu_exception   : yes
-cpuid level     : 13
-wp              : yes
-flags           : fpu vme de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good xtopology nonstop_tsc aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx sm
-x est tm2 ssse3 cx16 xtpr pdcm dca sse4_1 sse4_2 x2apic popcnt aes xsave avx lahf_lm ida arat epb xsaveopt pln pts dts tpr_shadow vnmi flexpriority ept vpid
-bogomips        : 5000.24
-clflush size    : 64
-cache_alignment : 64
-address sizes   : 46 bits physical, 48 bits virtual
 # ...
 ~~~
 {: .output }
