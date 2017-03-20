@@ -33,7 +33,7 @@ Lola becomes curious. She wants to experiment with this parallelization techniqu
 ~~~
 {: .bash}
 
-The log file that is filled by the `bsub` command, contains the following lines after finishing the job:
+The log file that is filled by the command above, contains the following lines after finishing the job:
 
 ~~~
 n01
