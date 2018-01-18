@@ -5,9 +5,8 @@ exercises: 10
 questions:
 - "How do I use multiple cores on a computer to solve a problem?"
 objectives:
-- "Perform a calculation of pi using only one CPU core."
 - "Perform a calculation of pi using multiple CPU cores on one machine."
-- "Measure the run time of both the serial and parallel version of the implementation and compare them."
+- "Measure the run time of both the parallel version of the implementation and compare it to the serial one."
 keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem."
 - "The generation of pseudo random numbers consumes the most time."
@@ -16,93 +15,6 @@ keypoints:
 - "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
-Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
-
-The algorithm to implement is very simple. It was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
-
-![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
-
-Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `n`). `Pi` is then approximated by: 
-
-~~~
-     4*m
-Pi = ---
-      n
-~~~
-
-The implementation of this algorithm using `total_count` random number pairs in a nutshell is given in the below program:
-
-~~~
-import numpy
-
-np.random.seed(2017)
-
-def inside_circle(total_count):
-    
-    x = np.float32(np.random.uniform(size=total_count))
-    y = np.float32(np.random.uniform(size=total_count))
-
-    radii = np.sqrt(x*x + y*y)
-
-    count = len(radii[np.where(radii<=1.0)])
-    
-    return count 
-    
-def estimate_pi(total_count):
-
-    return (4.0 * inside_circle(total_count) / total_count) 
-    
-~~~
-{: .python}
-
-This code is already written in a way to allow later reuse in parallel applications. So don't mind the two-fold indirection where `estimate_pi` calls `inside_circle`. For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
-
-Lola finishes writing the pi estimation and comes up with a [small python script](code/03_parallel_jobs/serial_numpi.py), that she can launch from the command line:
-
-~~~
-$ python3 ./serial_numpi.py 1000000000
-~~~
-{: .bash}
-
-~~~
-[serial version] required memory 11444.092 MB
-[serial version] pi is 3.141557 from 1000000000 samples
-~~~
-{: .output}
-
-She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
-
-> ## Premature Optimisation is the root of all evil!
->
-> Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
-> 
-> In order to install the profiler, please call:
-> ~~~
-> $ pip3 install line_profiler
-> ~~~
-> {: .bash }
-> 
-> When this is done, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we change the `inside_circle` function definition:
-> 
-> ~~~
-> ...
-> @profile
-> def inside_circle(total_count):
->   ...
-> ~~~
-> 
-> Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
-> 
-> ~~~
-> $ kernprof-3.5 -l ./serial_numpi_annotated.py 50000000
-> [serial version] required memory 572.205 MB
-> [serial version] pi is 3.141728 from 50000000 samples
-> Wrote profile results to serial_numpi_annotated.py.lprof
-> ~~~
-> {: .bash }
-> 
-> You can see that the profiler just adds one line to the output, i.e. the last line. In order to view, the output we can use the line_profile module in python:
-> 
 > ~~~
 > $ python3 -m line_profiler serial_numpi_profiled.py.lprof
 > Timer unit: 1e-06 s
@@ -217,11 +129,8 @@ If the snipped from above is compared to the snippets earlier, you can see that 
     
 So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m12.113s`). Apparently, her parallel program was _4.3_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
 
-> ## Adding up times
-> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
-> Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, time reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
-{: .callout}
 
-> ## Something is missing
-> A speed-up of _8.6x_ for a parallel python program is not bad. The luxury of python programming makes us pay the price of performance. In a perfect world, data parallel algorithms using one machine only are expected to scale perfectly, i.e. using 20 cores should give a speed-up of _20x_. Due to a myriad of reasons from the software or from the hardware side, this perfect scaling often remains a hard-to-achieve goal which projects attain only after months if not years of development.
-{: .callout}
+> ## Adding up times
+> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
+> Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
+
