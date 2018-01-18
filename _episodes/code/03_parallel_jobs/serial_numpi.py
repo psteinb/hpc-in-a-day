@@ -11,13 +11,15 @@ def inside_circle(total_count):
 
     radii = np.sqrt(x*x + y*y)
 
-    count = len(radii[np.where(radii<=1.0)])
+    filtered = np.where(radii<=1.0)
+    count = len(radii[filtered])
 
     return count
 
-def estimate_pi(n_samples):
+def estimate_pi(total_count):
 
-    return (4.0 * inside_circle(n_samples) / n_samples)
+    count = inside_circle(total_count)
+    return (4.0 * count / total_count)
 
 if __name__=='__main__':
 
