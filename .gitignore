@@ -11,3 +11,4 @@ _site
 tikz/*aux
 tikz/*pdf
 tikz/*log
+*.lprof
