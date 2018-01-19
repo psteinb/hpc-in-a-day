@@ -323,5 +323,5 @@ That means, our parallel implementation does already a good job, but only achiev
 > - Converting the currency of rows in a column of a large spreadsheet (10 million rows)
 > - Writing an e-mail in an online editor
 > - Playing a Video on youtube/vimeo/etc. or in a video player application
-> {: .challenge}
+{: .challenge}
 
