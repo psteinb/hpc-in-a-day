@@ -25,5 +25,5 @@ plt = plt + scale_y_continuous(trans=log2_trans(), breaks=2^(0:14))
 plt = plt + scale_x_continuous(trans=log2_trans(), breaks=2^(seq(0,13,1)))
 plt = plt + scale_color_discrete(name="portion p of code to parallelize")
 
-ggsave("amdahls_law.svg",plt,width=4,height=3,unit="cm")
-ggsave("amdahls_law.png",plt,width=4,height=3,unit="cm")
+ggsave("amdahls_law.svg",plt,width=32,height=18,unit="cm")
+ggsave("amdahls_law.png",plt,width=32,height=18,unit="cm")
