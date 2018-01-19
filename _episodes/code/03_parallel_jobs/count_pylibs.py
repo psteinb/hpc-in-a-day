@@ -4,6 +4,7 @@ import glob
 import re
 
 def load_text():
+    """ searchs for the path seen by python (aka sys.path) which contains os.py and reads all .py files in this directory into a large string """
 
     path_of_ospy = ""
     text = []
@@ -27,6 +28,7 @@ def load_text():
     return "\n".join(text)
 
 def word_count(text):
+    """ counts the number of words in the string given by <text> """
 
     word_pattern = r'\b[^\W\d_]+\b'
     result = re.split(word_pattern,text)
