@@ -1,24 +1,22 @@
 ---
-title: "Parallel Estimation of Pi for Pedestrians"
+title: "Estimation of Pi for Pedestrians"
 teaching: 45
 exercises: 10
 questions:
 - "How do I use multiple cores on a computer to solve a problem?"
 objectives:
 - "Perform a calculation of pi using only one CPU core."
-- "Perform a calculation of pi using multiple CPU cores on one machine."
-- "Measure the run time of both the serial and parallel version of the implementation and compare them."
+- "Measure the run time of both the serial of the implementation."
 keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem."
 - "The generation of pseudo random numbers consumes the most time."
-- "The generation of random numbers can be parallelized."
 - "Time consumption of a single application can be measured using the `time` utility."
 - "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
 Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
 
-The algorithm to implement is very simple. It was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
+The algorithm was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
 ![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
 
@@ -30,7 +28,7 @@ Pi = ---
       n
 ~~~
 
-The implementation of this algorithm using `total_count` random number pairs in a nutshell is given in the below program:
+The implementation of this algorithm using `total_count` random number pairs in a nutshell is given in the program below:
 
 ~~~
 import numpy
@@ -44,18 +42,20 @@ def inside_circle(total_count):
 
     radii = np.sqrt(x*x + y*y)
 
-    count = len(radii[np.where(radii<=1.0)])
+    filtered = np.where(radii<=1.0)
+    count = len(radii[filtered])
     
     return count 
     
 def estimate_pi(total_count):
 
-    return (4.0 * inside_circle(total_count) / total_count) 
+    count = inside_circle(total_count)
+    return (4.0 * count / total_count) 
     
 ~~~
 {: .python}
 
-This code is already written in a way to allow later reuse in parallel applications. So don't mind the two-fold indirection where `estimate_pi` calls `inside_circle`. For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
+For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
 
 Lola finishes writing the pi estimation and comes up with a [small python script](code/03_parallel_jobs/serial_numpi.py), that she can launch from the command line:
 
@@ -72,156 +72,163 @@ $ python3 ./serial_numpi.py 1000000000
 
 She must admit that the application takes quite long to finish. Yet another reason to use a cluster or any other remote resource for these kind of applications that take quite a long time. But not everyone has a cluster at his or her disposal. So she decides to parallelize this algorithm first so that it can exploit the number cores that each machine on the cluster or even her laptop has to offer.
 
-> ## Premature Optimisation is the root of all evil!
->
-> Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
-> 
-> In order to install the profiler, please call:
-> ~~~
-> $ pip3 install line_profiler
-> ~~~
-> {: .bash }
-> 
-> When this is done, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we change the `inside_circle` function definition:
-> 
-> ~~~
-> ...
-> @profile
-> def inside_circle(total_count):
->   ...
-> ~~~
-> 
-> Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
-> 
-> ~~~
-> $ kernprof-3.5 -l ./serial_numpi_annotated.py 50000000
-> [serial version] required memory 572.205 MB
-> [serial version] pi is 3.141728 from 50000000 samples
-> Wrote profile results to serial_numpi_annotated.py.lprof
-> ~~~
-> {: .bash }
-> 
-> You can see that the profiler just adds one line to the output, i.e. the last line. In order to view, the output we can use the line_profile module in python:
-> 
-> ~~~
-> $ python3 -m line_profiler serial_numpi_profiled.py.lprof
-> Timer unit: 1e-06 s
-> 
-> Total time: 2.40138 s
-> File: ./serial_numpi_profiled.py
-> Function: inside_circle at line 7
-> 
-> Line #      Hits         Time  Per Hit   % Time  Line Contents
-> ==============================================================
->      7                                           @profile
->      8                                           def inside_circle(total_count):
->      9                                           
->     10         1       827103 827103.0     34.4      x = np.float32(np.random.uniform(size=total_count))
->     11         1       891397 891397.0     37.1      y = np.float32(np.random.uniform(size=total_count))
->     12                                           
->     13         1       322505 322505.0     13.4      radii = np.sqrt(x*x + y*y)
->     14                                           
->     15         1       360375 360375.0     15.0      count = len(radii[np.where(radii<=1.0)])
->     16                                           
->     17         1            4      4.0      0.0      return count
-> ~~~
-> {: .output }
->
-> So generating the random numbers appears to be the bottleneck as it accounts for 70% of the time. So this is a prime candidate for acceleration.
->
-{: .callout}
+## Premature Optimisation is the root of all evil!
 
+Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-One of the many ways of making a program faster, is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
+In order to install the profiler, please call:
+~~~
+$ pip3 install line_profiler
+~~~
+{: .bash }
 
-![Illustration of drawing random number pairs `x` and `y` and their dependency](../tikz/data_parallel_estimate_pi.svg)
-
-Keeping this in mind, splitting up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions.
-
-![Partitioning `x` and `y`](../tikz/partition_data_parallel_estimate_pi.svg)
-
-The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel:
+When this is done and your command line offers the `kernprof-3` executable, you are ready to go on. Next, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we add the `@profile` annotation to a function definition of our choice. If we don't do this, the profiler will do nothing. So let's refactor our code a little bit:
 
 ~~~
-from multiprocessing import Pool
+def main():
+   n_samples = 10000
+   if len(sys.argv) > 1:
+       n_samples = int(sys.argv[1])
 
-def estimate_pi(n_samples,n_cores):
+   my_pi = estimate_pi(n_samples)
+   sizeof = np.dtype(np.float32).itemsize
 
-    partitions = [ ]
-    for i in range(n_cores):
-        partitions.append(int(n_samples/n_cores))
+   print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
+   print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
 
-    pool = Pool(processes=n_cores)
-    counts=pool.map(inside_circle, partitions)
+if __name__=='__main__':
+   main()
+~~~
 
-    total_count = sum(partitions)
-    return (4.0 * sum(counts) / total_count)
+With this trick, we can make sure that we profile the entire application. Note, that this is a necessity when using `line_profiler`. We can now carry on, and annotate the main function.
 
 ~~~
-{: .python}
+...
+@profile
+def main():
+  ...
+~~~
 
-We are using the `multiprocessing` module that comes with the python standard library. The first step is to create a list of numbers that contain the partitions. For this, `n_samples` is divided by the number of cores available on the machine, where this code is executed. The ratio has to be converted to an integer to ensure, that each partition is compatible to a length of an array. The construct used next is a process `Pool`. Due to technical details on how the python interpreter is built, we do not use a Pool of threads here. In other languages than python, `threads` are the more common idiom to represent independent strings of execution that share the same memory than the process they are created in. The process `Pool` creates `n_cores` processes and keeps them active as long as the `Pool` is active. Then `pool.map` will call `inside_circle` using an item of `partitions` as the argument. In other words, for each item in `partitions`, the `inside_circle` function is called once using the respective item as input argument. The result of these invocations of `inside_circle` are stored within the `counts` variable (which will have the same length as `partitions` eventually).
-
-![Partitioning `x` and `y` and results of reach partition](../tikz/partition_data_parallel_estimate_pi_with_results.svg)
-
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/03_parallel_jobs/parallel_numpi.py) and see what it gives:
+Let's save this to `serial_numpi_annotated.py`. After this is done, the profiler is run with a reduced input parameter that does take only about 2-3 seconds:
 
 ~~~
-$ python3 ./parallel_numpi.py 1000000000
+$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
+[serial version] required memory 572.205 MB
+[serial version] pi is 3.141728 from 50000000 samples
+Wrote profile results to serial_numpi_annotated.py.lprof
 ~~~
-{: .bash}
+{: .bash }
 
-~~~
-[parallel version] required memory 11444.092 MB
-[using  20 cores ] pi is 3.141631 from 1000000000 samples
-~~~
-{: .output}
-
-The good news is, the parallel implementation is correct. It estimates Pi to equally bad precision than our serial implementation. The question remains, did we gain anything? For this, Lola tries to the `time` system utility that can be found on all *nix installations and most certainly on compute clusters.
+You can see that the profiler just adds one line to the output, i.e. the last line. In order to view, the output we can use the `line_profile` module in python:
 
 ~~~
-$ time python3 ./serial_numpi.py 200000000
+$ python3 -m line_profiler serial_numpi_profiled.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 2.07893 s
+File: ./serial_numpi_profiled.py
+Function: main at line 24
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    24                                           @profile
+    25                                           def main():
+    26         1            2      2.0      0.0      n_samples = 10000
+    27         1            1      1.0      0.0      if len(sys.argv) > 1:
+    28         1            3      3.0      0.0          n_samples = int(sys.argv[1])
+    29                                           
+    30         1      2078840 2078840.0    100.0      my_pi = estimate_pi(n_samples)
+    31         1           11     11.0      0.0      sizeof = np.dtype(np.float32).itemsize
+    32                                           
+    33         1           50     50.0      0.0      print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
+    34         1           23     23.0      0.0      print("[serial version] pi is %f from %i samples" % (my_pi,n_samples)
 ~~~
-{: .bash}
+
+Aha, as expected the function that consumes 100% of the time is `estimate_pi`. So let's remove the annotation from `main` and move it to `estimate_pi`:
 
 ~~~
-[serial version] required memory 2288.818 MB
-[serial version] pi is 3.141604 from 200000000 samples
+    return count
 
-real	0m12.766s
-user	0m10.543s
-sys		0m2.101s
+@profile
+def estimate_pi(total_count):
+
+    count = inside_circle(total_count)
+    return (4.0 * count / total_count)
+
+def main():
+    n_samples = 10000
+    if len(sys.argv) > 1:
 ~~~
-{: .output}
+
+And run the same cycle of record and report:
 
 ~~~
-$ time python3 ./parallel_numpi.py 2000000000
+$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
+[serial version] required memory 572.205 MB
+[serial version] pi is 3.141728 from 50000000 samples
+Wrote profile results to serial_numpi_annotated.py.lprof
+$ python3 -m line_profiler serial_numpi_profiled.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 2.0736 s
+File: ./serial_numpi_profiled.py
+Function: estimate_pi at line 19
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    19                                           @profile
+    20                                           def estimate_pi(total_count):
+    21                                           
+    22         1      2073595 2073595.0    100.0      count = inside_circle(total_count)
+    23         1            5      5.0      0.0      return (4.0 * count / total_count)
 ~~~
-{: .bash}
+{: .output }
+
+Ok, one function to consume it all! So let's rinse and repeat again and annotate only `inside_circle`.
 
 ~~~
-[parallel version] required memory 2288.818 MB
-[using  12 cores ] pi is 3.141642 from 200000000 samples
+@profile
+def inside_circle(total_count):
 
-real	0m1.942s
-user	0m12.097s
-sys		0m2.813s
+    x = np.float32(np.random.uniform(size=total_count))
+    y = np.float32(np.random.uniform(size=total_count))
+
+    radii = np.sqrt(x*x + y*y)
+
+    filtered = np.where(radii<=1.0)
+    count = len(radii[filtered])
+
+    return count
 ~~~
-{: .output}
 
-If the snipped from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
+And run the profiler again:
 
-  - `real` that denotes the time that has passed during our program as if you would have used a stop watch
-  - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
-  - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
-    
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m12.113s`). Apparently, her parallel program was _4.3_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
+~~~
+$ kernprof-3 -l ./serial_numpi_annotated.py 50000000
+[serial version] required memory 572.205 MB
+[serial version] pi is 3.141728 from 50000000 samples
+Wrote profile results to serial_numpi_annotated.py.lprof
+$ python3 -m line_profiler serial_numpi_profiled.py.lprof
+Timer unit: 1e-06 s
 
-> ## Adding up times
-> The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations) when. Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
-> Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, time reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
-{: .callout}
+Total time: 2.04205 s
+File: ./serial_numpi_profiled.py
+Function: inside_circle at line 7
 
-> ## Something is missing
-> A speed-up of _8.6x_ for a parallel python program is not bad. The luxury of python programming makes us pay the price of performance. In a perfect world, data parallel algorithms using one machine only are expected to scale perfectly, i.e. using 20 cores should give a speed-up of _20x_. Due to a myriad of reasons from the software or from the hardware side, this perfect scaling often remains a hard-to-achieve goal which projects attain only after months if not years of development.
-{: .callout}
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     7                                           @profile
+     8                                           def inside_circle(total_count):
+     9                                           
+    10         1       749408 749408.0     36.7      x = np.float32(np.random.uniform(size=total_count))
+    11         1       743129 743129.0     36.4      y = np.float32(np.random.uniform(size=total_count))
+    12                                           
+    13         1       261149 261149.0     12.8      radii = np.sqrt(x*x + y*y)
+    14                                           
+    15         1       195070 195070.0      9.6      filtered = np.where(radii<=1.0)
+    16         1        93290  93290.0      4.6      count = len(radii[filtered])
+    17                                           
+    18         1            2      2.0      0.0      return count
+~~~
+
+So generating the random numbers appears to be the bottleneck as it accounts for 37+36=73% of the total runtime time. So this is a prime candidate for acceleration.
