@@ -8,12 +8,14 @@ questions:
 - "How do I use multiple cores on a computer?"
 objectives:
 - "Use the profiling data to calculate the theoretical speed-up."
-
+- "Use the theoretical speed-up to decide for an implementation."
+- "Use the multiprocessing module to create a pool of workers."
+- "Let each worker have a task and improve the runtime of the code as the workers can work independent of each other."
 - "Measure the run time of both the parallel version of the implementation and compare it to the serial one."
 keypoints:
-- "The estimation of pi with the Monte Carlo method is a compute bound problem."
-- "The generation of pseudo random numbers consumes the most time."
-- "The generation of random numbers can be parallelized."
+- "Amdahl's law is a description of what you can expect of your parallelisation efforts."
+- "Use the profiling data to calculate the time consumption of hot spots in the code."
+- "The generation and processing of random numbers can be parallelized as it is a data parallel task."
 - "Time consumption of a single application can be measured using the `time` utility."
 - "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
@@ -236,8 +238,10 @@ If the snipped from above is compared to the snippets earlier, you can see that 
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
   - `sys`  this is accumulated amount of CPU seconds that the CPU spent while executing system code that was necessary to run your program (memory management, display drivers if needed, interactions with the disk, etc.)
     
-So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m52.305s`) and compare it to the `real` time spent by her parallel implementation (`0m12.113s`). Apparently, her parallel program was _4.3_ times faster than the serial implementation. The latter number is called the speed-up of the parallelization. Very good for a first attempt. 
+So from the above, Lola wants to compare the `real` time spent by her serial implementation (`0m12.766`) and compare it to the `real` time spent by her parallel implementation (`0m1.942s`). Apparently, her parallel program was `6.6` times faster than the serial implementation. 
 
+We can compare this to the maximum speed-up that is achievable: `S = 1/(1 - 0.99 + 0.99/12) = 10.8`
+That means, our parallel implementation does already a good job, but only achieves `100*6.6/10.8 = 61.1%` runtime improvement of what is possible. As achieving maximum speed-up is hardly ever possible, Lola leaves that as a good end of the day and leaves for home.
 
 > ## Adding up times
 > The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
