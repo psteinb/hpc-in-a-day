@@ -10,7 +10,6 @@ objectives:
 - "Find the line of code in a python program that took the longest."
 keypoints:
 - "Each programming language typically provides tools called profilers with which you can analyse the runtime of your code."
-- "
 - "The estimate of pi spends most of it's time while generating random numbers."
 - "The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms."
 ---
