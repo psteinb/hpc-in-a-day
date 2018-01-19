@@ -5,7 +5,7 @@ exercises: 30
 questions:
 - "What are data parallel algorithms?"
 - "How can I estimate the yield of parallelization without writing one line of code?"
-- "How do I use multiple cores on a computer?"
+- "How do I use multiple cores on a computer in my program?"
 objectives:
 - "Use the profiling data to calculate the theoretical speed-up."
 - "Use the theoretical speed-up to decide for an implementation."
