@@ -3,15 +3,16 @@ title: "Estimation of Pi for Pedestrians"
 teaching: 45
 exercises: 10
 questions:
-- "How do I use multiple cores on a computer to solve a problem?"
+- "How do I find the portion of a code snipped that consumes the longest time?"
 objectives:
-- "Perform a calculation of pi using only one CPU core."
-- "Measure the run time of both the serial of the implementation."
+- "Perform an estimation of pi using only one CPU core."
+- "Measure the run time of the serial implementation for this estimate of pi."
+- "Find the line of code in a python program that took the longest."
 keypoints:
-- "The estimation of pi with the Monte Carlo method is a compute bound problem."
-- "The generation of pseudo random numbers consumes the most time."
-- "Time consumption of a single application can be measured using the `time` utility."
-- "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
+- "Each programming language typically provides tools called profilers with which you can analyse the runtime of your code."
+- "
+- "The estimate of pi spends most of it's time while generating random numbers."
+- "The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms."
 ---
 
 Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
@@ -76,13 +77,26 @@ She must admit that the application takes quite long to finish. Yet another reas
 
 Before venturing out and trying to accelerate a program, it is utterly important to find the hot spots of it by means of measurements. For the sake of this tutorial, we use the [line_profiler](https://github.com/rkern/line_profiler) of python. Your language of choice most likely has similar utilities.
 
-In order to install the profiler, please call:
+If need be, to install the profiler, please issue the following command:
 ~~~
 $ pip3 install line_profiler
 ~~~
 {: .bash }
 
-When this is done and your command line offers the `kernprof-3` executable, you are ready to go on. Next, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we add the `@profile` annotation to a function definition of our choice. If we don't do this, the profiler will do nothing. So let's refactor our code a little bit:
+When this is done and your command line offers the `kernprof-3` executable, you are ready to go on. 
+
+> ## Profilers
+>
+> Each programming language typically offers some open-source and/or free tools on the web, with which you can profile your code. Here are some examples of tools. Note though, depending on the nature of the language of choice, the results can be hard or easy to interpret. In the following we will only list open and free tools:
+>
+> - python: [line_profiler](https://github.com/rkern/line_profiler), [prof](https://docs.python.org/3.6/library/profile.html)
+> - java script: [firebug](https://github.com/firebug/firebug)
+> - ruby: [ruby-prof](https://github.com/ruby-prof/ruby-prof)
+> - C/C++: [xray](https://llvm.org/docs/XRay.html), [perf](https://perf.wiki.kernel.org/index.php/Main_Page), 
+> - R: [profvis](https://github.com/rstudio/profvis)
+{: .callout }
+
+Next, you have to annotate your code in order to indicate to the profiler what you want to profile. For this, we add the `@profile` annotation to a function definition of our choice. If we don't do this, the profiler will do nothing. So let's refactor our code a little bit:
 
 ~~~
 def main():
@@ -231,4 +245,35 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     18         1            2      2.0      0.0      return count
 ~~~
 
-So generating the random numbers appears to be the bottleneck as it accounts for 37+36=73% of the total runtime time. So this is a prime candidate for acceleration.
+So generating the random numbers appears to be the bottleneck as it accounts for 37+36=73% of the total runtime time. 
+So this is a prime candidate for acceleration.
+
+> ## Word count
+>
+> Download [this python script](/snippets/03/count_pylibs.py) to your current directory. Run it by executing:
+> 
+> ~~~~~
+> $ python3 count_pylibs.py
+> 4231827 characters and 418812 words found in standard python libs
+> ~~~~~
+> {: .bash}
+> 
+> Use the `line_profile` module to find the hot spot in this program! 
+{: .challenge}
+
+> ## Faster is always better, right?
+>
+> Download [this python script](/snippets/03/count_pylibs.py) to your current directory. Run it by executing:
+> 
+> ~~~~~
+> $ python3 count_pylibs.py
+> 4231827 characters and 418812 words found in standard python libs
+> ~~~~~
+> {: .bash}
+> 
+> After finding the hotspot, pair up and discuss the implementation. Discuss and answer the following points: 
+> 1. Find other ways to implement the word count without parallelizing the code! 
+> 2. For every alternative implementation, check the output of the program. Did the number of words change? Could such a check be automated?
+> 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
+> 
+{: .challenge}

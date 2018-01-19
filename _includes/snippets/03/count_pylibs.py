@@ -1,3 +1,5 @@
+from __future__
+
 import os
 import sys
 import glob
@@ -39,7 +41,7 @@ def main():
     text = load_text()
     nchars = len(text)
     nwords = word_count(text)
-    print("%i characters and %i words found in standard python lib" % (nchars, nwords))
+    print("%i characters and %i words found in standard python libs" % (nchars, nwords))
 
     if len(text):
         sys.exit(0)
