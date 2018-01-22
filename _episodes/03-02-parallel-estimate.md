@@ -194,9 +194,21 @@ S = ---------------
 >    return count 
 > ~~~~~
 > 
-> For the sake of the example, we assume that the line profile looks identical to the original implementation. Compute the theoretical speed-up S!
+> For the sake of the example, we assume that the line profile looks identical to the original implementation above. Compute the theoretical speed-up S!
 > Which implementation should Lola choose now? 
 {: .challenge}
+
+> ## Always go parallel! Right?
+>
+> Profile this [python application](/snippets/03/volume_pylibs.py) which computes how much disk space your python standard library consumes.
+> The algorithm works in 2 steps:
+> 1. create list of absolute paths of all `.py` files in your python's system folder
+> 2. loop over all paths from 1. and sum up the space on disk each file consumes
+>
+> Is this a task worth parallelizing? Make a guess!
+> Verify your answer using profiling and computing the theoretical speed-up possible.
+{: .challenge}
+
 
 So the bottom line(s) of Amdahl's law are:
 
