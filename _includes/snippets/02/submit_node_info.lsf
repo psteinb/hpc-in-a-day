@@ -3,6 +3,6 @@ $ cat node_info.sh
 
 FILENAME=/tmp/`hostname`_info.log
 
-head -n30 /proc/cpuinfo  > ${FILENAME}
+cat /proc/cpuinfo  > ${FILENAME}
 
 $ bsub -W 1 < node_info.sh
