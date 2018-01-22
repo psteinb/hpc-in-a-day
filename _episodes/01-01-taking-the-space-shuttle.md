@@ -6,11 +6,12 @@ questions:
 - "What is a super computer?"
 - "Where is a super computer?"
 - "How do I connect to it?"
+- "How do I transfer data to and from it?"
 objectives:
 - "Use ssh to open an interactive shell on a cluster."
 - "Inspect a directory with ls."
 - "Transfer a file to the cluster."
-- "Transfer from the cluster."
+- "Transfer files/folders from the cluster to your local machine."
 keypoints:
 - "Super computers do not have screens."
 - "Super computers are setup in remote places."
