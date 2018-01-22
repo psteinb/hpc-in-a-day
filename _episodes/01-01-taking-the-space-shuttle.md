@@ -45,7 +45,7 @@ Last login: Tue Mar 14 14:13:14 2017 from lolas_laptop
 Rob explains to Lola that she is using the secure shell or `ssh`. This establishes a temporary encrypted connection between Lola's laptop and `{{ site.workshop_login_host }}`. The word before the `@` symbol, e.g. `lola` here, is the user account name that Lola has access permissions for on the cluster. 
 
 > ## Where do I get this `ssh` from ?
-> At the time of writing, many Microsoft Windows operating systems do not have a program called `ssh` installed. To still be able to use the secure shell to a remote machine, use a program called [putty](http://www.putty.org), [bitvise SSH](https://www.bitvise.com/ssh-client-download) or [mRemoteNG](https://mremoteng.org/). Download it, install it and open the GUI. They typically ask for your user name and the destination address or IP. Once provided, you will be queried for your password.
+> On Linux and/or macOS, the `ssh` command line utility is typically pre-installed. Just open a terminal and you are good to go. At the time of writing, the openssh support on microsoft is still pretty [recent](https://blogs.msdn.microsoft.com/powershell/2017/12/15/using-the-openssh-beta-in-windows-10-fall-creators-update-and-windows-server-1709/). Alternatives to this are [putty](http://www.putty.org), [bitvise SSH](https://www.bitvise.com/ssh-client-download) or [mRemoteNG](https://mremoteng.org/). Download it, install it and open the GUI. They typically ask for your user name and the destination address or IP. Once provided, you will be queried for your password just like in the example above.
 {: .callout}
 
 
@@ -77,11 +77,11 @@ Lola wonders a bit what this may be about, that you need a dedicated command to 
 > ## Am I in the cloud now?
 > Not really, sorry. At the time of writing, there are a couple of distinctive features that separate cloud computing from HPC.
 > + *HPC*:
->   + machines are always available, i.e. the URL or address that you give to ssh doesn't change over time typically and the servers of an HPC infrastructure are operating 24/7 at this address
+>   + machines are always available, i.e. the URL or address that you give to ssh to doesn't change over time typically and the servers of an HPC infrastructure are operating 24/7 behind this address
 >   + machines typically run so called bare metal operating systems, i.e. when you ssh into an HPC cluster, the operating system that you will use is the same one the server was booted into
 > - *cloud*:
->   - instances have to be requested (albeit this can be automated) e.g. on a web page and then a user will be supplied a URL or address to point ssh to
->   - cloud instances are run in so called virtual machines, i.e. an operating system inside an operating system, this is one of the reasons why the performance of cloud instances often is inferior to HPC clusters for typical HPC workloads
+>   - instances have to be requested (albeit this can be automated) e.g. on a web page. Then a user will be supplied a URL or address to point ssh to.
+>   - cloud instances are run in so called virtual machines, i.e. an operating system inside an operating system, this is one of the reasons why the performance of cloud instances can be inferior to HPC clusters
 {: .callout}
 
 Rob explains to Lola that she has to work with this remote shell session in order to run programs on the HPC cluster. Launching programs that open a Graphical User Interface (GUI) is possible, but the interaction with the GUI will be slow as everything will have to get transferred through the WiFi network her laptop is currently logged into. Before Rob continues, he suggests to leave the cluster node again. For this, Lola can type in `logout` or `exit`.
@@ -182,5 +182,13 @@ $ man scp
 ~~~
 {: .bash}
 
+> ## Space left on device
+>
+> Use the `df` utility to infer how much space you have left on the current device and on the remove machine. To check, do:
+>
+> ~~~~~
+> $ df -h
+> ~~~~~
+{: .challenge}
 
 
