@@ -11,7 +11,7 @@ Please note that this lesson uses Python 3 without the intent of claiming python
 
 > ## Prerequisites
 >
-> This lesson guides you through the basics of using a computer cluster (or batch farm or supercomputer). If you have already written small programs with a language of your choice and know the difference between a “variable” and a “function”, you are ready for this lesson.
+> If you have already written small programs with a language of your choice and know the difference between a “variable” and a “function” and obtain a minimal knowledge of using the UNIX command line (e.g. if you have completed [shell-novice](https://swcarpentry.github.io/shell-novice/), you are good to go.
 >
-> If you're already comfortable with using systems like LSF, Slurm or PBS/Pro and have already run applications on a super computer or even wrote parallel applications to run on a cluster, you probably won't learn much from this lesson. But you are welcome to help the others as a technical assistant or contribute to this course material.
+> This lesson guides you through the basics of using a computer cluster (or batch farm or supercomputer). If you're already comfortable with using systems like LSF, Slurm or PBS/Pro and have already run applications on a super computer or even wrote parallel applications to run on a cluster, you probably won't learn much from this lesson. But you are welcome to help the others as a technical assistant or contribute to this [course material](https://psteinb.github.io/hpc-in-a-day).
 {: .prereq}
