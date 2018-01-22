@@ -3,13 +3,18 @@ title: "Working with the scheduler"
 teaching: 25
 exercises: 5
 questions:
-- "How do I know if something went wrong?"
-- "How to decrease the waiting time of your job?"
+- "How do I know if something went wrong with my jobs?"
+- "How to decrease the waiting time of your jobs?"
 - "How do I cancel a job?"
 objectives:
-- ""
+- "Submit a job and monitor the status of it."
+- "Decipher the output of the monitoring application."
+- "Quit or cancel an already running job."
+- "Specify the expected runtime of your job to decrease the waiting time."
 keypoints:
-- "n.n."
+- "As there are many users logged in, using monitoring tools is key."
+- "People commit errors. Cancelling jobs is key to make your admin happy and not stress the system unnecessarily."
+- "The more information you give the job scheduler about your job, the quicker it will be dispatched/spooled."
 ---
 
 While submitting more tests jobs, Lola observes that she always mirrors the current directory for a log file to appear. This sometimes takes awhile and sometimes this happens almost instantly. How does she know, if a job is running or not?
@@ -19,7 +24,7 @@ While submitting more tests jobs, Lola observes that she always mirrors the curr
 ~~~
 {: .bash}
 
-Now Lola tries one of the monitoring commands, the she discovered in the manpages of her scheduler:
+Now Lola tries one of the monitoring commands, the she discovered in the manpages of her scheduletc/bash_completioner:
 
 ~~~
 {% include /snippets/02/monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
