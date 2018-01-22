@@ -191,4 +191,14 @@ $ man scp
 > ~~~~~
 {: .challenge}
 
+> ## Who is hanging around
+>
+> The `w` utility displays a list logged in users and what they are currently doing. Use it to check:
+>
+> 1. that nobody but yourself is logged into your laptop/desktop
+> 2. that a lot of people use the login node of your cluster `{{ site.workshop_login_host }}`
+>
+> 
+{: .challenge}
+
 
