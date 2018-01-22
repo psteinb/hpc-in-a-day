@@ -23,7 +23,7 @@ if __name__=='__main__':
 
     if "help" in " ".join(sys.argv):
         print("usage: generate_scrambled_data.py <optional:file_name>")
-        print("""\n       script generates file <file_name> of 1 GB
+        print("""\n       script generates file <file_name> of 0.5 GB
        that contains blocks of random bytes followed
        by a newline and an estimate of pi""")
         sys.exit(0)
@@ -32,7 +32,7 @@ if __name__=='__main__':
         file_name = sys.argv[1]
 
     sizeof = np.dtype(np.float32).itemsize
-    targetsize_byte = 1*1024*1024*1024
+    targetsize_byte = .5*1024*1024*1024
     string_to_write = ""
     loop_count = 0
 
