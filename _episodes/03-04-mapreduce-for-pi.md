@@ -1,13 +1,14 @@
 ---
 title: "Searching for Pi"
-teaching: 40
-exercises: 10
+teaching: 30
+exercises: 15
 questions:
 - "How do I analyze a lot of large files efficiently?"
 objectives:
 - "Perform a Map-Reduce style operation to extract information from large files and collect these into one final answer."
+- "Use applications from 2 programming languages and imitate high-throughput compute."
 keypoints:
-- "Searching through a large file is bound by the speed that I can read-in the file."
+- "Searching through a large file is bound by the speed that it can be read-in."
 - "Having a set of files, the result of searching one file is independent of searching its sibling."
 - "HPC clusters have very powerful parallel file systems, that offer the best speed if data is accessed in parallel."
 - "The operation of searching through a file can be mapped to individual nodes on the cluster. (map step)"
@@ -85,6 +86,27 @@ She tests her python program on a single input file. As she knows how long it'll
 ~~~
 {: .output}
 
+> ## The `bash` can do that too
+>
+> Filtering out any lines starting with `3.1` can be done with pure bash commands as well.
+> 
+> ~~~~~
+> $ egrep "^3.1" pi_estimate_01.data
+> ~~~~~
+> {: .bash}
+>
+> ~~~~~
+> 3.142096
+> 3.141306
+> 3.140558
+> 3.142311
+> 3.141864
+> 3.141112
+> 3.142655
+> 3.140714
+> ~~~~~
+> {: .output}
+
 That went pretty well. She is reminded of the map-reduce idiom that she encountered yesterday. That was the map-step that filters out the occurrences she was interested in. She now needs a reduce step to combine all of these estimates to a global one. If she has all of this, she is basically done recovering her work of yesterday. The [code she comes up with](code/03_parallel_jobs/average_pi_estimates.py) is based on her previous programs. 
 
 ~~~
@@ -119,7 +141,7 @@ The question is, she would love to send this averaging job after she filtered ev
 ~~~
 {: .bash}
 
-The above is called an _array job_. The same commands are executed on an array of files which share a similar file name. In this case, it is `pi_estimate_1.data, pi_estimate_2.data, pi_estimate_3.data, ...`. When the job runs on the cluster, the shell variable 
+The above is called an _array job_. The same commands are executed on an array of files which share a similar file name. In this case, it is `pi_estimate_01.data, pi_estimate_02.data, pi_estimate_03.data, ...`. When the job runs on the cluster, the shell variable 
 
 ~~~
 {% include /snippets/03/array_job_task_id.{{ site.workshop_scheduler }} %}
@@ -144,3 +166,15 @@ $ python3 average_pi_estimates.py map_step.*.log
 averaged value of pi from 224 estimates : 3.141337
 ~~~
 {: .output}
+
+> ## Occurance of 2
+>
+> Dublicate the steps outlined in this section. Before doing the reduce step, filter out only those estimates of pi that end on an even number. For example, `3.141337` ends on `7` and would be discarded. ``3.141332` ends on `2` and hence would be used for the grand average.
+>
+{: .challenge}
+
+> ## Dependencies
+>
+> Open the man page(s) of your job scheduler. Search for ways to make the reduce job wait for the map job.
+>
+{: .challenge}
