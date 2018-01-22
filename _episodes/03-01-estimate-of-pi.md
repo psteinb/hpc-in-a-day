@@ -258,6 +258,32 @@ So this is a prime candidate for acceleration.
 > {: .bash}
 > 
 > Use the `line_profile` module to find the hot spot in this program! 
+> > ## Solution
+> > 
+> > ~~~~~
+> > Timer unit: 1e-06 s
+> > 
+> > Total time: 0.334168 s
+> > File: ./count_pylibs_annotated.py
+> > Function: main at line 38
+> > 
+> > Line #      Hits         Time  Per Hit   % Time  Line Contents
+> > ==============================================================
+> >     38                                           @profile
+> >     39                                           def main():
+> >     40                                           
+> >     41         1        63994  63994.0     19.2      text = load_text()
+> >     42         1            5      5.0      0.0      nchars = len(text)
+> >     43         1       270108 270108.0     80.8      nwords = word_count(text)
+> >     44         1           53     53.0      0.0      print("%i characters and %i words found in standard python lib" % (nchars, nwords))
+> >     45                                           
+> >     46         1            2      2.0      0.0      if len(text):
+> >     47         1            6      6.0      0.0          sys.exit(0)
+> >     48                                               else:
+> >     49                                                   sys.exit(1)
+> > ~~~~~
+> > The `word_count` function takes the longest time. Inside it, `re.split` hogs runtime the most.
+> {: .solution}
 {: .challenge}
 
 > ## Faster is always better, right?
@@ -272,7 +298,10 @@ So this is a prime candidate for acceleration.
 > 
 > After finding the hotspot, pair up and discuss the implementation. Discuss and answer the following points: 
 > 1. Find other ways to implement the word count without parallelizing the code! 
-> 2. For every alternative implementation, check the output of the program. Did the number of words change? Could such a check be automated?
+> 2. For every alternative implementation found in 1., check the output of the program. Did the number of words change? Could such a check be automated?
 > 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
-> 
+>
+> > ## Solution
+> One could use the 'count' method of strings and just count the words by using the number of spaces and add 1. Based on the assumption that our input text consists of sentences only, this can provide an estimate of the words. In this case, this is far from accurate as source code contains tabs, newlines etc to distinguish words. However, the `count` method improves runtime by more than one order of magniture in comparison to the `re.split` approach. Take away: Real life is a balance. But above all, your code should produce the correct result. 
+> {: .solution}
 {: .challenge}
