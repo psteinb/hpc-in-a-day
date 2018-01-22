@@ -23,7 +23,7 @@ None so far.
 
 ## Chapter 3
 
-### Section 3, Searching for Pi
+### Section 4, Searching for Pi
 
 Use the file [generate_scrambled_data.py](./code/03_parallel_jobs/generate_scrambled_data.py) to produce 16 files that comply to the files used in this section, e.g. : 
 
