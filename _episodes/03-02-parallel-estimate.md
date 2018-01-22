@@ -78,9 +78,69 @@ More over, the generation of random numbers in x and in y is independent (two se
 > ~~~~~
 {: .callout}
 
+
 Another approach is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
 
 ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the pair generated](../tikz/data_pairs_parallel_estimate_pi.svg)
+
+This behavior is often referred to as _data parallelism_. 
+
+> ## Data Parallel Code 1
+>
+> Does this code expose data independence?
+> 
+> ~~~~~~
+> my_data = [ 0, 1, 2, 3, 4, ... ]
+>
+> for i in range(len(my_data)):
+>   my_data[i] = pi*my_data[i]
+> ~~~~~~
+>
+> This code in numpy would be:
+>
+> ~~~~~
+> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
+> 
+> my_data = pi*my_data
+> ~~~~~
+{: .challenge}
+
+> ## Data Parallel Code 2
+>
+> Does this code expose data independence?
+> 
+> ~~~~~~
+> my_data = [ 0, 1, 2, 3, 4, ... ]
+>
+> for i in range(len(my_data)):
+>   if my_data[i] % 2 == 0:
+>       my_data[i] = 42
+>   else:
+>       my_data[i] = 3*my_data[i]
+> ~~~~~~
+>
+> This code in numpy would be:
+>
+> ~~~~~
+> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
+> 
+> my_data[np.where(my_data % 2 == 0)] = 42
+> my_data[np.where(my_data % 2 != 0)] = 3*my_data[np.where(my_data % 2 != 0)]
+> ~~~~~
+{: .challenge}
+
+> ## Data Parallel Code 3
+>
+> Does this code expose data independence?
+> 
+> ~~~~~~
+> from random import randint
+> my_data = [ 0, 1, 2, 3, 4, ... ]
+>
+> for i in range(len(my_data)):
+>   my_data[i] = 42*my_data[randint(0,len(my_data))]
+> ~~~~~~
+{: .challenge}
 
 Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
 
@@ -248,80 +308,38 @@ That means, our parallel implementation does already a good job, but only achiev
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
 
-> ## Data Independent Code 1
->
-> Does this code expose data independence?
-> 
-> ~~~~~~
-> my_data = [ 0, 1, 2, 3, 4, ... ]
->
-> for i in range(len(my_data)):
->   my_data[i] = pi*my_data[i]
-> ~~~~~~
->
-> This code in numpy would be:
->
-> ~~~~~
-> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
-> 
-> my_data = pi*my_data
-> ~~~~~
-{: .challenge}
-
-> ## Data Independent Code 2
->
-> Does this code expose data independence?
-> 
-> ~~~~~~
-> my_data = [ 0, 1, 2, 3, 4, ... ]
->
-> for i in range(len(my_data)):
->   if my_data[i] % 2 == 0:
->       my_data[i] = 42
->   else:
->       my_data[i] = 3*my_data[i]
-> ~~~~~~
->
-> This code in numpy would be:
->
-> ~~~~~
-> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
-> 
-> my_data[np.where(my_data % 2 == 0)] = 42
-> my_data[np.where(my_data % 2 != 0)] = 3*my_data[np.where(my_data % 2 != 0)]
-> ~~~~~
-{: .challenge}
-
-> ## Data Independent Code 3
->
-> Does this code expose data independence?
-> 
-> ~~~~~~
-> from random import randint
-> my_data = [ 0, 1, 2, 3, 4, ... ]
->
-> for i in range(len(my_data)):
->   my_data[i] = 42*my_data[randint(0,len(my_data))]
-> ~~~~~~
-{: .challenge}
 
 > ## Parallel for real 1
 >
 > What of the following is a task, that can be parallelized in real life:
 > 
-> - Manually copying a book and producing a clone 
-> - Clearing the table after dinner
-> - Rinsing the dishes 
-> - Getting dressed to leave the appartment
+> 1. Manually copying a book and producing a clone 
+> 2. Clearing the table after dinner
+> 3. Rinsing the dishes 
+> 4. A family getting dressed to leave the appartment for birthday party
+>
+> > ## Solution
+> > 1. not parallel as we have to start with one book and only have one reader/writer
+> > 2. parallel, the more people help, the better
+> > 3. not parallel, as we typically only have one sink
+> > 4. parallel, each family member can get dressed independent of each other 
+> {: .solution}
 {: .challenge}
 
 > ## Parallel for real 2
 >
 > What of the following is a task, that can be parallelized in real life:
 > 
-> - Compressing the contents of a directory full of files
-> - Converting the currency of rows in a column of a large spreadsheet (10 million rows)
-> - Writing an e-mail in an online editor
-> - Playing a Video on youtube/vimeo/etc. or in a video player application
+> 1. Compressing the contents of a directory full of files
+> 2. Converting the currency of rows in a column of a large spreadsheet (10 million rows)
+> 3. Writing an e-mail in an online editor
+> 4. Playing a Video on youtube/vimeo/etc. or in a video player application
+>
+> > ## Solution
+> > 1. parallel, each file can be compressed seperately
+> > 2. parallel, each row can be converted seperately
+> > 3. not parallel, we only have one writer (you)
+> > 4. not parallel, you only have one consumer (you), rendering the movie in 2 windows in parallel does not help
+> {: .solution}
 {: .challenge}
 
