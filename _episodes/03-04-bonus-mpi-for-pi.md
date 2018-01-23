@@ -1,5 +1,5 @@
 ---
-title: "Distributing computations among computers"
+title: "Bonus session: Distributing computations among computers"
 teaching: 45
 exercises: 10
 questions:
