@@ -29,7 +29,7 @@ pi_estimate_03.data  pi_estimate_06.data  pi_estimate_09.data  pi_estimate_12.da
 ~~~
 {: .output}
 
-Examining the files shows, that their size has been increased by some orders of magnitude in size. She opens one of her files and finds out that the results are still there, but they are scrambled with random symbols that she never saw before. Certainly, nothing human readable. But she notices that the pi estimates are always printed on an isolated line. This is something she can exploit to extract these lines. She immediately sits down and writes a [simple program](code/03_parallel_jobs/count_pi_estimates.py) to count the number of occurrences of pi along the lines of:
+Examining the files shows, that their size has been increased by some orders of magnitude in size. She opens one of her files and finds out that the results are still there, but they are scrambled with random symbols that she never saw before. Certainly, nothing human readable. But she notices that the pi estimates are always printed on an isolated line. This is something she can exploit to extract these lines. She immediately sits down and writes a [simple program]({{ page.root }}/code/03_parallel_jobs/count_pi_estimates.py) to count the number of occurrences of pi along the lines of:
 
 ~~~
 import sys
@@ -50,7 +50,7 @@ if __name__=='__main__':
 
 She launches the application and waits for quite a while until the she receives an answer (1 minute in this case). She thinks that this is strange. Looking through a some lines of text and checking if a line starts with `3.1` doesn't sound complicated, so why is it taking so long. She expected to get an answer back instantly. Given that she has 16 of these files, if she wants to look through all of them, this means that she has to wait at least 16 minutes for the answer to come along.
 
-Lola wonders, but what do we have a cluster for then? She decides to submit 16 jobs that filter out the estimates of pi for each file. She sits down and alters her previous program to [filter-out the occurrences of pi](code/03_parallel_jobs/filter_pi_estimates.py). The idea of her code is the following:
+Lola wonders, but what do we have a cluster for then? She decides to submit 16 jobs that filter out the estimates of pi for each file. She sits down and alters her previous program to [filter-out the occurrences of pi]({{ page.root }}/code/03_parallel_jobs/filter_pi_estimates.py). The idea of her code is the following:
 
 ~~~
 import sys
@@ -107,7 +107,7 @@ She tests her python program on a single input file. As she knows how long it'll
 > ~~~~~
 > {: .output}
 
-That went pretty well. She is reminded of the map-reduce idiom that she encountered yesterday. That was the map-step that filters out the occurrences she was interested in. She now needs a reduce step to combine all of these estimates to a global one. If she has all of this, she is basically done recovering her work of yesterday. The [code she comes up with](code/03_parallel_jobs/average_pi_estimates.py) is based on her previous programs. 
+That went pretty well. She is reminded of the map-reduce idiom that she encountered yesterday. That was the map-step that filters out the occurrences she was interested in. She now needs a reduce step to combine all of these estimates to a global one. If she has all of this, she is basically done recovering her work of yesterday. The [code she comes up with]({{ page.root }}/code/03_parallel_jobs/average_pi_estimates.py) is based on her previous programs. 
 
 ~~~
 import sys

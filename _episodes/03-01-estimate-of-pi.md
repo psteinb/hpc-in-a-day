@@ -18,7 +18,7 @@ Lola is told that her predecessors all worked on the same project. A high perfor
 
 The algorithm was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
-![Estimating Pi with Buffon's needle](../tikz/estimate_pi.svg)
+![Estimating Pi with Buffon's needle]({{ page.root }}/tikz/estimate_pi.svg)
 
 Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `n`). `Pi` is then approximated by: 
 
@@ -57,7 +57,7 @@ def estimate_pi(total_count):
 
 For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
 
-Lola finishes writing the pi estimation and comes up with a [small python script](code/03_parallel_jobs/serial_numpi.py), that she can launch from the command line:
+Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/03_parallel_jobs/serial_numpi.py), that she can launch from the command line:
 
 ~~~
 $ python3 ./serial_numpi.py 1000000000
@@ -249,7 +249,7 @@ So this is a prime candidate for acceleration.
 
 > ## Word count
 >
-> Download [this python script](/snippets/03/count_pylibs.py) to your current directory. Run it by executing:
+> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
 > 
 > ~~~~~
 > $ python3 count_pylibs.py
@@ -288,7 +288,7 @@ So this is a prime candidate for acceleration.
 
 > ## Faster is always better, right?
 >
-> Download [this python script](/snippets/03/count_pylibs.py) to your current directory. Run it by executing:
+> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
 > 
 > ~~~~~
 > $ python3 count_pylibs.py

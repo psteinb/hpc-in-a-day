@@ -161,7 +161,7 @@ which will be constructed in a similar way, but not be exactly identical.
 
 On Lola's computer, the filesystem looks like this:
 
-![The Filesystem](../fig/filesystem.svg)
+![The Filesystem]({{ page.root }}/fig/filesystem.svg)
 
 At the top is the **root directory**
 that holds everything else.
@@ -197,7 +197,7 @@ Underneath `/home`,
 we find one directory for each user with an account on Lola's machine,
 her colleagues the Mummy and Wolfman.  
 
-![Home Directories](../fig/home-directories.svg)
+![Home Directories]({{page.root}}/fig/home-directories.svg)
 
 The Mummy's files are stored in `/home/imhotep`,
 Wolfman's in `/home/larry`,
@@ -512,7 +512,7 @@ At this point, Rob is called for an emergency into the machine room. He apologiz
 > 3.  `2012-12-01/ 2013-01-08/ 2013-01-27/`
 > 4.  `original pnas_final pnas_sub`
 >
-> ![Filesystem for Challenge Questions](../fig/filesystem-challenge.svg)
+> ![Filesystem for Challenge Questions]({{ page.root }}/fig/filesystem-challenge.svg)
 >
 > > ## Solution
 > > 1. No: there *is* a directory `backup` in `/home`.

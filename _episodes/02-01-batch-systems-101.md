@@ -30,15 +30,15 @@ keypoints:
 
 Lola's lab has just bought a 4-node cluster for their sole use. Each individual computer in the cluster (also called a node) has 12 CPU cores, some memory and a connection to a network that all nodes are members of and can hence communicate by. This is by far much more hardware than the group has ever managed before. The setup is different from the cluster at the IT department that Rob started to introduce her to.
 
-![Schematics of a 4-node cluster](../tikz/cluster_schematic.svg)
+![Schematics of a 4-node cluster]({{ page.root }}/tikz/cluster_schematic.svg)
 
 She and her colleague start to run calculations on the machine. Lola wants to analyze some files that are scattered across the cluster. 
 
-![Lola's jobs on the 4-node cluster](../tikz/cluster_schematic_lolas_jobs.svg)
+![Lola's jobs on the 4-node cluster]({{ page.root }}/tikz/cluster_schematic_lolas_jobs.svg)
 
 Lola's colleague is tasked to check on the cluster every now and then. She wrote a program, that collects some telemetry data from each node every at fixed time intervals. Today, some more detailed statistics have to be collected from every node. As this task can be performed for every node independent of it's neighboring node, Lola's room mate performs it in parallel.
 
-![Lola's (blue) and her room mates (red) compute jobs on the 4-node cluster](../tikz/cluster_schematic_lolas_jobs_and_heartbeat.svg)
+![Lola's (blue) and her room mates (red) compute jobs on the 4-node cluster]({{ page.root }}/tikz/cluster_schematic_lolas_jobs_and_heartbeat.svg)
 
 Both discover independently that the compute tasks on node 0 take longer than usual. Lola's jobs on node 0 require all 12 CPU cores to run. If a new job comes in and wants to perform a task, the node has to decide which task has the higher priority. For sure, this decision is not made based on the sender of the task but on other parameters. Operating systems (just as job schedulers) try to distribute the compute power of a machine in a fair share fashion as well. But that means, that these two tasks will take longer than expected as they block each other or they steal each others resources.
 

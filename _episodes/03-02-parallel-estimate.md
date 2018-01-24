@@ -54,7 +54,7 @@ The key points were, that `inside_circle` consumed the majority of the runtime (
 
 More over, the generation of random numbers in x and in y is independent (two seperate lines of code). So there is another way to expliot data independence:
 
-![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension](../tikz/data_coords_parallel_estimate_pi.svg)
+![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension]({{ page.root }}/tikz/data_coords_parallel_estimate_pi.svg)
 
 
 > ## Numpy madness
@@ -81,7 +81,7 @@ More over, the generation of random numbers in x and in y is independent (two se
 
 Another approach is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
 
-![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the pair generated](../tikz/data_pairs_parallel_estimate_pi.svg)
+![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the pair generated]({{ page.root }}/tikz/data_pairs_parallel_estimate_pi.svg)
 
 This behavior is often referred to as _data parallelism_. 
 
@@ -158,7 +158,7 @@ S = ---------------
 > 
 > Let's take Lola's idea of executing the generation of random numbers per coordinate `x` and `y` from above:
 >
-> ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension](../tikz/data_coords_parallel_estimate_pi.svg)
+> ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension]({{ page.root }}/tikz/data_coords_parallel_estimate_pi.svg)
 >
 > The parallel portion of these two operations amounts to `37+36=73%` of the overall runtime, i.e. `p = 73% = 0.73`. As we want to make the generation of random numbers in x to one task and the generation of random numbers in y to another one, the speed-up `s = 2`.
 >
@@ -200,7 +200,7 @@ S = ---------------
 
 > ## Always go parallel! Right?
 >
-> Profile this [python application](/snippets/03/volume_pylibs.py) which computes how much disk space your python standard library consumes.
+> Profile this [python application]({{ page.root }}/downloads/volume_pylibs.py) which computes how much disk space your python standard library consumes.
 > The algorithm works in 2 steps:
 > 1. create list of absolute paths of all `.py` files in your python's system folder
 > 2. loop over all paths from 1. and sum up the space on disk each file consumes
@@ -216,7 +216,7 @@ So the bottom line(s) of Amdahl's law are:
 - we can speed up a program if we drive `s` to a large number, in other words we should find ways to speed-up portions of the code as best as possible
 - there is a limit to the speed-up that we can achieve 
 
-![Comparison of different speed-ups and parallel portions](../fig/03/amdahls_law.svg)
+![Comparison of different speed-ups and parallel portions]({{ page.root }}/fig/03/amdahls_law.svg)
 
 > ## Surprise! More limits.
 > 
@@ -233,7 +233,7 @@ So the bottom line(s) of Amdahl's law are:
 
 Keeping this in mind, Lola decides to split up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions:
 
-![Partitioning `x` and `y`](../tikz/partition_data_parallel_estimate_pi.svg)
+![Partitioning `x` and `y`]({{ page.root }}/tikz/partition_data_parallel_estimate_pi.svg)
 
 The number of partitions has to be limited by the number of CPU cores available. With this in mind, the `estimate_pi` method can be converted to run in parallel:
 
@@ -257,7 +257,7 @@ def estimate_pi(n_samples,n_cores):
 
 We are using the `multiprocessing` module that comes with the python standard library. The first step is to create a list of numbers that contain the partitions. For this, `n_samples` is divided by the number of cores available on the machine, where this code is executed. The ratio has to be converted to an integer to ensure, that each partition is compatible to a length of an array. The construct used next is a process `Pool`. Due to technical details on how the python interpreter is built, we do not use a Pool of threads here. In other languages than python, `threads` are the more common idiom to represent independent strings of execution that share the same memory than the process they are created in. The process `Pool` creates `n_cores` processes and keeps them active as long as the `Pool` is active. Then `pool.map` will call `inside_circle` using an item of `partitions` as the argument. In other words, for each item in `partitions`, the `inside_circle` function is called once using the respective item as input argument. The result of these invocations of `inside_circle` are stored within the `counts` variable (which will have the same length as `partitions` eventually).
 
-![Partitioning `x` and `y` and results of reach partition](../tikz/partition_data_parallel_estimate_pi_with_results.svg)
+![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/tikz/partition_data_parallel_estimate_pi_with_results.svg)
 
 The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/03_parallel_jobs/parallel_numpi.py) and see what it gives:
 

@@ -89,6 +89,6 @@ As the default wall time limit of the jobs is much higher than 6 minutes, Lola's
 
 > ## errors and outputs
 >
-> Submit [this script](/snippets/02/errors_and_outputs.sh) to your cluster and split the output in stdout and stderr. Check the contents of the log files that were created. Use the manpage(s) of your scheduler to make the scheduler send both stdout and stderr to the same file.
+> Submit [this script]({{ page.root }}/downloads/errors_and_outputs.sh) to your cluster and split the output in stdout and stderr. Check the contents of the log files that were created. Use the manpage(s) of your scheduler to make the scheduler send both stdout and stderr to the same file.
 >
 {: .challenge}
