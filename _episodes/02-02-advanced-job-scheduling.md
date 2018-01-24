@@ -89,6 +89,19 @@ As the default wall time limit of the jobs is much higher than 6 minutes, Lola's
 
 > ## errors and outputs
 >
-> Submit [this script]({{ page.root }}/downloads/errors_and_outputs.sh) to your cluster and split the output in stdout and stderr. Check the contents of the log files that were created. Use the manpage(s) of your scheduler to make the scheduler send both stdout and stderr to the same file.
+> 1. Submit [this script]({{ page.root }}/downloads/errors_and_outputs.sh) to your cluster and tell the scheduler to split the output in stdout and stderr. Check the contents of the log files that were created. 
+> 2. Submit the same job again, but this time make the scheduler send both stdout and stderr to the same output file. Use the manpage of the scheduler commands to find out how.
 >
+{: .challenge}
+
+> ## Ready, Set, Go!
+>
+> 1. Download this [small python script]({{ page.root }}/downloads/calc_pi.py) to some place on your cluster.
+> 2. Run it by issuing:
+> ~~~~~
+> $ python3 ./calc_pi.py 100000000
+> ~~~~~
+> 2. Use the `time` utility to measure the runtime of this command. 
+> 3. Submit a job with the same command but using `10000000000`, i.e. `100` times the argument of above. What is the runtime limit that you want to specify?
+> 
 {: .challenge}
