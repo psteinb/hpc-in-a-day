@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import numpy as np
+import argparse
 
 np.random.seed(2017)
 
@@ -19,16 +20,22 @@ def inside_circle(total_count):
 def estimate_pi(total_count):
 
     count = inside_circle(total_count)
-    return (4.0 * count / total_count)
+    return (4.0 * count / float(total_count))
 
 if __name__=='__main__':
 
-    n_samples = 10000
-    if len(sys.argv) > 1:
-        n_samples = int(sys.argv[1])
+    parser = argparse.ArgumentParser(description='Estimate Pi using a Monte Carlo method.')
+    parser.add_argument('n_samples', metavar='N', type=int, nargs=1,
+                        default=10000,
+                        help='number of times to draw a random number')
 
+    args = parser.parse_args()
+
+    n_samples = args.n_samples[0]
     my_pi = estimate_pi(n_samples)
     sizeof = np.dtype(np.float32).itemsize
 
     print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
     print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
+
+    sys.exit(0)

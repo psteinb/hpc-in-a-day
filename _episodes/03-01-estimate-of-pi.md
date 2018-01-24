@@ -51,7 +51,7 @@ def estimate_pi(total_count):
 
     count = inside_circle(total_count)
     return (4.0 * count / total_count) 
-    
+
 ~~~
 {: .python}
 
@@ -99,18 +99,26 @@ Next, you have to annotate your code in order to indicate to the profiler what y
 
 ~~~
 def main():
-   n_samples = 10000
-   if len(sys.argv) > 1:
-       n_samples = int(sys.argv[1])
 
-   my_pi = estimate_pi(n_samples)
-   sizeof = np.dtype(np.float32).itemsize
+    parser = argparse.ArgumentParser(description='Estimate Pi using a Monte Carlo method.')
+    parser.add_argument('n_samples', metavar='N', type=int, nargs=1,
+                        default=10000,
+                        help='number of times to draw a random number')
 
-   print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
-   print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
+    args = parser.parse_args()
+
+    n_samples = args.n_samples[0]
+    my_pi = estimate_pi(n_samples)
+    sizeof = np.dtype(np.float32).itemsize
+
+    print("[serial version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
+    print("[serial version] pi is %f from %i samples" % (my_pi,n_samples))
+
+    sys.exit(0)
+
 
 if __name__=='__main__':
-   main()
+    main()
 ~~~
 
 With this trick, we can make sure that we profile the entire application. Note, that this is a necessity when using `line_profiler`. We can now carry on, and annotate the main function.
