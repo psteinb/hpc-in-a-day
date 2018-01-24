@@ -125,8 +125,14 @@ The scheduler allows Lola to split the two and write them to individual files. F
 ~~~
 {: .bash}
 
-> ## How long has this node been running
+> ## How long has this node been running ?
 >
 > Write a batch script that prints the `hostname` and the time the node has been running so far (using the `uptime` command). Advice the scheduler to store the output in a log file. Submit this script multiple times and see, if you find a node that has been running the longest or the shortest. Compare with your neighbor! 
+>
+{: .challenge}
+
+> ## Is there anyone ?
+>
+> Write a batch script that prints the `hostname` and lists the users currently logged into the node using the `w` command. Submit this job at maximum 3 times and check if you land on a node where you are not alone. 
 >
 {: .challenge}
