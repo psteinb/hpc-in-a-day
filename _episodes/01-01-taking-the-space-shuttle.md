@@ -183,23 +183,67 @@ $ man scp
 ~~~
 {: .bash}
 
-> ## Space left on device
+
+> ## All mixed up
 >
-> Use the `df` utility to infer how much space you have left on the current device and on the remove machine. To check, do:
+> Lola needs to obtain a file called `results.data` from a remote machine that is hidden called `safe-store-1` behind the login node `{{ site.workshop_login_host }}`. However she mixed up the commands somehow that are needed to get the file onto her laptop. Help her!
 >
 > ~~~~~
-> $ df -h
+> $ ssh lola@`{{ site.workshop_login_host }}`
+> $ logout
+> $ scp lola@`{{ site.workshop_login_host }}`:results.data .
+> $ scp lola@safe-store-1:results.data .
+> ~~~~~
+> > ## Solution
+> ~~~~~
+> $ ssh lola@`{{ site.workshop_login_host }}`
+> $ scp lola@safe-store-1:results.data .
+> $ logout
+> $ scp lola@`{{ site.workshop_login_host }}`:results.data .
 > ~~~~~
 {: .challenge}
 
-> ## Who is hanging around
+
+> ## Who is hanging around ?
 >
 > The `w` utility displays a list logged in users and what they are currently doing. Use it to check:
 >
 > 1. that nobody but yourself is logged into your laptop/desktop
 > 2. that a lot of people use the login node of your cluster `{{ site.workshop_login_host }}`
+{: .challenge}
+
+> ## Where did they go ?
 >
-> 
+> Rob has a zip file stored in `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`. He wants to unzip it on his laptop under `/important/passwords`. How does he do that?
+>
+> 1. 
+> ~~~~~
+> $ ssh rob@{{ site.workshop_login_host }}`
+> $ unzip /tmp/passwords.zip
+> ~~~~~
+> 2.
+> ~~~~~
+> $ scp {{ site.workshop_login_host }}@rob:/tmp/passwords.zip .`
+> $ unzip passwords.zip
+> ~~~~~
+> 3.
+> ~~~~~
+> $ cd /important/passwords
+> $ scp rob@{{ site.workshop_login_host }}:passwords.zip .`
+> $ unzip passwords.zip
+> ~~~~~
+> 4.
+> ~~~~~
+> $ cd /important/passwords
+> $ scp rob@{{ site.workshop_login_host }}:/tmp/passwords.zip .`
+> $ unzip passwords.zip
+> ~~~~~
+> > ## Solution
+> > 1. No: Rob only unpacks the zip file, but does not transfer the unpacked files onto his laptop
+> > 2. No: Rob mixed up the syntax for scp
+> > 3. No: Rob did not specify the correct path of `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`
+> > 4. Yes: you may also use `unzip foo.zip -d /somewhere` if you want to omit the first command
+> {: .solution}
 {: .challenge}
 
 

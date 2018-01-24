@@ -74,6 +74,21 @@ model name      : Intel(R) Xeon(R) CPU E5-2640 0 @ 2.50GHz
 
 Lola is happy. Before leaving, her colleague briefs her, that she should be cautious with this file system. Even though it appears so powerful, misusing it will effects on all other users as it is a **shared** file system.
 
+> ## Space left on device(s)
+>
+> Use the `df` utility to infer how much space you have left on the current device and on the remote machine. What sizes do you see?
+> To check, do:
+>
+> ~~~~~
+> $ df -h
+> ~~~~~
+{: .challenge}
+
+> ## Multiple times your laptop
+>
+> Use the `df` utility to infer how much space is available on the largest shared file system on your cluster. Find out how much hard drive space your laptop has. Calculate how many laptop hard drives would fit inside the shared file system on your cluster.
+{: .challenge}
+
 > ## What is shared?
 >
 > Is there any way to know which parts of the folder structure are shared? The answer to this is yes. Explore the following output with your neighbor:
