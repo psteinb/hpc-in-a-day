@@ -222,24 +222,29 @@ $ man scp
 > $ ssh rob@{{ site.workshop_login_host }}
 > $ unzip /tmp/passwords.zip
 > ~~~~~
+> 
 > 2.
 > ~~~~~
 > $ scp {{ site.workshop_login_host }}@rob:/tmp/passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
+> 
 > 3.
 > ~~~~~
 > $ cd /important/passwords
 > $ scp rob@{{ site.workshop_login_host }}:passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
+> 
 > 4.
 > ~~~~~
 > $ cd /important/passwords
 > $ scp rob@{{ site.workshop_login_host }}:/tmp/passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
+> 
 > > ## Solution
+> > 
 > > 1. No: Rob only unpacks the zip file, but does not transfer the unpacked files onto his laptop
 > > 2. No: Rob mixed up the syntax for scpc
 > > 3. No: Rob did not specify the correct path of `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`
