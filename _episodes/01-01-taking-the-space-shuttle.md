@@ -1,6 +1,6 @@
 ---
 title: "Taking the space shuttle"
-teaching: 10
+teaching: 45
 exercises: 5
 questions:
 - "What is a super computer?"
@@ -195,12 +195,13 @@ $ man scp
 > $ scp lola@safe-store-1:results.data .
 > ~~~~~
 > > ## Solution
-> ~~~~~
-> $ ssh lola@`{{ site.workshop_login_host }}`
-> $ scp lola@safe-store-1:results.data .
-> $ logout
-> $ scp lola@`{{ site.workshop_login_host }}`:results.data .
-> ~~~~~
+> > ~~~~~
+> > $ ssh lola@`{{ site.workshop_login_host }}`
+> > $ scp lola@safe-store-1:results.data .
+> > $ logout
+> > $ scp lola@`{{ site.workshop_login_host }}`:results.data .
+> > ~~~~~
+> {: .solution}
 {: .challenge}
 
 
@@ -218,29 +219,29 @@ $ man scp
 >
 > 1. 
 > ~~~~~
-> $ ssh rob@{{ site.workshop_login_host }}`
+> $ ssh rob@{{ site.workshop_login_host }}
 > $ unzip /tmp/passwords.zip
 > ~~~~~
 > 2.
 > ~~~~~
-> $ scp {{ site.workshop_login_host }}@rob:/tmp/passwords.zip .`
+> $ scp {{ site.workshop_login_host }}@rob:/tmp/passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
 > 3.
 > ~~~~~
 > $ cd /important/passwords
-> $ scp rob@{{ site.workshop_login_host }}:passwords.zip .`
+> $ scp rob@{{ site.workshop_login_host }}:passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
 > 4.
 > ~~~~~
 > $ cd /important/passwords
-> $ scp rob@{{ site.workshop_login_host }}:/tmp/passwords.zip .`
+> $ scp rob@{{ site.workshop_login_host }}:/tmp/passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
 > > ## Solution
 > > 1. No: Rob only unpacks the zip file, but does not transfer the unpacked files onto his laptop
-> > 2. No: Rob mixed up the syntax for scp
+> > 2. No: Rob mixed up the syntax for scpc
 > > 3. No: Rob did not specify the correct path of `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`
 > > 4. Yes: you may also use `unzip foo.zip -d /somewhere` if you want to omit the first command
 > {: .solution}

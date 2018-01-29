@@ -1,6 +1,6 @@
 ---
 title: "Batch systems and schedulers 101"
-teaching: 30
+teaching: 45
 exercises: 0
 questions:
 - "Why is a scheduler necessary?"
