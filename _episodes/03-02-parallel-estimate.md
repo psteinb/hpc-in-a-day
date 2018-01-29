@@ -1,7 +1,7 @@
 ---
 title: "Parallel Estimation of Pi for Pedestrians"
-teaching: 45
-exercises: 30
+teaching: 30
+exercises: 15
 questions:
 - "What are data parallel algorithms?"
 - "How can I estimate the yield of parallelization without writing one line of code?"

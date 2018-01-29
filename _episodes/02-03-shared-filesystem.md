@@ -1,6 +1,6 @@
 ---
 title: "Working with the shared file system"
-teaching: 15
+teaching: 25
 exercises: 5
 questions:
 - "How do I store a file on node so that another node can see it?"

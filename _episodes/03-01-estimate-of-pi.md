@@ -1,6 +1,6 @@
 ---
 title: "Estimation of Pi for Pedestrians"
-teaching: 45
+teaching: 40
 exercises: 10
 questions:
 - "How do I find the portion of a code snipped that consumes the longest time?"
