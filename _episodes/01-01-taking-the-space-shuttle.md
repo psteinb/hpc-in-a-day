@@ -207,7 +207,7 @@ $ man scp
 
 > ## Who is hanging around ?
 >
-> The `w` utility displays a list logged in users and what they are currently doing. Use it to check:
+> The `w` utility displays a list logged-in users and what they are currently doing. Use it to check:
 >
 > 1. that nobody but yourself is logged into your laptop/desktop
 > 2. that a lot of people use the login node of your cluster `{{ site.workshop_login_host }}`
@@ -215,7 +215,7 @@ $ man scp
 
 > ## Where did they go ?
 >
-> Rob has a zip file stored in `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`. He wants to unzip it on his laptop under `/important/passwords`. How does he do that?
+> Rob has a zip file stored under `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`. He wants to unzip it on his laptop under `/important/passwords`. How does he do that?
 >
 > 
 > 1. 
