@@ -87,7 +87,7 @@ The documentation indicates that she can provide an estimate of the _wall time_ 
 
 As the default wall time limit of the jobs is much higher than 6 minutes, Lola's job is started a lot earlier than the one of her colleagues and she does finish her tasks before she goes to lunch.
 
-> ## errors and outputs
+> ## Errors and Outputs
 >
 > 1. Submit [this script]({{ page.root }}/downloads/errors_and_outputs.sh) to your cluster and tell the scheduler to split the output in stdout and stderr. Check the contents of the log files that were created. 
 > 2. Submit the same job again, but this time make the scheduler send both stdout and stderr to the same output file. Use the manpage of the scheduler commands to find out how.
@@ -101,7 +101,7 @@ As the default wall time limit of the jobs is much higher than 6 minutes, Lola's
 > ~~~~~
 > $ python3 ./calc_pi.py 100000000
 > ~~~~~
-> 2. Use the `time` utility to measure the runtime of this command. 
-> 3. Submit a job with the same command but using `10000000000`, i.e. `100` times the argument of above. What is the runtime limit that you want to specify?
+> 2. Put the `time` command before `python3` to measure the runtime of this command. 
+> 3. Submit a job with `time python3` but using `10000000000`, i.e. `100` times the argument of above. What is the runtime limit that you want to specify?
 > 
 {: .challenge}
