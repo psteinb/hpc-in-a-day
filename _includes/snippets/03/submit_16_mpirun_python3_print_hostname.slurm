@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
     print_hostname()
 
-$ cat submit_4_print_hostname.sh
+$ cat submit_16_print_hostname.sh
 #!/bin/bash
 
 mpirun python3 print_hostname.py
-$ sbatch -n 4 -o call_hostname.out -e call_hostname.err < submit_4_print_hostname.sh
+$ sbatch -n 16 -o call_hostname.out -e call_hostname.err < submit_16_print_hostname.sh
