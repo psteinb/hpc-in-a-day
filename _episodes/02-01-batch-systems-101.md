@@ -54,7 +54,7 @@ A first exercise would be to submit a job that does nothing else but print "Hell
 {: .bash}
 
 ~~~
-Hello World
+{% include /snippets/02/output_hello_world_to_void.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
