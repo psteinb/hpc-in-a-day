@@ -1,0 +1,8 @@
+$ cat map_step.sh
+#!/bin/bash
+#PBS -l walltime=00:01:00
+#PBS -J 1-16  
+
+cd $PBS_O_WORKDIR
+python3 filter_pi_estimates.py pi_estimate_${PBS_ARRAY_INDEX}.data
+$ qsub map_step.sh

@@ -1,0 +1,6 @@
+$ cat filter.sh
+#!/bin/bash
+
+python3 filter_pi_estimates.py pi_estimate_01.data
+
+$ qsub -o filter-pi.log -e filter-pi.err filter.sh
