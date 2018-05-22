@@ -36,7 +36,7 @@ workshop_site: "https://swcarpentry.github.io/workshop-template"
 training_site: "https://swcarpentry.github.io/instructor-training"
 
 # this is the scheduler to be used for the workshop
-# possible values: lsf, slurm
+# possible values: lsf, slurm, pbs
 workshop_scheduler: "slurm"
 workshop_login_host: "cray-1"
 workshop_shared_fast_filesystem: "/fastfs"
