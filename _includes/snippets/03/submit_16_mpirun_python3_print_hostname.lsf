@@ -17,4 +17,4 @@ if __name__ == '__main__':
 
     print_hostname()
 
-$ bsub -n 4 -o call_hostname.out -e call_hostname.err mpirun python3 print_hostname.py
+$ bsub -n 16 -o call_hostname.out -e call_hostname.err mpirun python3 print_hostname.py

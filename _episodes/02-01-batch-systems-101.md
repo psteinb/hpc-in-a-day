@@ -54,7 +54,7 @@ A first exercise would be to submit a job that does nothing else but print "Hell
 {: .bash}
 
 ~~~
-Hello World
+{% include /snippets/02/output_hello_world_to_void.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -67,7 +67,7 @@ That worked out pretty well. The problem is, it's not very helpful and doesn't h
 {: .bash}
 
 ~~~
-n01
+{% include /snippets/02/output_hostname_experiment.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -81,8 +81,7 @@ Individual commands are fine, but Lola knows from experience that very often her
 {: .bash}
 
 ~~~
-n02
-Tue Mar  7 11:04:11 CET 2017
+{% include /snippets/02/output_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -108,6 +107,7 @@ OK, but Lola wonders where the output of the job goes. Is there a way to reliabl
 Once the job is done, the file `multiple_commands.log` is created in the current directory and yields the following output:
 
 ~~~
+$ cat multiple_commands.log
 n12
 Tue Mar  7 11:14:11 CET 2017
 ~~~
@@ -124,6 +124,18 @@ The scheduler allows Lola to split the two and write them to individual files. F
 {% include /snippets/02/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
+
+
+> ## Fill me in
+>
+> Your colleaque left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
+>
+> ~~~
+> {% include /snippets/02/submit_check_node.any %}
+> ~~~
+> {: .bash}
+>
+{: .challenge}
 
 > ## How long has this node been running ?
 >

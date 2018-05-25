@@ -1,0 +1,5 @@
+$ cat hostname.pbs
+#!/bin/bash
+
+hsotname
+$ qsub hostname.pbs

@@ -1,0 +1,6 @@
+$ qstat -u ${USER}
+service1.cray-1: 
+                                                                                  Req'd    Req'd       Elap
+Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory   Time    S   Time
+----------------------- ----------- -------- ---------------- ------ ----- ------ ------ --------- - ---------
+1531001                 course01    ShortQ   multiple_command    --      1     24    --   00:00:10 Q       -- 

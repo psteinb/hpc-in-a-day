@@ -1,0 +1,7 @@
+$ cat ________
+#!/bin/bash
+
+date
+_______________
+
+$ _____ -o multiple_commands.log ________

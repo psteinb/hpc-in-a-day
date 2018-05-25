@@ -21,4 +21,4 @@ $ cat submit_16_print_hostname.sh
 #!/bin/bash
 
 mpirun python3 print_hostname.py
-$ sbatch -n 16 -o call_hostname.out -e call_hostname.err < submit_16_print_hostname.sh
+$ qsub -l nodes=16 -o call_hostname.out -e call_hostname.err submit_16_print_hostname.sh

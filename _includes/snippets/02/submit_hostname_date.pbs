@@ -1,0 +1,6 @@
+$ cat multiple_commands.sh
+#!/bin/bash
+
+hostname
+date
+$ qsub multiple_commands.sh

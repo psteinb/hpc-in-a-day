@@ -1,0 +1,5 @@
+$ cat hello_world.pbs
+#!/bin/bash
+
+echo Hello World
+$ qsub hello_world.pbs
