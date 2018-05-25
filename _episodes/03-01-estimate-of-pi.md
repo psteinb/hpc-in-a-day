@@ -3,7 +3,7 @@ title: "Estimation of Pi for Pedestrians"
 teaching: 40
 exercises: 10
 questions:
-- "How do I find the portion of a code snipped that consumes the longest time?"
+- "How do I find the portion of a code snippet that consumes the longest time?"
 objectives:
 - "Perform an estimation of pi using only one CPU core."
 - "Measure the run time of the serial implementation for this estimate of pi."
@@ -14,9 +14,9 @@ keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms."
 ---
 
-Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as work horse per group. But currently, need for distributed computations has arisen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. 
+Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as a computational workhorse per group. But currently, the need for distributed computations has risen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. Simple!
 
-The algorithm was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
+The algorithm that Lola aims for was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
 ![Estimating Pi with Buffon's needle]({{ page.root }}/tikz/estimate_pi.svg)
 
