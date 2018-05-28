@@ -130,10 +130,17 @@ The scheduler allows Lola to split the two and write them to individual files. F
 >
 > Your colleague left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
 >
-> ~~~
-> {% include /snippets/02/submit_check_node.any %}
-> ~~~
->
+> ~~~~~~~
+> $ cat ________
+> #!/bin/bash
+> 
+> date
+> _______________
+> 
+> $ _____ -o multiple_commands.log ________
+> ~~~~~~~
+> {: .bash }
+> 
 {: .challenge}
 
 > ## How long has this node been running ?
@@ -142,8 +149,3 @@ The scheduler allows Lola to split the two and write them to individual files. F
 >
 {: .challenge}
 
-> ## Is there anyone ?
->
-> Write a batch script that prints the `hostname` and lists the users currently logged into the node using the `w` command. Submit this job at maximum 3 times and check if you land on a node where you are not alone. 
->
-{: .challenge}
