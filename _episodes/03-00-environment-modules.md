@@ -133,6 +133,9 @@ As you can see only directories (not paths to files) are added to `PATH` (simila
 Lena is now able to use `fdate` whereever she wants.
 
 ~~~
+$ cd ~
+$ fdate
+$ cd /tmp
 $ fdate
 ~~~
 {: .bash}
@@ -141,7 +144,12 @@ $ fdate
 -----------------------------
 Fri May 25 17:24:08 CEST 2018
 -----------------------------
+-----------------------------
+Fri May 25 17:24:18 CEST 2018
+-----------------------------
 ~~~
 {: .output}
+
+As the above is a very common task on HPC clusters, elaborate systems to manage changing the environment have been introduced. One such system is called `environment modules`. 
 
 
