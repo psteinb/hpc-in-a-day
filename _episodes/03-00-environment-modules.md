@@ -150,6 +150,50 @@ Fri May 25 17:24:18 CEST 2018
 ~~~
 {: .output}
 
-As the above is a very common task on HPC clusters, elaborate systems to manage changing the environment have been introduced. One such system is called `environment modules`. 
+As the above is a very common task on HPC clusters and servers, elaborate systems to manage changing the environment have been introduced. One such system is called `environment modules`. Lena explains that this system is currently used on `{{ site.workshop_login_host }}`. 
+
+To have a look, what software is available through the `module` system, a user invokes:
+
+~~~
+$ module available
+~~~
+{: .bash}
+
+~~~
+--------------------------------- /opt/modulefiles/ ---------------------------------------
+python/3.6.5                pandoc/1.13.2               python_memory_profiler/0.31
+fftw/3.3.4                  line_profiler/trunk         maven/3.0.5                 
+#...
+~~~
+{: .output}
+
+The structure of each entry is usually the same `<software>/<version>`, where `software` can be anything from a simple application to a larger framework. To help typing, issuing `module av` is enough. To make an aplication availble, the `load` or `add` verb can be used interchangeably. In a new terminal window do:
+
+~~~
+$ module load python/3.6.5
+~~~
+{: .bash}
+
+~~~
+python version 3.6.5 for x86_64 architecture loaded.
+~~~
+{: .output}
+
+The exact content of the above differs from system to system and depends on how the `module` system was configured. After doing so, `PATH` was changed so that `fdate` is now available. You can check now, that python is available now:
+
+~~~
+$ python --version             
+~~~
+{: .bash}
+
+~~~
+Python 3.6.5
+~~~
+{: .output}
+
+
+
+
+
 
 
