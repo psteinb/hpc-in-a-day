@@ -15,6 +15,13 @@ keypoints:
 - "Changing the environment is so common, that automated systems like the environment modules are used to manage that."
 ---
 
+> ## Important Notice for all learners
+>
+> The following material is based on a given cluster configuration at the time of writing. The notion, that python version 3 or higher is not the default python installed on your system may change in the future or change based on which system you are working on. 
+>
+> However, the rationale and use of environment modules remains untouched from this alteration. If it's not python3 you rely on, it maybe a higher version of perl, java, gcc, llvm/clang, etc.
+{: .callout }
+
 When Lola sits down to tackle her next project, she wants to get a feeling on what tooling is available on the cluster. She is a passionate `python3` developer and hence wants to see what modules are already installed on the cluster. To her suprise, she discovers that it's not there:
 
 ~~~
