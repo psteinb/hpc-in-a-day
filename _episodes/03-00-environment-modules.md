@@ -88,4 +88,60 @@ bash: fdate: command not found...
 ~~~
 {: .output}
 
-Lena explains, that for regular compute jobs that read some data from disk, perform analysis or computation on them and store the results on disk, running applications by specifying the relative/absolute directory to an application works just fine.  
+Lena explains: When running a command, specifying the application to run by specifying the relative/absolute path works just fine. If you want to run the application from anywhere in the file system without specifying the exact path, further actions are required. 
+
+Lola explains, that she wants `fdate` to work from anywhere and asks Lena to proceed and show her how to do it. Lena says that the situation is quite similar to a library when you want to find a book. Imagine the time when J.J.K. Rowling's books were in high demand. And let's imagine you are a clerk in a library which has an infinite amount of Harry Potter replica's available. How would you tame the constant high rate of people coming in and asking for the location of 'Harry Potter 7'? The tedious way would be to tell every customer, that they need to go to the upper level of the library, search for the phantasy corner and tend to the upper shelf of the last cabinet. This would resemble specifying the exact path to an application everytime. 
+
+What is likely to happen in a good library: a sign will be put up which tells a customer where books of high demand are. In the best of all worlds, there will be a guiding system which leads people to the phantasy corner. The same is possible on the command-line by expanding the `PATH` environment variable. `PATH` contains a set of file system locations (separated by a colon `:`) where the operating system is able to check for applications to run in the terminal. To print it, do 
+
+~~~
+$ echo ${PATH}
+~~~
+{: .bash}
+
+which may yield something along the lines of:
+
+~~~
+/usr/lib64/ccache:/usr/local/bin:/usr/bin:/bin:/home/lola/bin:/usr/local/sbin:/usr/sbin
+~~~
+{: .output}
+
+Many systems define `PATH` to yield some folders by default. It depends on the system configuration what you will see when running `echo ${PATH}` as above. That is a also a good thing in case you make an error when altering `PATH`, you simply leave the shell session by issuing `exit` or similar and can start from scratch next time you spin up the shell.
+
+To proceed and make `/home/lola/from_lena/fdate` available to `PATH`, Lena shows Lola what to type:
+
+~~~
+$ export PATH=${PATH}:/home/lola/from_lena/
+~~~
+{: .bash}
+
+As you can see only directories (not paths to files) are added to `PATH` (similar to the example above where only signs to the phantasy corner and not to Harry Potter V are put up). 
+
+> ## A less cautious version
+> 
+> It is also fine to **prepend** an extension to `PATH`. 
+> 
+> ~~~~~
+> $ export PATH=/home/lola/from_lena/:${PATH}
+> ~~~~~
+> {: .bash}
+> 
+> This means though that you have trust, that `/home/lola/from_lena/` does not contain applications which would shadow applications which are already accessible through `PATH`.
+>
+{: .callout }
+
+Lena is now able to use `fdate` whereever she wants.
+
+~~~
+$ fdate
+~~~
+{: .bash}
+
+~~~
+-----------------------------
+Fri May 25 17:24:08 CEST 2018
+-----------------------------
+~~~
+{: .output}
+
+
