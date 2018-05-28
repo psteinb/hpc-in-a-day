@@ -22,7 +22,7 @@ keypoints:
 > However, the rationale and use of environment modules remains untouched from this alteration. If it's not python3 you rely on, it maybe a higher version of perl, java, gcc, llvm/clang, etc.
 {: .callout }
 
-When Lola sits down to tackle her next project, she wants to get a feeling on what tooling is available on the cluster. She is a passionate `python3` developer and hence wants to see what modules are already installed on the cluster. To her suprise, she discovers that it's not there:
+When Lola sits down to tackle her next project, she wants to get a feeling on what tooling is available on the cluster. She is a passionate `python3` developer and hence wants to see what modules are already installed on the cluster. To her surprise, she discovers that it's not there:
 
 ~~~
 $ python3
@@ -48,9 +48,9 @@ She starts digging into the documentation. No mention of this short coming, that
 > HPC clusters are big monetary and human resource investments. As such, no one except the administrators are allowed to install software in the operating system that is run on tens or hundreds of compute nodes inside the cluster.
 {: .callout }
 
-The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [zipfile with a small application]({{ page.root }}/code/03_parallel_jobs/fdate.zip) into Lola's home directory which Lola unpacks by calling `unzip fdate.zip`. This produces a small application named `fdate` in the current directory.
+The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [zip file with a small application]({{ page.root }}/code/03_parallel_jobs/fdate.zip) into Lola's home directory which Lola unpacks by calling `unzip fdate.zip`. This produces a small application named `fdate` in the current directory.
 
-Lena demostrates that inside the folder where `fdate` was unzipped, it can be executed:
+Lena demonstrates that inside the folder where `fdate` was unzipped, it can be executed:
 
 ~~~
 $ ./fdate
@@ -78,9 +78,9 @@ bash: fdate: command not found...
 
 Lena explains: When running a command, specifying the application to run by specifying the relative/absolute path works just fine. If you want to run the application from anywhere in the file system without specifying the exact path, further actions are required. 
 
-Lola explains, that she wants `fdate` to work from anywhere and asks Lena to proceed and show her how to do it. Lena says that the situation is quite similar to a library when you want to find a book. Imagine the time when J.J.K. Rowling's books were in high demand. And let's imagine you are a clerk in a library which has an infinite amount of Harry Potter replica's available. How would you tame the constant high rate of people coming in and asking for the location of 'Harry Potter 7'? The tedious way would be to tell every customer, that they need to go to the upper level of the library, search for the phantasy corner and tend to the upper shelf of the last cabinet. This would resemble specifying the exact path to an application everytime. 
+Lola explains, that she wants `fdate` to work from anywhere and asks Lena to proceed and show her how to do it. Lena says that the situation is quite similar to a library when you want to find a book. Imagine the time when J.J.K. Rowling's books were in high demand. And let's imagine you are a clerk in a library which has an infinite amount of Harry Potter replica's available. How would you tame the constant high rate of people coming in and asking for the location of 'Harry Potter 7'? The tedious way would be to tell every customer, that they need to go to the upper level of the library, search for the fantasy corner and tend to the upper shelf of the last cabinet. This would resemble specifying the exact path to an application every time. 
 
-What is likely to happen in a good library: a sign will be put up which tells a customer where books of high demand are. In the best of all worlds, there will be a guiding system which leads people to the phantasy corner. The same is possible on the command-line by expanding the `PATH` environment variable. `PATH` contains a set of file system locations (separated by a colon `:`) where the operating system is able to check for applications to run in the terminal. To print it, do 
+What is likely to happen in a good library: a sign will be put up which tells a customer where books of high demand are. In the best of all worlds, there will be a guiding system which leads people to the fantasy corner. The same is possible on the command-line by expanding the `PATH` environment variable. `PATH` contains a set of file system locations (separated by a colon `:`) where the operating system is able to check for applications to run in the terminal. To print it, do 
 
 ~~~
 $ echo ${PATH}
@@ -103,7 +103,7 @@ $ export PATH=${PATH}:/home/lola/from_lena/
 ~~~
 {: .bash}
 
-As you can see only directories (not paths to files) are added to `PATH` (similar to the example above where only signs to the phantasy corner and not to Harry Potter V are put up). 
+As you can see only directories (not paths to files) are added to `PATH` (similar to the example above where only signs to the fantasy corner and not to Harry Potter V are put up). 
 
 > ## A less cautious version
 > 
@@ -129,7 +129,7 @@ As you can see only directories (not paths to files) are added to `PATH` (simila
 >
 > > ## Solution
 > > 1. `export PATH=/home/lola/apps`  (NO: has side effects, removes all existing folders from PATH)    
-> > 2. `set PATH=/lola/home/apps;${PATH}` (NO: does nothing and yields wrong seperator ;)
+> > 2. `set PATH=/lola/home/apps;${PATH}` (NO: does nothing and yields wrong separator ;)
 > > 3. `PATH=/lola/home/apps;${PATH}`     (NO: only changes the PATH variable for this invocation, not persistent)
 > > 4. `export PATH=/home/lola/apps:$PATH` (YES!)
 > {: .solution}
@@ -164,7 +164,7 @@ As you can see only directories (not paths to files) are added to `PATH` (simila
 {: .challenge}
 
 
-Lena is now able to use `fdate` whereever she wants.
+Lena is now able to use `fdate` wherever she wants.
 
 ~~~
 $ cd ~
@@ -201,7 +201,7 @@ fftw/3.3.4                  line_profiler/trunk         maven/3.0.5
 ~~~
 {: .output}
 
-The structure of each entry is usually the same `<software>/<version>`, where `software` can be anything from a simple application to a larger framework. To help typing, issuing `module av` is enough. To make an aplication availble, the `load` or `add` verb can be used interchangeably. In a new terminal window do:
+The structure of each entry is usually the same `<software>/<version>`, where `software` can be anything from a simple application to a larger framework. To help typing, issuing `module av` is enough. To make an application available, the `load` or `add` verb can be used interchangeably. In a new terminal window do:
 
 ~~~
 $ module load python/3.6.5
