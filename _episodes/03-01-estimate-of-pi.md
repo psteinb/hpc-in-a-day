@@ -307,7 +307,7 @@ So this is a prime candidate for acceleration.
 > Find the hotspot of the application.
 > 
 > > ## Solution
-> 
+> > The function which is evaluated most often is `word_count` as it is run on every python lib which is found in the current standard library.
 > {: .solution}
 {: .challenge}
 
