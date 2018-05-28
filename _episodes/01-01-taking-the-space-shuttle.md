@@ -218,26 +218,26 @@ $ man scp
 > Rob has a zip file stored under `/tmp/passwords.zip` on the login node of the cluser `{{ site.workshop_login_host }}`. He wants to unzip it on his laptop under `/important/passwords`. How does he do that?
 >
 > 
-> 1. 
+> 1.   
 > ~~~~~
 > $ ssh rob@{{ site.workshop_login_host }}
 > $ unzip /tmp/passwords.zip
 > ~~~~~
 > 
-> 2.
+> 2.  
 > ~~~~~
 > $ scp {{ site.workshop_login_host }}@rob:/tmp/passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
 > 
-> 3.
+> 3.  
 > ~~~~~
 > $ cd /important/passwords
 > $ scp rob@{{ site.workshop_login_host }}:passwords.zip .
 > $ unzip passwords.zip
 > ~~~~~
 > 
-> 4.
+> 4.  
 > ~~~~~
 > $ cd /important/passwords
 > $ scp rob@{{ site.workshop_login_host }}:/tmp/passwords.zip .

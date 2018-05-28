@@ -294,7 +294,7 @@ So this is a prime candidate for acceleration.
 > {: .solution}
 {: .challenge}
 
-> ## Faster is always better, right?
+> ## Faster is always better, right? (Part 1)
 >
 > Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
 > 
@@ -304,12 +304,28 @@ So this is a prime candidate for acceleration.
 > ~~~~~
 > {: .bash}
 > 
-> After finding the hotspot, pair up and discuss the implementation. Discuss and answer the following points: 
-> 1. Find other ways to implement the word count without parallelizing the code! 
-> 2. For every alternative implementation found in 1., check the output of the program. Did the number of words change? Could such a check be automated?
-> 3. Compare the runtimes that you achieved throughout this exercise. Was your time worth it?
->
+> Find the hotspot of the application.
+> 
 > > ## Solution
-> One could use the 'count' method of strings and just count the words by using the number of spaces and add 1. Based on the assumption that our input text consists of sentences only, this can provide an estimate of the words. In this case, this is far from accurate as source code contains tabs, newlines etc to distinguish words. However, the `count` method improves runtime by more than one order of magniture in comparison to the `re.split` approach. Take away: Real life is a balance. But above all, your code should produce the correct result. 
+> > The function which is evaluated most often is `word_count` as it is run on every python lib which is found in the current standard library.
 > {: .solution}
+{: .challenge}
+
+
+> ## Faster is always better, right? (Part 2)
+>
+> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
+> 
+> ~~~~~
+> $ python3 count_pylibs.py
+> 4231827 characters and 418812 words found in standard python libs
+> ~~~~~
+> {: .bash}
+> 
+> 1. Start a Stopwatch
+> 2. Find one alternative way to achieve what `count_pylibs.py` does.
+> 3. Run the application and check if you sped up your code
+> 4. Stop your Stopwatch
+> 5. Compare the time your invested versus the speed-up you obtained.
+> 6. Review the [literature](https://xkcd.com/1205/) about this cycle.
 {: .challenge}
