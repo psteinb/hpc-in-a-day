@@ -45,24 +45,12 @@ She starts digging into the documentation. No mention of this short coming, that
 
 > ## A shared resource of a hundreds
 >
-> TODO: Illustrate the tension of a homogenous installation, custom drivers to parallel file systems and more on a cluster and why users cannot install packages as they would on a workstation or laptop.
+> HPC clusters are big monetary and human resource investments. As such, no one except the administrators are allowed to install software in the operating system that is run on tens or hundreds of compute nodes inside the cluster.
 {: .callout }
 
-The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [small application]({{ page.root }}/code/03_parallel_jobs/fdate) into Lola's home directory.
+The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [zipfile with a small application]({{ page.root }}/code/03_parallel_jobs/fdate.zip) into Lola's home directory which Lola unpacks by calling `unzip fdate.zip`. This produces a small application named `fdate` in the current directory.
 
-> ## A fancy date
->
-> When downloading [small application]({{ page.root }}/code/03_parallel_jobs/fdate), the file needs to be made executable. To do this, issue the following command:
->
-> ~~~~
-> chmod u+x ./fdate
-> ~~~~
-> {: .bash}
-> 
-> This small executable does nothing more as to append/prepend dashes to the output of `date`.
-{: .callout }
-
-Lena demostrates that inside the folder where `fdate` was downloaded, it can be executed:
+Lena demostrates that inside the folder where `fdate` was unzipped, it can be executed:
 
 ~~~
 $ ./fdate
@@ -74,7 +62,7 @@ $ ./fdate
 Fri May 25 17:14:28 CEST 2018
 -----------------------------
 ~~~
-{: .output}
+{: .output}                  
 
 However, when omitting the leading `./`, the command doesn't work anymore.
 
@@ -129,6 +117,52 @@ As you can see only directories (not paths to files) are added to `PATH` (simila
 > This means though that you have trust, that `/home/lola/from_lena/` does not contain applications which would shadow applications which are already accessible through `PATH`.
 >
 {: .callout }
+
+> ## Making it work
+>
+> Lola wants to experiment herself and puts an application by the name of `lc` in `/home/lola/apps`. Which of the following commands adds that folder to PATH?
+> 
+> 1. `export PATH=/home/lola/apps`
+> 2. `set PATH=/lola/home/apps;${PATH}`
+> 3. `PATH=/lola/home/apps;${PATH}`
+> 4. `export PATH=/home/lola/apps:$PATH`
+>
+> > ## Solution
+> > 1. `export PATH=/home/lola/apps`  (NO: has side effects, removes all existing folders from PATH)    
+> > 2. `set PATH=/lola/home/apps;${PATH}` (NO: does nothing and yields wrong seperator ;)
+> > 3. `PATH=/lola/home/apps;${PATH}`     (NO: only changes the PATH variable for this invocation, not persistent)
+> > 4. `export PATH=/home/lola/apps:$PATH` (YES!)
+> {: .solution}
+{: .challenge}
+
+> ## In the Shadows
+>
+> Something is broken in Lola's terminal. When using `ls`, she keeps getting 
+> 
+> ~~~~~
+> -----------------------------
+> Fri May 25 21:14:28 CEST 2018
+> -----------------------------
+> ~~~~~
+> {: .output}
+> 
+> After she did the following:
+>
+> ~~~~~
+> $ unzip fdate.zip
+> $ export PATH=${PWD}:${PATH}
+> $ cp fdate ls
+> $ cd /tmp
+> $ ls
+> ~~~~~
+> {: .bash} 
+> 
+> > ## Solution
+> > `fdate.zip` can be downloaded from [here]({{ page.root }}/code/03_parallel_jobs/fdate.zip). 
+> > Lola adds the path where `fdate` resides to `PATH`. By accident, she then copies fdate to a file named `ls`. As she preprended `$PWD` to `PATH`, this version of `ls` has precedence over `/usr/bin/ls` (the actual list command).
+> {: .solution}
+{: .challenge}
+
 
 Lena is now able to use `fdate` whereever she wants.
 
@@ -192,8 +226,56 @@ Python 3.6.5
 {: .output}
 
 
+> ## On some systems ...
+> 
+> The module load command doesn't replace `python` but rather makes `python3` or similar available. To check, try:
+>
+> ~~~
+> $ python --version             
+> ~~~
+> {: .bash}
+> 
+{: .callout }
+
+The real hallmark of the module system comes with the facility to switch off applications again by invoking:
+
+~~~
+$ module unload python/3.6.5
+~~~
+{: .bash}
+
+When one tries again now, the above mentioned effect is gone again:
+
+~~~
+$ python --version
+~~~
+{: .bash}
+
+~~~
+Python 2.7.15
+~~~
+{: .output}
 
 
-
-
+> ## The others do it too
+> 
+> The idea of programmatically changing the environment of a running terminal is offered by many other software stacks. In the python eco system, `virtualenv` is a prime example. of such. From the [`virtualenv` docs](https://virtualenv.pypa.io/en/stable/userguide/#activate-script):
+>
+> ~~~~~
+> $ source bin/activate
+> ~~~~~
+> { .bash }
+> 
+> "... This will change your $PATH so its first entry is the virtualenv’s bin/ directory. (You have to use source because it changes your shell environment in-place.)"
+> 
+> Another prominent example are anaconda environments:
+>
+> ~~~~~
+> $ conda create -n our_workshop python=3.6 numpy mpi4py line_profiler
+> $ source activate our_workshop
+> ~~~~~
+> { .bash }
+>
+> The last line above changes the environment of the current shell, so that `python=3.6 numpy mpi4py line_profiler` are available.
+{: .callout }
 
