@@ -128,12 +128,11 @@ The scheduler allows Lola to split the two and write them to individual files. F
 
 > ## Fill me in
 >
-> Your colleaque left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
+> Your colleague left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
 >
 > ~~~
 > {% include /snippets/02/submit_check_node.any %}
 > ~~~
-> {: .bash}
 >
 {: .challenge}
 
