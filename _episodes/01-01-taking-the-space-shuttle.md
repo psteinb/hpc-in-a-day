@@ -189,17 +189,17 @@ $ man scp
 > Lola needs to obtain a file called `results.data` from a remote machine that is called `safe-store-1`. This machine is hidden behind the login node `{{ site.workshop_login_host }}`. However she mixed up the commands somehow that are needed to get the file onto her laptop. Help her and rearrange the following commands into the right order!
 >
 > ~~~~~
-> $ ssh lola@`{{ site.workshop_login_host }}`
+> $ ssh lola@{{ site.workshop_login_host }}
 > $ logout
-> $ scp lola@`{{ site.workshop_login_host }}`:results.data .
+> $ scp lola@{{ site.workshop_login_host }}:results.data .
 > $ scp lola@safe-store-1:results.data .
 > ~~~~~
 > > ## Solution
 > > ~~~~~
-> > $ ssh lola@`{{ site.workshop_login_host }}`
+> > $ ssh lola@{{ site.workshop_login_host }}
 > > $ scp lola@safe-store-1:results.data .
 > > $ logout
-> > $ scp lola@`{{ site.workshop_login_host }}`:results.data .
+> > $ scp lola@{{ site.workshop_login_host }}:results.data .
 > > ~~~~~
 > {: .solution}
 {: .challenge}
