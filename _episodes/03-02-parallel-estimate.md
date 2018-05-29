@@ -20,6 +20,40 @@ keypoints:
 - "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
+> ## Parallel for real 1
+>
+> What of the following is a task, that can be parallelized in real life:
+> 
+> 1. Manually copying a book and producing a clone 
+> 2. Clearing the table after dinner
+> 3. Rinsing the dishes 
+> 4. A family getting dressed to leave the appartment for birthday party
+>
+> > ## Solution
+> > 1. not parallel as we have to start with one book and only have one reader/writer
+> > 2. parallel, the more people help, the better
+> > 3. not parallel, as we typically only have one sink
+> > 4. parallel, each family member can get dressed independent of each other 
+> {: .solution}
+{: .challenge}
+
+> ## Parallel for real 2
+>
+> What of the following is a task, that can be parallelized in real life:
+> 
+> 1. Compressing the contents of a directory full of files
+> 2. Converting the currency of rows in a column of a large spreadsheet (10 million rows)
+> 3. Writing an e-mail in an online editor
+> 4. Playing a Video on youtube/vimeo/etc. or in a video player application
+>
+> > ## Solution
+> > 1. parallel, each file can be compressed seperately
+> > 2. parallel, each row can be converted seperately
+> > 3. not parallel, we only have one writer (you)
+> > 4. not parallel, you only have one consumer (you), rendering the movie in 2 windows in parallel does not help
+> {: .solution}
+{: .challenge}
+
 Having the profiling data, our estimate of pi is a valuable resource.
 
 ~~~~~
@@ -320,38 +354,17 @@ That means, our parallel implementation does already a good job, but only achiev
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
 
-
-> ## Parallel for real 1
+> ## Parallel word count
 >
-> What of the following is a task, that can be parallelized in real life:
+> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
 > 
-> 1. Manually copying a book and producing a clone 
-> 2. Clearing the table after dinner
-> 3. Rinsing the dishes 
-> 4. A family getting dressed to leave the appartment for birthday party
->
-> > ## Solution
-> > 1. not parallel as we have to start with one book and only have one reader/writer
-> > 2. parallel, the more people help, the better
-> > 3. not parallel, as we typically only have one sink
-> > 4. parallel, each family member can get dressed independent of each other 
-> {: .solution}
+> ~~~~~
+> $ python3 count_pylibs.py
+> 4231827 characters and 418812 words found in standard python libs
+> ~~~~~
+> {: .bash}
+> 
+> Examine the application if you can find data parallelism. 
 {: .challenge}
 
-> ## Parallel for real 2
->
-> What of the following is a task, that can be parallelized in real life:
-> 
-> 1. Compressing the contents of a directory full of files
-> 2. Converting the currency of rows in a column of a large spreadsheet (10 million rows)
-> 3. Writing an e-mail in an online editor
-> 4. Playing a Video on youtube/vimeo/etc. or in a video player application
->
-> > ## Solution
-> > 1. parallel, each file can be compressed seperately
-> > 2. parallel, each row can be converted seperately
-> > 3. not parallel, we only have one writer (you)
-> > 4. not parallel, you only have one consumer (you), rendering the movie in 2 windows in parallel does not help
-> {: .solution}
-{: .challenge}
 

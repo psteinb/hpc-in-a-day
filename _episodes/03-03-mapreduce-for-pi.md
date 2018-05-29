@@ -169,7 +169,7 @@ averaged value of pi from 224 estimates : 3.141337
 
 > ## Occurance of 2
 >
-> Dublicate the steps outlined in this section. Before doing the reduce step, filter out only those estimates of pi that end on an even number. For example, `3.141337` ends on `7` and would be discarded. ``3.141332` ends on `2` and hence would be used for the grand average.
+> Dublicate the steps outlined in this section. Before doing the reduce step, filter out only those estimates of pi that end on an even number. For example, `3.141337` ends on `7` and would be discarded. `3.141332` ends on `2` and hence would be used for the grand average.
 >
 {: .challenge}
 
