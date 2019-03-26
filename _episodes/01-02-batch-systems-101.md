@@ -49,12 +49,12 @@ The cluster in question here, is running a scheduling software called {{ site.wo
 A first exercise would be to submit a job that does nothing else but print "Hello World!".
 
 ~~~
-{% include /snippets/02/submit_hello_world_to_void.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_hello_world_to_void.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 ~~~
-{% include /snippets/02/output_hello_world_to_void.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/output_hello_world_to_void.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -62,12 +62,12 @@ A first exercise would be to submit a job that does nothing else but print "Hell
 That worked out pretty well. The problem is, it's not very helpful and doesn't help Lola or anyone to do her job. But Lola wonders if the job really was executed on another node. She thinks of a little experiment to explore the scheduler a bit. 
 
 ~~~
-{% include /snippets/02/submit_hostname_experiment.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_hostname_experiment.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 ~~~
-{% include /snippets/02/output_hostname_experiment.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/output_hostname_experiment.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -76,12 +76,12 @@ If she repeats this command, over and over again, the output changes. So these c
 Individual commands are fine, but Lola knows from experience that very often her work requires her to do more complex tasks, i.e. to execute a couple of commands after one another. To simulate this, she writes a small script that can be run on the node that runs her job.  
 
 ~~~
-{% include /snippets/02/submit_hostname_date.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 ~~~
-{% include /snippets/02/output_hostname_date.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/output_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -100,7 +100,7 @@ OK, but Lola wonders where the output of the job goes. Is there a way to reliabl
 
 
 ~~~
-{% include /snippets/02/submit_with_output_hostname_date.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_with_output_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -121,7 +121,7 @@ Tue Mar  7 11:14:11 CET 2017
 The scheduler allows Lola to split the two and write them to individual files. For example like this:
  
 ~~~
-{% include /snippets/02/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_with_output_and_error_hostname_date.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 

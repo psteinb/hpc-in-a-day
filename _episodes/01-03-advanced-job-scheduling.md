@@ -20,19 +20,19 @@ keypoints:
 While submitting more tests jobs, Lola observes that she always mirrors the current directory for a log file to appear. This sometimes takes awhile and sometimes this happens almost instantly. How does she know, if a job is running or not?
 
 ~~~ 
-{% include /snippets/02/submit_hostname_date_sleep.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 Now Lola tries one of the monitoring commands, the she discovered in the manpages of her scheduletc/bash_completioner:
 
 ~~~
-{% include /snippets/02/monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 ~~~
-{% include /snippets/02/output_monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/output_monitor_hostname_date_sleep.{{ site.workshop_scheduler }} %}
 ~~~
 {: .output}
 
@@ -50,7 +50,7 @@ All of these information might appear pointless when submitting only one job at 
 Lola is quite happy with her progress so far. All of a sudden, she detects a mistake in one of her scripts. 
 
 ~~~
-{% include /snippets/02/submit_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -58,14 +58,14 @@ Lola is quite happy with her progress so far. All of a sudden, she detects a mis
 No, that shouldn't happen! She doesn't want to wait 5 minutes for the job to complete. So Lola would love to cancel this job. 
 
 ~~~
-{% include /snippets/02/find_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/find_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 For this, she needs to find job ID of the job that she would like to stop. With this, she can ask the scheduler to cancel her job.
 
 ~~~
-{% include /snippets/02/kill_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/kill_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -80,7 +80,7 @@ Right before lunch on that day, Lola notices that more and more staff members of
 The documentation indicates that she can provide an estimate of the _wall time_ of her job to the scheduler. 
 
 ~~~
-{% include /snippets/02/submit_walltime_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_walltime_hostname_date_sleep300.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
