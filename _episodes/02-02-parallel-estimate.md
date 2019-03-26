@@ -293,7 +293,7 @@ We are using the `multiprocessing` module that comes with the python standard li
 
 ![Partitioning `x` and `y` and results of reach partition]({{ page.root }}/tikz/partition_data_parallel_estimate_pi_with_results.svg)
 
-The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/03_parallel_jobs/parallel_numpi.py) and see what it gives:
+The last step required before calculating pi is to collect the individual results from the `partitions` and _reduce_ it to one `total_count` of those random number pairs that were inside of the circle. Here the `sum` function loops over `partitions` and does exactly that. So let's run our [parallel implementation](code/02_parallel_jobs/parallel_numpi.py) and see what it gives:
 
 ~~~
 $ python3 ./parallel_numpi.py 1000000000
