@@ -70,7 +70,7 @@ if __name__=='__main__':
 She tests her python program on a single input file. As she knows how long it'll take approximately, she can provide a good estimate of the run time of the job. If the cluster is busy, that allows the scheduler to start her job faster.
 
 ~~~
-{% include /snippets/03/submit_filter_pi.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_filter_pi.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -137,14 +137,14 @@ The question is, she would love to send this averaging job after she filtered ev
 
 
 ~~~
-{% include /snippets/03/map_filter_pi.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/map_filter_pi.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
 The above is called an _array job_. The same commands are executed on an array of files which share a similar file name. In this case, it is `pi_estimate_01.data, pi_estimate_02.data, pi_estimate_03.data, ...`. When the job runs on the cluster, the shell variable 
 
 ~~~
-{% include /snippets/03/array_job_task_id.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/array_job_task_id.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
