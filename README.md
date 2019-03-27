@@ -1,4 +1,4 @@
-# HPC-in-a-day
+# HPC-in-a-day [![DOI](https://zenodo.org/badge/83803821.svg)](https://zenodo.org/badge/latestdoi/83803821)
 
 Novice introduction to high performance computing. This material was conceived as a sandbox project for [swcarpentry/hpc-novice](https://github.com/psteinb/hpc-in-a-day). Parts of it will be contributed to [swcarpentry/hpc-novice](https://github.com/psteinb/hpc-in-a-day) in due course.
 
