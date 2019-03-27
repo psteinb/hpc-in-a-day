@@ -37,6 +37,18 @@ $ ssh lola@{{ site.workshop_login_host }}
 ~~~
 {: .bash}
 
+> ## Logging in
+> 
+> If you do this material on your own, be sure to replace `lola` with the username that is attributed to you on {{ site.workshop_login_host }}. When you hit enter, a prompt like this might appear:
+>
+> ~~~
+> lola@{{ site.workshop_login_host }}'s password:
+> ~~~
+> {: .output}
+> 
+> Now is your chance to type in your password. But watchout, the characters you type are not displayed on the screen.
+{: .callout}
+
 ~~~ 
 Last login: Tue Mar 14 14:13:14 2017 from lolas_laptop
 -bash-4.1$ 

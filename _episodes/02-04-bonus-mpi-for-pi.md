@@ -30,7 +30,7 @@ One of her more experienced colleagues has suggested to her, to use the _Message
 Lola becomes curious. She wants to experiment with this parallelization technique a bit. For this, she would like to print the name of the node where a specific driver application is run. 
 
 ~~~
-{% include /snippets/03/submit_4_mpirun_hostname.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_4_mpirun_hostname.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -47,7 +47,7 @@ n01
 The output makes her wonder. Apparently, the command was cloned and executed on the same host 4 times. If she increases the number of processors to a number larger than the number of CPU cores each of here nodes has, this might change and the distributed nature of `mpirun` will reveal itself.
 
 ~~~
-{% include /snippets/03/submit_16_mpirun_hostname.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_16_mpirun_hostname.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -75,10 +75,10 @@ n02
 
 As the figure above shows, 12 instances of `hostname` were called on `n01` and 4 more on `n02`. Strange though, that the last 5 lines are not ordered correctly. Upon showing this result to her colleague, the latter explains: even though, the `hostname` command is run in parallel across the 2 nodes that are used here, the output of her 16 `hostname` calls need to be merged into one output file (that she called `call_hostname.out`) at the end. This synchronization performed by the `mpirun` application is not guaranteed to happen in an ordered fashion (how could it be as the commands were issued in parallel). Her colleague explains, that the `hostname` application itself is not aware of _MPI_ in a way that it is not parallelized with it. Thus, the `mpirun` driver simply accesses the nodes that it is allowed to run on by the batch system and launches the `hostname` application. After that, `mpirun` collects the output of the executed commands at completion and writes it to the defined output file `call_hostname.out`.
 
-Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as FORTRAN, C, C++, Python and many more. As Lola is most confident with Python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This Python script called [`print_hostname.py`]({{ page.root }}/code/03_parallel_jobs/print_hostname.py) prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
+Like a reflex, Lola asks how to write these MPI programs. Her colleague points out that she needs to program the languages that MPI supports, such as FORTRAN, C, C++, Python and many more. As Lola is most confident with Python, her colleague wants to give her a head start using `mpi4py` and provides a minimal example. This example is analogous to what Lola just played with. This Python script called [`print_hostname.py`]({{ page.root }}/code/02_parallel_jobs/print_hostname.py) prints the number of the current MPI rank (i.e. the unique id of the execution thread within one mpirun invocation), the total number of MPI ranks available and the hostname this rank is currently run on.
 
 ~~~
-{% include /snippets/03/submit_16_mpirun_python3_print_hostname.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_16_mpirun_python3_print_hostname.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 
@@ -116,7 +116,7 @@ Again, the unordered output is visible. Now, the relation between the rank and t
 > 
 {: .challenge}
 
-To finalize this day's work, Lola wants to tackle distributed memory parallelization using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is pre-installed on her cluster. She again starts from the [serial implementation]({{ page.root }}/code/03_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
+To finalize this day's work, Lola wants to tackle distributed memory parallelization using the Message Passing Interface (MPI). For this, she uses the `mpi4py` library that is pre-installed on her cluster. She again starts from the [serial implementation]({{ page.root }}/code/02_parallel_jobs/serial_numpi.py). At first, she expands the include statements a bit. 
 
 ~~~
 from mpi4py import MPI
@@ -187,7 +187,7 @@ if rank == 0:
 And that's it. Now, Lola can submit her first MPI job.
 
 ~~~
-{% include /snippets/03/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
+{% include /snippets/02/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash}
 

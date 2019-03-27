@@ -21,7 +21,7 @@ After all these first attempts to make use of the cluster, Lola wonders about so
 Lola comes up with a small example job, that collects information on the node that the jobs is run on and submits it.
 
 ~~~
-{% include /snippets/02/submit_node_info.{{ site.workshop_scheduler }} %}
+{% include /snippets/01/submit_node_info.{{ site.workshop_scheduler }} %}
 ~~~
 {: .bash }
 

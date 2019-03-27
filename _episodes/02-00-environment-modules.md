@@ -48,7 +48,7 @@ She starts digging into the documentation. No mention of this short coming, that
 > HPC clusters are big monetary and human resource investments. As such, no one except the administrators are allowed to install software in the operating system that is run on tens or hundreds of compute nodes inside the cluster.
 {: .callout }
 
-The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [zip file with a small application]({{ page.root }}/code/03_parallel_jobs/fdate.zip) into Lola's home directory which Lola unpacks by calling `unzip fdate.zip`. This produces a small application named `fdate` in the current directory.
+The support staff, named Lena, demonstrates to Lola how she can deal with the situation. First off, she drops a [zip file with a small application]({{ page.root }}/code/02_parallel_jobs/fdate.zip) into Lola's home directory which Lola unpacks by calling `unzip fdate.zip`. This produces a small application named `fdate` in the current directory.
 
 Lena demonstrates that inside the folder where `fdate` was unzipped, it can be executed:
 
@@ -158,7 +158,7 @@ As you can see only directories (not paths to files) are added to `PATH` (simila
 > {: .bash} 
 > 
 > > ## Solution
-> > `fdate.zip` can be downloaded from [here]({{ page.root }}/code/03_parallel_jobs/fdate.zip). 
+> > `fdate.zip` can be downloaded from [here]({{ page.root }}/code/02_parallel_jobs/fdate.zip). 
 > > Lola adds the path where `fdate` resides to `PATH`. By accident, she then copies fdate to a file named `ls`. As she preprended `$PWD` to `PATH`, this version of `ls` has precedence over `/usr/bin/ls` (the actual list command).
 > {: .solution}
 {: .challenge}
