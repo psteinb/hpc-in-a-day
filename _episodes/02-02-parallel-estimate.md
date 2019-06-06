@@ -354,6 +354,31 @@ That means, our parallel implementation does already a good job, but only achiev
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
 
+> ## Line count
+>
+> Download [this python script]({{ page.root }}/downloads/count_lines.py) to your current directory. Run it by executing:
+> 
+> ~~~~~
+> $ python3 count_lines.py *py
+> ~~~~~
+> {: .bash}
+>
+> It should print something like this:
+> 
+> ~~~~~
+> 31 count_lines.py
+> 53 count_pylibs_annotated.py
+> 52 count_pylibs.py
+> 55 parallel_pi.py
+> 44 serial_pi_annotated.py
+> 43 serial_pi.py
+> 278 total
+> ~~~~~
+> {: .output}
+> 
+> Examine the application if you can find data parallelism. If so parallelize it! Compare the timings!
+{: .challenge}
+
 > ## Parallel word count
 >
 > Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
@@ -364,7 +389,7 @@ That means, our parallel implementation does already a good job, but only achiev
 > ~~~~~
 > {: .bash}
 > 
-> Examine the application if you can find data parallelism. 
+> Examine the application if you can find data parallelism. If so parallelize it! Compare the timings!
 {: .challenge}
 
 
