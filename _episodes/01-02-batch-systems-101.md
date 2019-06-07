@@ -128,7 +128,7 @@ The scheduler allows Lola to split the two and write them to individual files. F
 
 > ## Fill me in
 >
-> Your colleague left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
+> Your colleague left you with a small script `~/check_node.sh` that needs to be run *BEFORE* any other application to check if a node has enough free memory using the `free` command. This is essential to reproduce her paper. You are experimenting with it to find out, if it works on your cluster too. Fill in the blank spots.
 >
 > ~~~~~~~
 > $ cat ________
