@@ -197,7 +197,7 @@ S = ---------------
 >
 > ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the dimension]({{ page.root }}/tikz/data_coords_parallel_estimate_pi.svg)
 >
-> The parallel portion of these two operations amounts to `37+36=73%` of the overall runtime, i.e. `p = 73% = 0.73`. As we want to make the generation of random numbers in x to one task and the generation of random numbers in y to another one, the speed-up `s = 2`.
+> The parallel portion of these two operations amounts to `37+36=73%` of the overall runtime, i.e. `p = 73% = 0.73`. As we want to rewrite the generation of random numbers in x into one independent task and the generation of random numbers in y into another one, the speed-up `s = 2`.
 >
 > ~~~~~
 >            1                   1          1
@@ -219,7 +219,7 @@ S = ---------------
 >    x = np.float32(np.random.uniform(size=count_per_chunk))
 >    y = np.float32(np.random.uniform(size=count_per_chunk))
 >
->    for i in range(4-1):
+>    for i in range(1,4):
 >       x = np.append(x,np.float32(np.random.uniform(size=count_per_chunk)))
 >       y = np.append(y,np.float32(np.random.uniform(size=count_per_chunk)))
 > 
@@ -233,13 +233,22 @@ S = ---------------
 > 
 > For the sake of the example, we assume that the line profile looks identical to the original implementation above. Compute the theoretical speed-up S!
 > Which implementation should Lola choose now? 
+>
+> > ## Solution
+> > ~~~~~
+> >            1                   1
+> > S = -------------------  =  -------- = 2.21
+> >     1 - 0.73 + (0.73/4)      0.4525
+> > ~~~~~
+> {: .solution}
 {: .challenge}
 
 > ## Always go parallel! Right?
 >
 > Profile this [python application]({{ page.root }}/downloads/volume_pylibs.py) which computes how much disk space your python standard library consumes.
+>
 > The algorithm works in 2 steps:
-> 1. create list of absolute paths of all `.py` files in your python's system folder
+> 1. create a list of absolute paths of all `.py` files in your python's system folder
 > 2. loop over all paths from 1. and sum up the space on disk each file consumes
 >
 > Is this a task worth parallelizing? Make a guess!
@@ -249,15 +258,17 @@ S = ---------------
 
 So the bottom line(s) of Amdahl's law are:
 
-- we can speed up a program if we drive `p` as close as possible towards `1`, in other words we should try to parallelize at best the entire program 
-- we can speed up a program if we drive `s` to a large number, in other words we should find ways to speed-up portions of the code as best as possible
-- there is a limit to the speed-up that we can achieve 
+- **we can speed up a program if we drive `p` as close as possible towards `1`**   
+(in other words we should try to parallelize at best the entire program )
+- **we can speed up a program if we drive `s` to a large number**  
+(in other words we should find ways to speed-up portions of the code as best as possible)
+- **there is a limit to the speed-up that we can achieve** 
 
 ![Comparison of different speed-ups and parallel portions]({{ page.root }}/fig/03/amdahls_law.svg)
 
 > ## Surprise! More limits.
 > 
-> Until here `s` was of a bit dubious nature. It was a proprerty of the parallel implementation of our code. In practise, this number is not only limited algorithmically, but also by the hardware your code is running on.
+> Until here `s` was of dubious nature. It was a proprerty of the parallel implementation of our code. In practise, this number is not only limited algorithmically, but also by the hardware your code is running on.
 >
 > Modern computers consist of 3 major parts most of the time:
 > - a core processing unit (CPU)
@@ -265,10 +276,19 @@ So the bottom line(s) of Amdahl's law are:
 > - input/output devices
 > (we omit disks, network cards, monitors, keyboards, GPUs, etc for the sake of argument)
 >
-> When a program wants to perform a computation, it most of the time reads in some data, stores it in memory (RAM) and performs computations on it using the CPU. Modern CPUs can do more than one thing at a time, mostly because they consist of more than one "device" than can perform a computation. This "device" is called a CPU core. When we want to perform some tasks in parallel to one another, the amout of work that can be done in parallel is limited by the amount of CPU cores that can perform computations. So, the number of CPU cores is the hard limit for parallelizing any computation. 
+> When a program wants to perform a computation, it typically does the following  
+> 
+> 1. read in some data
+> 2. store it in memory (RAM)
+> 3. perform computations on it using the CPU
+> 4. store the results back to RAM
+> 5. write the data to some output (monitor, disk)
+> 
+> Modern CPUs can do more than one thing at a time. They consist of more than one "device" than can perform a computation at a single point in time. This "device" is called a CPU core. 
+> When we want to perform some tasks in parallel, the amount of work that can be done in parallel is limited by the amount of CPU cores that can perform computations autonomously. Thus, the number of CPU cores is typically the hard limit for parallelizing any computation heavy program. 
 {: .callout}
 
-Keeping this in mind, Lola decides to split up the work for multiple cores requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions:
+Keeping this in mind, Lola decides to split up the work for multiple cores. This requires Lola to split up the number of total samples by the number of cores available and calling `count_inside` on each of these partitions (or chunks):
 
 ![Partitioning `x` and `y`]({{ page.root }}/tikz/partition_data_parallel_estimate_pi.svg)
 
@@ -341,7 +361,7 @@ sys		0m2.813s
 ~~~
 {: .output}
 
-If the snipped from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
+If the snippet from above is compared to the snippets earlier, you can see that `time` has been put before any other command executed at the prompt and 3 lines have been added to the output of our program. `time` reports 3 times and they are all different:
 
   - `real` that denotes the time that has passed during our program as if you would have used a stop watch
   - `user` this is accumulated amount of CPU seconds (so seconds that the CPU was active) spent in code by the user (you)
@@ -358,7 +378,7 @@ That means, our parallel implementation does already a good job, but only achiev
 {: .callout}
 
 
-> ## Parallel for real 2
+> ## Data Parallel for real, part 2
 >
 > What of the following is a task, that can be parallelized in real life:
 > 
