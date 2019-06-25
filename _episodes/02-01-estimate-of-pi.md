@@ -261,7 +261,35 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 So generating the random numbers appears to be the bottleneck as it accounts for 37+36=73% of the total runtime time. 
 So this is a prime candidate for acceleration.
 
-> ## Word count
+> ## Line count
+>
+> Download [this python script]({{ page.root }}/downloads/count_lines.py) to your current directory. Run it by executing:
+> 
+> ~~~~~
+> $ python3 count_lines.py *py
+> ~~~~~
+> {: .bash}
+>
+> It should print something like this:
+> 
+> ~~~~~
+> 31 count_lines.py
+> 53 count_pylibs_annotated.py
+> 52 count_pylibs.py
+> 55 parallel_pi.py
+> 44 serial_pi_annotated.py
+> 43 serial_pi.py
+> 278 total
+> ~~~~~
+> {: .output}
+> 
+> Use the `line_profile` module to find the hot spot in this program! 
+> 
+> > ## Solution
+> {: .solution}
+{: .challenge}
+
+> ## Faster is always better, right? (Part 1)
 >
 > Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
 > 
@@ -271,7 +299,8 @@ So this is a prime candidate for acceleration.
 > ~~~~~
 > {: .bash}
 > 
-> Use the `line_profile` module to find the hot spot in this program! 
+> Find the hotspot of the application.
+> 
 > > ## Solution
 > > 
 > > ~~~~~
@@ -297,23 +326,6 @@ So this is a prime candidate for acceleration.
 > >     49                                                   sys.exit(1)
 > > ~~~~~
 > > The `word_count` function takes the longest time. Inside it, `re.split` hogs runtime the most.
-> {: .solution}
-{: .challenge}
-
-> ## Faster is always better, right? (Part 1)
->
-> Download [this python script]({{ page.root }}/downloads/count_pylibs.py) to your current directory. Run it by executing:
-> 
-> ~~~~~
-> $ python3 count_pylibs.py
-> 4231827 characters and 418812 words found in standard python libs
-> ~~~~~
-> {: .bash}
-> 
-> Find the hotspot of the application.
-> 
-> > ## Solution
-> > The function which is evaluated most often is `word_count` as it is run on every python lib which is found in the current standard library.
 > {: .solution}
 {: .challenge}
 

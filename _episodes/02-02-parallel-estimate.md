@@ -354,7 +354,7 @@ That means, our parallel implementation does already a good job, but only achiev
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
 
-> ## Line count
+> ## Line count again
 >
 > Download [this python script]({{ page.root }}/downloads/count_lines.py) to your current directory. Run it by executing:
 > 
