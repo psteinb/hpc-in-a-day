@@ -20,39 +20,7 @@ keypoints:
 - "The ratio of the run time of a parallel program divided by the time of the equivalent serial implementation, is called speed-up."
 ---
 
-> ## Parallel for real 1
->
-> What of the following is a task, that can be parallelized in real life:
-> 
-> 1. Manually copying a book and producing a clone 
-> 2. Clearing the table after dinner
-> 3. Rinsing the dishes 
-> 4. A family getting dressed to leave the appartment for birthday party
->
-> > ## Solution
-> > 1. not parallel as we have to start with one book and only have one reader/writer
-> > 2. parallel, the more people help, the better
-> > 3. not parallel, as we typically only have one sink
-> > 4. parallel, each family member can get dressed independent of each other 
-> {: .solution}
-{: .challenge}
 
-> ## Parallel for real 2
->
-> What of the following is a task, that can be parallelized in real life:
-> 
-> 1. Compressing the contents of a directory full of files
-> 2. Converting the currency of rows in a column of a large spreadsheet (10 million rows)
-> 3. Writing an e-mail in an online editor
-> 4. Playing a Video on youtube/vimeo/etc. or in a video player application
->
-> > ## Solution
-> > 1. parallel, each file can be compressed seperately
-> > 2. parallel, each row can be converted seperately
-> > 3. not parallel, we only have one writer (you)
-> > 4. not parallel, you only have one consumer (you), rendering the movie in 2 windows in parallel does not help
-> {: .solution}
-{: .challenge}
 
 Having the profiling data, our estimate of pi is a valuable resource.
 
@@ -93,7 +61,7 @@ More over, the generation of random numbers in x and in y is independent (two se
 
 > ## Numpy madness
 >
-> Numpy is a great library for doing numerical computations in python (this where its name originates). In terms of readability however, the numpy syntax does somewhat obscure what is happening under the hood. For example:
+> Numpy is a great library for doing numerical computations in python (this is where its name originates). In terms of readability however, the numpy syntax does somewhat obscure what is happening under the hood. Let's go through an example:
 >
 > ~~~~~
 > a = np.random.uniform(size=10)
@@ -102,7 +70,7 @@ More over, the generation of random numbers in x and in y is independent (two se
 > c = a + b
 > ~~~~~
 > 
-> First of, `np.random.uniform(size=10)` creates a list of 10 random numbers. Cross check this by printing it to the terminal. 
+> First of, `np.random.uniform(size=10)` creates a collection of 10 random numbers. Cross check this by printing it to the terminal. 
 >
 > Second, `c = a + b` refers to the plus operation performed item by item of the participating arrays or lists. It can be rewritten as:
 >
@@ -110,6 +78,8 @@ More over, the generation of random numbers in x and in y is independent (two se
 > for i in range(len(a)):
 >   c[i] = a[i] + b[i]
 > ~~~~~
+>
+> In technical terms, numpy is a vectorizing library. It tries to compress for-loop-lie operations into singular statements if each iteration of for-loop-operation is independent of the previous and/or next.
 {: .callout}
 
 
@@ -118,6 +88,25 @@ Another approach is trying to compute as many independent parts as possible in p
 ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the pair generated]({{ page.root }}/tikz/data_pairs_parallel_estimate_pi.svg)
 
 This behavior is often referred to as _data parallelism_. 
+
+> ## Data parallel in Reality
+>
+> What of the following is a task, that can be parallelized in real life:
+> 
+> 1. Manually copying a book and producing a clone 
+> 2. Clearing the table after dinner
+> 3. Rinsing the dishes with one sink
+> 4. A family getting dressed to leave the appartment for a birthday party
+>
+> Think about what the inputs are to the task at hand. Can individual items of the inputs be processed independent of each other?
+> 
+> > ## Solution
+> > 1. not parallel typically - as we have to start with one book and only have one reader/writer
+> > 2. parallel, the more people help, the better
+> > 3. not parallel, every piece of cutlery and dishes needs to go through one sink
+> > 4. parallel, each family member can get dressed independent of each other 
+> {: .solution}
+{: .challenge}
 
 > ## Data Parallel Code 1
 >
@@ -130,13 +119,17 @@ This behavior is often referred to as _data parallelism_.
 >   my_data[i] = pi*my_data[i]
 > ~~~~~~
 >
-> This code in numpy would be:
->
-> ~~~~~
-> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
-> 
-> my_data = pi*my_data
-> ~~~~~
+> > ## Solution
+> > Yes, each iteration at a given value for `i` is independent of any other value. We multiply the value that is currently stored at `my_data[i]` by `pi` and store the result back into `my_data[i]`.
+> > 
+> > The same code in numpy would be:
+> >
+> > ~~~~~
+> > my_data = np.array([ 0, 1, 2, 3, 4, ... ])
+> > 
+> > my_data = pi*my_data
+> > ~~~~~
+> {: .solution}
 {: .challenge}
 
 > ## Data Parallel Code 2
@@ -153,14 +146,18 @@ This behavior is often referred to as _data parallelism_.
 >       my_data[i] = 3*my_data[i]
 > ~~~~~~
 >
-> This code in numpy would be:
->
-> ~~~~~
-> my_data = np.array([ 0, 1, 2, 3, 4, ... ])
-> 
-> my_data[np.where(my_data % 2 == 0)] = 42
-> my_data[np.where(my_data % 2 != 0)] = 3*my_data[np.where(my_data % 2 != 0)]
-> ~~~~~
+> > ## Solution
+> > Yes, each iteration at a given value for `i` is independent of any other value even though we have an if-statement here. We set every even indexed value in `my_data` to `42`. For any other value in `my_data`, we multiply the value that is currently stored by `3` and store the result back into `my_data[i]`.
+> > 
+> > The same code in numpy would be:
+> >
+> > ~~~~~
+> > my_data = np.array([ 0, 1, 2, 3, 4, ... ])
+> > 
+> > my_data[np.where(my_data % 2 == 0)] = 42
+> > my_data[np.where(my_data % 2 != 0)] = 3*my_data[np.where(my_data % 2 != 0)]
+> > ~~~~~
+> {: .solution}
 {: .challenge}
 
 > ## Data Parallel Code 3
@@ -171,9 +168,13 @@ This behavior is often referred to as _data parallelism_.
 > from random import randint
 > my_data = [ 0, 1, 2, 3, 4, ... ]
 >
-> for i in range(len(my_data)):
->   my_data[i] = 42*my_data[randint(0,len(my_data))]
+> for i in range(1,len(my_data)):
+>   my_data[i] = 42*my_data[i-1]
 > ~~~~~~
+> 
+> > ## Solution
+> > No, iteration `i` depends on the iteration before it, i.e. on iteration `i-1`. This is hard if not impossible to parallelize.
+> {: .solution}
 {: .challenge}
 
 Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
@@ -353,6 +354,24 @@ That means, our parallel implementation does already a good job, but only achiev
 > The output of the `time` command is very much bound to how a operating system works. In an ideal world, `user` and `sys` of serial programs should add up to `real`. Typically they never do. The reason is, that the operating systems used in HPC and on laptops or workstations are set up in a way, that the operating system decides which process receives time on the CPU (aka to perform computations). Once a process runs, it may however happen, that the system decides to intervene and have some other binary have a tiny slice of a CPU second while your application is executed. This is where the mismatch for `user+sys` and `real` comes from.
 > Note also how the `user` time of the parallel program is a lot larger than the time that was actually consumed. This is because, `time` reports accumulated timings i.e. it adds up CPU seconds that were consumed in parallel.
 {: .callout}
+
+
+> ## Parallel for real 2
+>
+> What of the following is a task, that can be parallelized in real life:
+> 
+> 1. Compressing the files in a directory
+> 2. Converting the currency in all rows of a large spreadsheet (10 million rows)
+> 3. Writing an e-mail in an online editor
+> 4. Watching a video on youtube/vimeo/etc. or in a video player application
+>
+> > ## Solution
+> > 1. parallel, each file can be compressed seperately
+> > 2. parallel, each row can be converted seperately
+> > 3. not parallel, we only have one writer (you)
+> > 4. not parallel, you only have one consumer (you)
+> {: .solution}
+{: .challenge}
 
 > ## Line count again
 >
