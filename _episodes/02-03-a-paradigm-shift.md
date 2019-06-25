@@ -49,4 +49,10 @@ Another day, Lola discovers a library named `dask` (see more details [here](http
 ~~~
 {: .python}
 
-This [implementation]({{page.root}}/code/02_parallel_jobs/dask_numpi.py) performs similarly than the other implementation.
+This [implementation]({{page.root}}/code/02_parallel_jobs/dask_numpi.py) can now be put to work. At this point, a paradigm shift has been introduced silently. Lola's office mate makes her aware of this. It is a subtle change compared to using the `multiprocessing` library, but it is there. 
+
+In this example, the containers for the random numbers have become smart. This is only visible by good measure of the `chunks=-1` argument to the `da.random.uniform` function. A flat container used to just hold numbers in memory wouldn't have to be responsible for the chunking of the data. But dask offers us a container that does so.
+
+Behind the courtains, the dask framework connects containers (`da.array` here) with functions (`operator*`, `operator+`, `da.sqrt`, `da.where`). The framework then infers which functions can act on which data independently. From this, the dask library can complete the program to any degree of parallelism that is needed. 
+
+All this automation comes at a price. The dask implementation is about 2x slower than the pure `multiprocessing` one. But there must be something, we have gained.

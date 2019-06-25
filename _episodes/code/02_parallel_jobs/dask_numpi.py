@@ -32,7 +32,11 @@ def main():
     if len(sys.argv) > 1:
         n_samples = int(sys.argv[1])
 
-    my_pi = estimate_pi(n_samples, 1000)
+    chunksize = .1*n_samples
+    if len(sys.argv) > 2:
+        chunksize = int(sys.argv[2])
+        
+    my_pi = estimate_pi(n_samples, chunksize)
     sizeof = np.dtype(np.float32).itemsize
     print("[parallel version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
     print("[using dask lib  ] pi is %f from %i samples" % (my_pi,n_samples))
