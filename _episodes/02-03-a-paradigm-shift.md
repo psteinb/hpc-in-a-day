@@ -42,7 +42,7 @@ Lola's office mate observes, that:
 
 Lola agrees to these observations and both argue that an alternative implementation using higher level abstractions of the underlying hardware might be a good idea.
 
-Another day, Lola discovers a library named `dask` that not only promises high performance, but also appears to be on par with the numpy library, so that she has to apply only minimal changes.
+Another day, Lola discovers a library named `dask` (see more details [here](https://docs.dask.org/en/latest/)) that not only promises high performance, but also appears to be on par with the numpy library, so that she has to apply only minimal changes to the code.
 
 ~~~
 {% include {{ page.root }}/code/02_parallel_jobs/dask_numpi.py %}

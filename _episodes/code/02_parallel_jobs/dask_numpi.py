@@ -7,7 +7,7 @@ import numpy as np
 np.random.seed(2017)
 da.random.seed(2017)
 
-def inside_circle(total_count, chunk_size):
+def inside_circle(total_count, chunk_size = -1):
     x = da.random.uniform(size=(total_count),
                           chunks=(chunk_size))
 
@@ -22,7 +22,7 @@ def inside_circle(total_count, chunk_size):
 
     return count
 
-def estimate_pi(total_count, chunk_size=1000):
+def estimate_pi(total_count, chunk_size=-1):
 
     count = inside_circle(total_count, chunk_size)
     return (4.0 * count / total_count)
