@@ -14,21 +14,26 @@ keypoints:
 - "The estimation of pi with the Monte Carlo method is a compute bound problem because pseudo-random numbers are just algorithms."
 ---
 
-Lola is told that her predecessors all worked on the same project. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as a computational workhorse per group. But currently, the need for distributed computations has risen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. Simple!
+Lola is told that her predecessors worked on the same project - all of them. A high performance calculation that is able to produce a high precision estimate of Pi. Even though calculating Pi can be considered a solved problem, this piece of code is used at the institute to benchmark new hardware. So far, the institute has only acquired larger single machines for each lab to act as a computational workhorse per group. But currently, the need for distributed computations has risen and hence a distributed code is needed, that yields both simplicity, efficiency and scalability. Simple! So Lola is tasked to look into the matter.
 
-The algorithm that Lola aims for was pioneered by _Georges-Louis Leclerc de Buffon_ in _1733_. 
+Inside the code base, Lola looks at something based on ideas by _Georges-Louis Leclerc de Buffon_ in _1733_. 
 
 ![Estimating Pi with Buffon's needle]({{ page.root }}/tikz/estimate_pi.svg)
 
-Overlay a unit square over a quadrant of a circle. Throw `m` random number pairs and count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `n`). `Pi` is then approximated by: 
+The algorithm goes like this:
+
+1. Overlay a unit square over a quadrant of a circle. 
+2. Throw `total_count` random number pairs
+3. Count how many of the pairs lie inside the circle (the number pairs inside the circle is denoted by `inside_count`). 
+4. Given `total_count` and `inside_count`, `Pi` is approximated by: 
 
 ~~~
-     4*m
-Pi = ---
-      n
+         inside_count
+Pi = 4 * -------------
+         total_count
 ~~~
 
-The implementation of this algorithm using `total_count` random number pairs in a nutshell is given in the program below:
+Using `total_count` random number pairs in a nutshell is given in the program below:
 
 ~~~
 import numpy
@@ -55,7 +60,7 @@ def estimate_pi(total_count):
 ~~~
 {: .python}
 
-For generating pseudo-random numbers, we sample the uniform probability distribution in the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
+For generating pseudo-random numbers, we sample the [uniform probability distribution](https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)) using the default floating point interval from `0` to `1`. The `sqrt` step is not required directly, but Lola includes it here for clarity. `numpy.where` is used obtain the list of indices that correspond to radii which are equal or smaller than `1.0`. At last, this list of indices is used to filter-out the numbers in the `radii` array and obtain its length, which is the number Lola are after.
 
 Lola finishes writing the pi estimation and comes up with a [small python script]({{ page.root }}/code/02_parallel_jobs/serial_numpi.py), that she can launch from the command line:
 
@@ -120,6 +125,7 @@ def main():
 if __name__=='__main__':
     main()
 ~~~
+{: .python }
 
 With this trick, we can make sure that we profile the entire application. Note, that this is a necessity when using `line_profiler`. We can now carry on, and annotate the main function.
 
