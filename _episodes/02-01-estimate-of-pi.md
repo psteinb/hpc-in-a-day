@@ -286,6 +286,33 @@ So this is a prime candidate for acceleration.
 > Use the `line_profile` module to find the hot spot in this program! 
 > 
 > > ## Solution
+> > ~~~
+> > $ python3 -m line_profiler count_lines.py.lprof                                      
+> > Timer unit: 1e-06 s
+> > 
+> > Total time: 0.010569 s
+> > File: ./count_lines.py
+> > Function: main at line 15
+> > 
+> > Line #      Hits         Time  Per Hit   % Time  Line Contents
+> > ==============================================================
+> >     15                                           @profile
+> >     16                                           def main():
+> >     17                                           
+> >     18         1          1.0      1.0      0.0      if len(sys.argv)<2:
+> >     19                                                   print("usage: python count_lines.py <file(s)>)")
+> >     20                                                   sys.exit(1)
+> >     21                                           
+> >     22         1          1.0      1.0      0.0      total = 0
+> >     23        10          7.0      0.7      0.1      for infile in sys.argv[1:]:
+> >     24         9      10459.0   1162.1     99.0          len_ = lines_count(infile)
+> >     25         9         88.0      9.8      0.8          print(len_,infile)
+> >     26         9          6.0      0.7      0.1          total += len_
+> >     27                                           
+> >     28         1          4.0      4.0      0.0      print(total,"total")
+> >     29         1          3.0      3.0      0.0      sys.exit(0)
+> > ~~~
+> > {: .output }
 > {: .solution}
 {: .challenge}
 
