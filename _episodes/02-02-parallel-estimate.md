@@ -83,11 +83,11 @@ More over, the generation of random numbers in x and in y is independent (two se
 {: .callout}
 
 
-Another approach is trying to compute as many independent parts as possible in parallel. In this case here, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
+Another approach is trying to compute as many independent parts as possible in parallel. In Lola's case, we can make the observation that each pair of numbers in `x` and `y` is independent of each other. 
 
 ![Illustration of drawing random number pairs `x` and `y` and their dependency with respect to the pair generated]({{ page.root }}/tikz/data_pairs_parallel_estimate_pi.svg)
 
-This behavior is often referred to as _data parallelism_. 
+This behavior is often referred to as **data parallelism**. 
 
 > ## Data parallel in Reality
 >
@@ -177,9 +177,11 @@ This behavior is often referred to as _data parallelism_.
 > {: .solution}
 {: .challenge}
 
-Lola now wonders how to proceed. There are multiple options at her disposal. But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that this type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple of mean of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. 
+Lola now wonders how to proceed. There are multiple options at her disposal (see the 2 strategies above). But given her limited time budget, she thinks that trying them all out is tedious. She discusses this with her office mate over lunch. Her colleaque mentions that a similar type of consideration was first discussed by Gene Amdahl in 1967 and goes by the name of [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law). This law provides a simple way of calculating how fast a program can get when parallelized for a fixed problem size. By profiling her code, Lola has all the ingredients to make this calculation. So they both embark on this exercise.
 
-The performance improvement of a program, given an original implementation and an improved one is referred as __speed-up S__. Given a program, we can measure the runtime portion of the code that can be benefit from use of more resources (in our case parallel computations), aka __parallel portion p__. For this __parallel portion__, we finally need how much this can be sped-up, which we will refer to as __serial speed-up s__. 
+The performance improvement of a program, given an original implementation and an improved one is referred to as __speed-up S__. Given a program, we can measure the runtime of the code that can benefit later on from use of more resources (i.e. parallel computations as in our case). We call this quantity __portion `p` to parallelize__ (or short parallel portion). 
+
+For this __parallel portion__, we also need to know how much this can be sped-up effectively by the changes we have in mind. We will refer to this quantity as __serial speed-up `s`__ (code in the parallel portion that was once serial will be sped-up). 
 
 Given all these ingredients, the theoretical speed-up of the whole program is given by:
 
