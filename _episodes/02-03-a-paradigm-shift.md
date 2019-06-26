@@ -115,4 +115,64 @@ By chance, she talks to her office mate about this. They discover that there is 
 
 ![](fig/dask-dashboard_1024px.png)
 
+In an cluster environment, this is now a powerful feature. Scaling the application has just become manageable. So let's get real and scale across multiple nodes on the cluster. For this, we start the central `dask-scheduler` on the login node. This is a process that only handles network traffic and hence should not (to be monitored) consume too many resources.
 
+~~~
+$ dask-scheduler > scheduler.log 2>&1 &
+~~~
+{: .bash}
+
+Note, we are sending this process into the background immediately and route its output including all errors into `scheduler.log`. The output of this command should look like this (if not, there is a problem):
+
+~~~
+distributed.scheduler - INFO - Clear task state
+distributed.scheduler - INFO -   Scheduler at:  tcp://1.1.1.42:8786
+distributed.scheduler - INFO -       bokeh at:        1.1.1.42:8787
+distributed.scheduler - INFO - Local Directory:    /tmp/scheduler-xp31e5sl
+distributed.scheduler - INFO - -----------------------------------------------
+~~~
+{: .output}
+
+Subsequently, we have to start a worker on a cluster node and connect it to the scheduler by means of the IP address:
+
+~~~
+$ cat worker.sh
+#!/bin/bash
+#SBATCH --exclusive
+#SBATCH -t 01:00:00
+#SBATCH --exclusive
+
+dask-worker tcp://1.1.1.42:8786
+$ sbatch -o worker1.log  worker.sh
+~~~
+{: .bash}
+
+Now, we have to update the address of the scheduler inside our dask python script:
+
+~~~
+client = Client("tcp://1.1.1.42:8786")
+~~~
+{: .python}
+
+As Lola observes, all parts of this dask system are connected by a single point, i.e. the IP address of the `dask-scheduler`. Lola can now run her dask scripts from the node where the `dask-scheduler` was started.
+
+~~~
+$ python3 distributed.dask_numpi.py
+~~~
+{: .bash}
+
+She will notice that the dashboard at `1.1.1.42:8787` is now filled with moving boxes. Her application runs. But, how about adding another node?
+
+~~~
+$ sbatch -o worker2.log  worker.sh
+~~~
+{: .bash}
+
+She is curious if the 2 workers can be used by her code.
+
+~~~
+$ python3 distributed.dask_numpi.py
+~~~
+{: .bash}
+
+Lola smiles while looking at the dashboard. This was after all very easy to setup. She has now reached a precision boundary that no other emplyee has reach for estimating pi.
