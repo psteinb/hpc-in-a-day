@@ -37,7 +37,7 @@ def main():
     if len(sys.argv) > 2:
         chunksize = int(sys.argv[2])
 
-    client = Client("tcp://192.168.178.25:8786")
+    client = Client("tcp://10.1.4.14:8786")
     my_pi = estimate_pi(n_samples, chunksize)
     sizeof = np.dtype(np.float32).itemsize
     print("[parallel version] required memory %.3f MB" % (n_samples*sizeof*3/(1024*1024)))
