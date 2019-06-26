@@ -184,7 +184,14 @@ if rank == 0:
 ~~~
 {: .python}
 
-And that's it. Now, Lola can submit her first MPI job.
+And that's it. The complete script the looks like this:
+
+~~~
+{% include code/02_parallel_jobs/mpi_numpi.py %}
+~~~
+{: .python}
+
+Now, Lola can submit her first MPI job.
 
 ~~~
 {% include /snippets/02/submit_48_mpirun_python3_mpi_numpi.{{ site.workshop_scheduler }} %}
